@@ -1,0 +1,11 @@
+*
+!inc/
+!inc/**
+!src/
+!src/**
+!doc/
+!doc/**
+doc/subject.pdf
+!README.md
+!Makefile
+!.gitignore
