@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/09 22:37:42 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/11 19:08:48 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,26 +31,15 @@ LIBS := -lreadline
 # ============================================================================= #
 
 SRCS_DIR := src/
-PARSER_DIR := $(SRCS_DIR)parser/
-EXEC_DIR := $(SRCS_DIR)executor/
+PARSER_DIR := $(SRCS_DIR)src_parsing/
+EXEC_DIR := $(SRCS_DIR)src_execute/
 
 SRCS := \
-	$(SRCS_DIR) \
-	$(SRCS_DIR) \
-	$(SRCS_DIR) \
+	$(SRCS_DIR)main.c \
 
 SRCS_PARSER := \
-	$(PARSER_DIR) \
-	$(PARSER_DIR) \
-	$(PARSER_DIR) \
-	$(PARSER_DIR) \
-	$(PARSER_DIR) \
 
 SRCS_EXEC := \
-	$(EXEC_DIR) \
-	$(EXEC_DIR) \
-	$(EXEC_DIR) \
-	$(EXEC_DIR) \
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)
@@ -59,7 +48,6 @@ OBJS := $(ALL_SRCS:.c=.o)
 #                                   COLORS                                      #
 # ============================================================================= #
 
-# Text Colors
 BLACK       := \033[0;30m
 RED         := \033[0;31m
 GREEN       := \033[0;32m
@@ -69,17 +57,6 @@ PURPLE      := \033[0;35m
 CYAN        := \033[0;36m
 WHITE       := \033[0;37m
 
-# Background Colors
-BG_BLACK    := \033[40m
-BG_RED      := \033[41m
-BG_GREEN    := \033[42m
-BG_YELLOW   := \033[43m
-BG_BLUE     := \033[44m
-BG_PURPLE   := \033[45m
-BG_CYAN     := \033[46m
-BG_WHITE    := \033[47m
-
-# Reset
 RESET       := \033[0m
 
 # ============================================================================= #
@@ -124,34 +101,23 @@ norminette:
 	@echo "$(BLUE)📏 Running norminette...$(RESET)"
 	@norminette $(ALL_SRCS) includes/ | grep -E "(Error|Warning)" || echo "$(GREEN)✅ Norminette: OK!$(RESET)"
 
-test: $(NAME)
-	@echo "$(CYAN)🧪 Running basic tests...$(RESET)"
-	@echo "$(YELLOW)Testing echo...$(RESET)"
-	@echo 'echo "Hello World!"' | ./$(NAME)
-	@echo "$(YELLOW)Testing pwd...$(RESET)"
-	@echo 'pwd' | ./$(NAME)
-
-leak: $(NAME)
-	@echo "$(RED)🔍 Running leak test...$(RESET)"
-	@leaks --atExit -- ./$(NAME)
-
 header:
 	@clear
-	@echo "$(CYAN)"
-	@echo "╔══════════════════════════════════════════════════════════════════════════════╗"
-	@echo "║                                                                              ║"
-	@echo "║    ███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗            ║"
-	@echo "║    ████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║            ║"
-	@echo "║    ██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║            ║"
-	@echo "║    ██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║            ║"
-	@echo "║    ██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗       ║"
-	@echo "║    ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝       ║"
-	@echo "║                                                                              ║"
-	@echo "║$(YELLOW)                          ✨ 42 School Project ✨                             $(CYAN)║"
-	@echo "║                                                                              ║"
-	@echo "║$(GREEN)                            👥 jcaro-lo & lginer-m 👥                         $(CYAN)║"
-	@echo "║                                                                              ║"
-	@echo "╚══════════════════════════════════════════════════════════════════════════════╝"
+	@echo "$(BLUE)"
+	@echo "╔═══════════════════════════════════════════════════════════════════════════╗"
+	@echo "║                                                                           ║"
+	@echo "║    ███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗         ║"
+	@echo "║    ████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║         ║"
+	@echo "║    ██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║         ║"
+	@echo "║    ██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║         ║"
+	@echo "║    ██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗    ║"
+	@echo "║    ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝    ║"
+	@echo "║                                                                           ║"
+	@echo "║$(YELLOW)                         ✨ 42 School Project ✨                           $(BLUE)║"
+	@echo "║                                                                           ║"
+	@echo "║$(GREEN)                        👥 jcaro-lo & lginer-m 👥                          $(BLUE)║"
+	@echo "║                                                                           ║"
+	@echo "╚═══════════════════════════════════════════════════════════════════════════╝"
 	@echo "$(RESET)"
 	@echo "$(GREEN)🚀 Starting compilation...$(RESET)"
 
