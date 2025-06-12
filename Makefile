@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/11 19:08:48 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/12 19:17:02 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,9 @@ CFLAGS := -g -Wall -Werror -Wextra \
 
 LIBFT_DIR := Libft
 LIBFT := $(LIBFT_DIR)/libft.a
-INCLUDES := -I$(LIBFT_DIR) -Iinc -I/usr/include -I$(HOME)/.brew/include
-LIBS := -lreadline
+READLINE_INCLUDE = $(shell brew --prefix readline)/include
+READLINE_LIB = $(shell brew --prefix readline)/lib
+INCLUDES = -I./includes -I./lib/libft -I$(READLINE_INCLUDE)
 
 # ============================================================================= #
 #                                   SOURCES                                     #
