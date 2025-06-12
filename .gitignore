@@ -5,7 +5,8 @@
 !src/**
 !doc/
 !doc/**
-doc/subject.pdf
+!main.c
+!manual.txt
 !README.md
 !Makefile
 !.gitignore
