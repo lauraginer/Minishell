@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/09 22:08:14 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:19:27 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,13 @@
 # include <sys/wait.h>
 # include <term.h>
 # include <unistd.h>
+
+typedef struct s_ast_node
+{
+    t_node type type;
+    char *args;
+    struct s_ast_node *left;
+    struct s_ast_node *right;
+}   t_ast_node;
 
 #endif
