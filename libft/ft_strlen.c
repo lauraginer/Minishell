@@ -1,13 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/12 19:57:16 by jcaro-lo         ###   ########.fr       */
+/*   Created: 2024/04/13 18:25:29 by jcaro-lo          #+#    #+#             */
+/*   Updated: 2024/04/13 19:17:54 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+int	ft_strlen(const char *s)
+{
+	unsigned int	count;
+
+	count = 0;
+	while (s[count] != '\0')
+		count++;
+	return (count);
+}

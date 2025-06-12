@@ -1,13 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_print_char.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/12 19:57:16 by jcaro-lo         ###   ########.fr       */
+/*   Created: 2024/06/12 18:25:10 by jcaro-lo          #+#    #+#             */
+/*   Updated: 2025/02/01 16:21:40 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+
+int	ft_print_char(char c)
+{
+	write(1, &c, 1);
+	return (1);
+}
+
+/*int	main(void)
+{
+	char	c;
+
+	c = 'a';
+	ft_print_char('8');
+}*/
