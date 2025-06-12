@@ -22,7 +22,7 @@ int execute(t_node node)
 
 /*Para manejar file descriptors y crear procesos con fork():
 Esto es el núcleo de la parte de ejecución, además de trabajar un poco con las redirecciones,
-donde básicamente abrimos un archivo y luego redirigimos (usando dup2) la entrada o salida estándar a ese archivo.
+donde bbásicamente abrimos un archivo y luego redirigimos (usando dup2) la entrada o salida estándar a ese archivo.
 En el caso de here-doc (<<), redirigimos la entrada estándar a un pipe.*/
 int execute_pipe()
 {
