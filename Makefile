@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/11 19:08:48 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/13 15:38:17 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CFLAGS := -g -Wall -Werror -Wextra \
 		#-g -fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
-LIBFT_DIR := Libft
+LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
 INCLUDES := -I$(LIBFT_DIR) -Iinc -I/usr/include -I$(HOME)/.brew/include
 LIBS := -lreadline
