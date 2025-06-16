@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/13 15:38:17 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/16 22:07:58 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,11 @@ PARSER_DIR := $(SRCS_DIR)src_parsing/
 EXEC_DIR := $(SRCS_DIR)src_execute/
 
 SRCS := \
-	$(SRCS_DIR)main.c \
+	$(SRCS_DIR)\
 
 SRCS_PARSER := \
 
-SRCS_EXEC := \
+SRCS_EXEC :=\
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)

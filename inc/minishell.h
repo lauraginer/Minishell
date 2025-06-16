@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/13 19:26:02 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:03:08 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ typedef struct s_token
     struct s_token *next;
 }   t_token;
 
-typedef struct s_ast_node
+/*typedef struct s_ast_node
 {
     t_node_type type;             // Tipo del nodo: comando, pipe, redirección, etc.
     char *args;                   // Argumentos del comando (por ejemplo, "ls", "-l", etc.)
     struct s_ast_node *left;      // Hijo izquierdo (ej: primer comando en un pipe)
     struct s_ast_node *right;     // Hijo derecho (ej: segundo comando en un pipe)
-}   t_ast_node;
+}   t_ast_node;*/
 
 
 //builtins
