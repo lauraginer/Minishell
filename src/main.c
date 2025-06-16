@@ -6,8 +6,8 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/12 19:57:16 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/16 10:07:50 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"

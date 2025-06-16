@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/13 19:26:02 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/16 10:26:47 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,19 @@ typedef enum e_token_type
     TOKEN_REDIR_OUT, // For '>'
     TOKEN_REDIR_APPEND, // For '>>'
     TOKEN_REDIR_HEREDOC, // For '<<'
-    TOKEN_ENV_VAR, // For environment variables
+    TOKEN_EXPAND, // For expanding variables
 }   t_token_type;
+
+typedef enum e_node_type
+{
+    NODE_CMD,  
+    NODE_PIPE, 
+    NODE_REDIR_IN,
+    NODE_REDIR_OUT,
+    NODE_REDIR_APPEND,
+    NODE_REDIR_HEREDOC,
+    NODE_ENV_VAR,
+}   t_node_type;
 
 typedef struct s_token
 {
