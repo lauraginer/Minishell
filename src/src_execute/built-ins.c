@@ -6,13 +6,12 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/16 18:02:51 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:50:00 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int builtin_echo(char **args);
 int builtin_cd(char **args);
 int builtin_pwd(char **args);
 int builtin_exit(char **args);

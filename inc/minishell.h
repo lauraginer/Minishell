@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/16 18:03:08 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:33:16 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,19 @@ typedef enum e_token_type
     TOKEN_REDIR_OUT, // For '>'
     TOKEN_REDIR_APPEND, // For '>>'
     TOKEN_REDIR_HEREDOC, // For '<<'
-    TOKEN_ENV_VAR, // For environment variables
+    TOKEN_EXPAND, // For expanding variables
 }   t_token_type;
+
+typedef enum e_node_type
+{
+    NODE_CMD,  
+    NODE_PIPE, 
+    NODE_REDIR_IN,
+    NODE_REDIR_OUT,
+    NODE_REDIR_APPEND,
+    NODE_REDIR_HEREDOC,
+    NODE_ENV_VAR,
+}   t_node_type;
 
 typedef struct s_token
 {
@@ -50,17 +61,18 @@ typedef struct s_token
     struct s_token *next;
 }   t_token;
 
-/*typedef struct s_ast_node
+typedef struct s_ast_node
 {
     t_node_type type;             // Tipo del nodo: comando, pipe, redirección, etc.
     char *args;                   // Argumentos del comando (por ejemplo, "ls", "-l", etc.)
     struct s_ast_node *left;      // Hijo izquierdo (ej: primer comando en un pipe)
     struct s_ast_node *right;     // Hijo derecho (ej: segundo comando en un pipe)
-}   t_ast_node;*/
+}   t_ast_node;
 
 
 //builtins
 int builtin_echo(char **args);
+int valid_flag(char *str);
 int builtin_cd(char **args);
 int builtin_pwd(char **args);
 int builtin_exit(char **args);
