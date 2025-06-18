@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/16 11:42:19 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/18 21:46:45 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ typedef struct s_ast_node
 
 //builtins
 int builtin_echo(char **args);
+int valid_flag(char *str);
+void print_arg(char *arg);
 int builtin_cd(char **args);
 int builtin_pwd(char **args);
 int builtin_exit(char **args);
