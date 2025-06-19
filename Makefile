@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/13 15:38:17 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/18 21:35:30 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,9 @@ SRCS := \
 SRCS_PARSER := \
 
 SRCS_EXEC := \
+	$(EXEC_DIR)echo.c \
+	$(EXEC_DIR)pwd.c \
+	$(EXEC_DIR)env.c \
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)
@@ -63,9 +66,13 @@ RESET       := \033[0m
 #                                    RULES                                      #
 # ============================================================================= #
 
-.PHONY: all clean fclean re bonus norminette test help
+.PHONY: all clean fclean re bonus norminette test help cleanlib
 
-all: header $(NAME)
+cleanlib:
+	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
+	@make -C $(LIBFT_DIR) clean --no-print-directory
+
+all: header cleanlib $(NAME)
 	@echo "$(GREEN)✅ Compilation completed successfully!$(RESET)"
 	@echo "$(CYAN)🚀 Ready to use ./$(NAME)$(RESET)"
 
@@ -86,6 +93,7 @@ $(LIBFT):
 clean:
 	@echo "$(YELLOW)🧹 Cleaning object files...$(RESET)"
 	@rm -f $(OBJS)
+	@find $(SRCS_DIR) -name "*.o" -type f -delete 2>/dev/null || true
 	@make -C $(LIBFT_DIR) clean --no-print-directory
 	@echo "$(GREEN)✨ Object files cleaned!$(RESET)"
 
