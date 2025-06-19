@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/19 13:04:47 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/19 23:06:15 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,16 @@ int		quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type);
 /*It fills the values of the token node and add it at the end of the list*/
 int		fill_and_add_token_node(t_parse *parse, t_list *my_env, t_token_type type, int j);
 
+//EXECUTE
+
 //builtins
 int		builtin_echo(char **args);
-int		valid_flag(char *str);
+int		valid_flag(char *str, int flag);
 void	print_arg(char *arg);
 int		builtin_cd(char **args);
 int		builtin_pwd(char **args);
 int		builtin_exit(char **args);
-int		builtin_env(char **envp);
+int		builtin_env(char **args, t_list *my_env);
 int		builtin_export(char **args);
 int		builtin_unset(char **args);
 int		is_builtin(char *cmd);
