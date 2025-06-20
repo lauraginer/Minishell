@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/19 23:06:15 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/20 21:13:33 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		fill_and_add_token_node(t_parse *parse, t_list *my_env, t_token_type type, 
 
 //builtins
 int		builtin_echo(char **args);
-int		valid_flag(char *str, int flag);
+int		valid_flag(char *str);
 void	print_arg(char *arg);
 int		builtin_cd(char **args);
 int		builtin_pwd(char **args);
