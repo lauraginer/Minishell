@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 17:54:18 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/17 18:09:34 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:01:24 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,28 @@ void	lstadd_back_token(t_token **tokens, t_token *new)
 			curr = curr ->next;
 		curr -> next = new;
 	}
+}
+
+void	fill_and_add_token_node(t_parse *parse,
+	t_list *my_env, t_token_type type, int j) // cambiar a void en minishell.h
+{
+	t_token	*node;
+	char	*value;
+
+	value = ft_substr(parse->input, j, parse->count - j);
+	if (!value)
+	{
+		free_env_list(my_env);
+		free_parse(parse);
+		exit (1);
+	}
+	node = lstnew_token(value, type);
+	if (!node)
+	{
+		free(value);
+		free_env_list(my_env);
+		free_parse(parse);
+		exit(1);
+	}
+	lstadd_back_token(&(parse->tokens), node);
 }

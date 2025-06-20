@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/19 12:44:55 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:29:25 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@
 	
 	*/
 
-
-
-t_parse *init_parse()
+t_parse	*init_parse(void)
 {
-	t_parse *parse;
-	
+	t_parse	*parse;
+
 	parse = malloc(sizeof(t_parse));
 	if (!parse)
 		return (NULL);
@@ -44,7 +42,7 @@ t_parse *init_parse()
 	parse->count = 0;
 }
 
-t_list *copy_env_var(char **envp)
+t_list	*copy_env_var(char **envp)
 {
 	int		i;
 	t_list	*new_node;
@@ -81,13 +79,17 @@ void	main_loop(t_parse *parse, t_list *my_env)
 		if (parse->input && *(parse->input))
 			add_history(parse->input);
 		else
-			break;
+		{
+			free_env_list(my_env);
+			free(parse);
+			break ;
+		}
 		if (lexer(my_env, parse) == FAILURE)
-			continue;
+			continue ;
 	}
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_parse	*parse;
 	t_list	*my_env;
@@ -102,6 +104,6 @@ int main(int argc, char **argv, char **envp)
 	{
 		free_env_list(my_env);
 		exit (1);
-	}	
+	}
 	main_loop(parse, my_env);
 }
