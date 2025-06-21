@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:55:54 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/19 22:18:24 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/20 21:28:10 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	builtin_env(char **args, t_list *my_env)
 {
 	t_list	*current_env;
-	
+
 	current_env = my_env;
 	if (args[1])
 	{
@@ -32,13 +32,13 @@ int	builtin_env(char **args, t_list *my_env)
 		ft_printf("%s\n", (char *)current_env->content);
 		current_env = current_env->next;
 	}
-	return(0);
+	return (0);
 }
 /*
 int	main(int argc, char **argv, char **envp)
 {
-	t_list *my_env;
-	
+	t_list	*my_env;
+
 	(void)argc;
 	my_env = copy_env_var(envp);
 	builtin_env(argv, my_env); // Pasamos argumentos y variables de entorno
