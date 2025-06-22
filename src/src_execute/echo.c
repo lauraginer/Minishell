@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:04:53 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/18 21:30:06 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/20 21:13:14 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ int	valid_flag(char *str)
 
 	if (!str || str[0] != '-')
 		return (0);
+	if (str[1] == '\0')
+		return (0);
 	i = 1;
 	while (str[i] == 'n')
 		i++;
 	if (str[i] == '\0')
 		return (1);
-	return (0); // contiene cualquier otra cosa (inválido)
+
+	return (0);
 }
 void	print_arg(char *arg)
 {
@@ -63,9 +66,11 @@ int	builtin_echo(char **args)
 	return (0);
 }
 
-int	main(int argc, char **args)
+/*int	main(int argc, char **args)
 {
 	(void)argc;
 	builtin_echo(args);
 	return (0);
-}
+}*/
+
+//gestiona la mierda esta del ./echo - -nn caca 

@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/20 13:29:25 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/22 09:26:21 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 	
 	*/
 
-t_parse	*init_parse(void)
+t_parse *init_parse()
 {
 	t_parse	*parse;
 
@@ -40,6 +40,7 @@ t_parse	*init_parse(void)
 	parse->tokens = NULL;
 	parse->input = NULL;
 	parse->count = 0;
+	return(0);
 }
 
 t_list	*copy_env_var(char **envp)

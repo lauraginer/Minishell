@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+         #
+#    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/19 09:34:19 by jcaro-lo         ###   ########.fr        #
+#    Updated: 2025/06/19 21:46:10 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ SRCS := \
 	$(SRCS_DIR)main.c \
 
 SRCS_PARSER := \
-	$(addprefix $(PARSER_DIR), free_parse.c \
+	$(addprefix $(PARSER_DIR), lexer.c \
+	free_parse.c \
 	token_list_utils.c)
 
 SRCS_EXEC := \
