@@ -6,11 +6,27 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/20 17:27:46 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:30:11 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int print_tokens(t_parse *parse)
+{
+	t_token *curr;
+
+	curr = parse->tokens;
+	const char *token_to_str[] = {"TOKEN_WORD", "TOKEN_S_QUOTES",
+	"TOKEN_PIPE", "TOKEN_REDIR_IN","TOKEN_REDIR_OUT",
+	"TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC"};
+	while (curr)
+	{
+		printf("TOKEN TYPE: %s\n", token_to_str[curr->type]);
+		printf("VALUE: %s\n\n", curr->value);
+		curr = curr->next;
+	}
+}
 
 int	quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type)
 {
