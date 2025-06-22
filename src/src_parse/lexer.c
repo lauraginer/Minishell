@@ -6,13 +6,13 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/20 19:30:11 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/22 10:02:55 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int print_tokens(t_parse *parse)
+void print_tokens(t_parse *parse)
 {
 	t_token *curr;
 
@@ -50,7 +50,6 @@ int	quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type)
 	return (SUCCESS);
 }
 
-//AÑADIR A .h: It tokenizes operators (<, >, <<, >>, |)
 void	token_operator(t_list *my_env, t_parse *parse)
 {
 	int	j;
@@ -67,7 +66,6 @@ void	token_operator(t_list *my_env, t_parse *parse)
 	}
 }
 
-//AÑADIR A .h: It tokenizes everything except quotes
 int	token_not_quot(t_list *my_env, t_parse *parse)
 {
 	int	j;
@@ -113,5 +111,8 @@ int	lexer(t_list *my_env, t_parse *parse)
 				return (FAILURE);
 		}
 	}
+	print_tokens(parse);
+	free(parse);
+	parse = init_parse();
 	return (SUCCESS);
 }
