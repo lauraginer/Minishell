@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/22 09:29:13 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/22 12:07:23 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,14 @@ void	main_loop(t_parse *parse, t_list *my_env)
 	while (1)
 	{
 		parse->input = readline("minishell> ");
-		if (parse->input && *(parse->input))
-			add_history(parse->input);
-		else
+		if (!parse->input)
 		{
 			free_env_list(my_env);
-			free(parse);
+			//free(parse);
 			break ;
 		}
+		if (*(parse->input))
+			add_history(parse->input);
 		if (lexer(my_env, parse) == FAILURE)
 			continue ;
 	}

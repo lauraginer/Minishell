@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/22 10:02:55 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/22 12:13:28 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int	quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type)
 		parse->count++;
 	if (parse->input[parse->count] == '\0')
 	{
-		printf("Syntax error: quotes unclosed");
+		printf("Syntax error: quotes unclosed\n");
+		free(parse);
+		parse = init_parse();
 		return (FAILURE);
 	}
 	else

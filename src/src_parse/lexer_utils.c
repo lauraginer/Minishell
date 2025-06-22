@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 17:26:48 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/22 09:42:34 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/22 12:41:16 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_not_allowed(t_parse *parse)
 
 void	token_redir_in(t_list *my_env, t_parse *parse, int j)
 {
-	parse->input++;
+	parse->count++;
 	if (parse->input[parse->count] == '<')
 	{
 		parse->count++;
@@ -44,7 +44,7 @@ void	token_redir_in(t_list *my_env, t_parse *parse, int j)
 
 void	token_redir_out(t_list *my_env, t_parse *parse, int j)
 {
-	parse->input++;
+	parse->count++;
 	if (parse->input[parse->count] == '>')
 	{
 		parse->count++;
