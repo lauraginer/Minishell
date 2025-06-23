@@ -6,115 +6,94 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/22 12:13:28 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:07:03 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void print_tokens(t_parse *parse)
+void	print_tokens(t_parse *parse)
 {
-	t_token *curr;
+	t_token	*curr;
 
+	const char *token_to_str[] = {"TOKEN_WORD",
+		"TOKEN_PIPE", "TOKEN_REDIR_IN","TOKEN_REDIR_OUT",
+		"TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC"};
 	curr = parse->tokens;
-	const char *token_to_str[] = {"TOKEN_WORD", "TOKEN_S_QUOTES",
-	"TOKEN_PIPE", "TOKEN_REDIR_IN","TOKEN_REDIR_OUT",
-	"TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC"};
 	while (curr)
 	{
 		printf("TOKEN TYPE: %s\n", token_to_str[curr->type]);
 		printf("VALUE: %s\n\n", curr->value);
 		curr = curr->next;
 	}
-}
-
-int	quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type)
-{
-	int		j;
-
-	parse->count++;
-	j = parse->count;
-	while (parse->input[parse->count] != c
-		&& parse->input[parse->count] != '\0')
-		parse->count++;
-	if (parse->input[parse->count] == '\0')
-	{
-		printf("Syntax error: quotes unclosed\n");
-		free(parse);
-		parse = init_parse();
-		return (FAILURE);
-	}
-	else
-	{
-		fill_and_add_token_node(parse, my_env, type, j);
-		parse->count++;
-	}
-	return (SUCCESS);
+	free(parse);
+	parse = init_parse();
 }
 
 void	token_operator(t_list *my_env, t_parse *parse)
 {
 	int	j;
 
-	j = parse->count;
-	if (parse->input[parse->count] == '<')
+	j = parse->i;
+	if (parse->input[parse->i] == '<')
 		token_redir_in(my_env, parse, j);
-	else if (parse->input[parse->count] == '>')
+	else if (parse->input[parse->i] == '>')
 		token_redir_out(my_env, parse, j);
 	else
 	{
-		parse->count++;
+		parse->i++;
 		fill_and_add_token_node(parse, my_env, TOKEN_PIPE, j);
 	}
 }
 
-int	token_not_quot(t_list *my_env, t_parse *parse)
+int	token_word(t_list *my_env, t_parse *parse, int j)
 {
-	int	j;
-
-	j = parse->count;
-	while (parse->input[parse->count] && !is_operator(parse)
-		&& parse->input[parse->count] != '\"'
-		&& parse->input[parse->count] != '\'')
+	while (parse->input[parse->i] && !is_operator(parse)
+		&& !ft_is_space(parse->input[parse->i]) && !is_not_allowed(parse))
 	{
-		if (ft_is_space(parse->input[parse->count]))
-			break ;
-		if (is_not_allowed(parse))
+		if (parse->input[parse->i] == '\"' || parse->input[parse->i] == '\'')
 		{
-			free (parse);
-			parse = init_parse();
-			return (FAILURE);
+			parse->quot = parse->input[parse->i];
+			parse->i++;
+			while (parse->input[parse->i] != parse->quot
+				&& parse->input[parse->i])
+				parse->i++;
+			if (parse->input[parse->i] == '\0')
+			{
+				printf("Syntax error: quotes unclosed\n");
+				free(parse);
+				parse = init_parse();
+				return (FAILURE);
+			}
 		}
-		parse->count++;
+		parse->i++;
 	}
-	if (j != parse->count)
+	if (j != parse->i)
 		fill_and_add_token_node(parse, my_env, TOKEN_WORD, j);
-	if (is_operator(parse))
-		token_operator(my_env, parse);
 	return (SUCCESS);
 }
 
 int	lexer(t_list *my_env, t_parse *parse)
 {
-	while (parse->input[parse->count])
+	int	j;
+
+	while (parse->input[parse->i])
 	{
-		while (ft_is_space(parse->input[parse->count]))
-			parse->count++;
-		if (token_not_quot(my_env, parse) == FAILURE)
+		while (ft_is_space(parse->input[parse->i]))
+			parse->i++;
+		j = parse->i;
+		if (token_word(my_env, parse, j) == FAILURE)
 			return (FAILURE);
-		else if (parse->input[parse->count] == '\"')
+		else if (is_not_allowed(parse))
 		{
-			if (quot_filt(parse, my_env, '\"', TOKEN_WORD) == FAILURE)
-				return (FAILURE);
+			printf("Syntax error: character not supported.\n");
+			free (parse);
+			parse = init_parse();
+			return (FAILURE);
 		}
-		else if (parse->input[parse->count] == '\'')
-		{
-			if (quot_filt(parse, my_env, '\'', TOKEN_S_QUOTES) == FAILURE)
-				return (FAILURE);
-		}
+		else if (is_operator(parse))
+			token_operator(my_env, parse);
 	}
 	print_tokens(parse);
-	free(parse);
-	parse = init_parse();
 	return (SUCCESS);
 }

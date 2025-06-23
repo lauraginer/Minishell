@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/22 09:52:39 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:56:45 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 typedef enum e_token_type
 {
     TOKEN_WORD,      // For commands and arguments
-    TOKEN_S_QUOTES,  // For what's inside simple quotes
 	TOKEN_PIPE,      // For '|'
     TOKEN_REDIR_IN,  // For '<'
     TOKEN_REDIR_OUT, // For '>'
@@ -68,7 +67,9 @@ typedef struct s_parse
 {
 	t_token	*tokens;
 	char	*input;
-	int		count;
+	int		i;
+	int		q_flag;
+	char	quot;
 }	t_parse;
 
 typedef struct s_ast_node
@@ -95,12 +96,10 @@ t_parse *init_parse();
 
 /*It split the input in tokens*/
 int		lexer(t_list *my_env, t_parse *parse);
-/*Filter to save what's inside quotes*/
-int		quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type);
 /*It tokenizes operators (<, >, <<, >>, |)*/
 void	token_operator(t_list *my_env, t_parse *parse);
-/*It tokenizes everything except quotes*/
-int		token_not_quot(t_list *my_env, t_parse *parse);
+/*It tokenizes words*/
+int		token_word(t_list *my_env, t_parse *parse, int j);
 /*It tokenizes input redir (<, <<)*/
 void	token_redir_in(t_list *my_env, t_parse *parse, int j);
 /*AÑADIR A .h:It tokenizer output redir (>, >>)*/

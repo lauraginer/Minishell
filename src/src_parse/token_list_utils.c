@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 17:54:18 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/22 09:38:10 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:08:59 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	fill_and_add_token_node(t_parse *parse,
 	t_token	*node;
 	char	*value;
 
-	value = ft_substr(parse->input, j, parse->count - j);
+	value = ft_substr(parse->input, j, parse->i - j);
 	if (!value)
 	{
 		free_env_list(my_env);

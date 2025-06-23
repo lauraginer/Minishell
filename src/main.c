@@ -6,31 +6,13 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/22 12:07:23 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:05:37 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// incluir TOKEN_S_QUOTES en t_token
-// para poder identificar qué NO tengo que expandir
-/*Lo de los espacios es un follon
-	Ejemplos:
-	* echo hola adios --> hola adios
-	* echo hola $USER --> hola user_name
-	* echo hola$USER --> holauser_name
-	
-	En este ultimo caso: si separo los tokens tendria
-	un WORD hola y un EXPAND $USER, ¿ PERO COMO SE CUANDO
-	HABIA UN ESPACIO Y CUANDO NO?
-	Voy a eliminar el TOKEN_EXPAND y en la fase de expansion
-	recorro todos los tokens y expando cuando me encuentre 
-	un $, excepto el TOKEN_S_QUOTES. 
-	No olvidar que $? se expande en la ejecucion	
-	
-	*/
-
-t_parse *init_parse(void)
+t_parse	*init_parse(void)
 {
 	t_parse	*parse;
 
@@ -39,8 +21,10 @@ t_parse *init_parse(void)
 		return (NULL);
 	parse->tokens = NULL;
 	parse->input = NULL;
-	parse->count = 0;
-	return(parse);
+	parse->i = 0;
+	parse->q_flag = 0;
+	parse->quot = '.';
+	return (parse);
 }
 
 t_list	*copy_env_var(char **envp)
@@ -99,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	my_env = copy_env_var(envp);
 	if (!my_env)
-		exit (1); //crear un enum de errores y meter el correspondiente aqui
+		exit (1);
 	parse = init_parse();
 	if (!parse)
 	{
