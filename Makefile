@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
+#    By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/19 21:46:10 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/22 09:55:06 by jcaro-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ SRCS := \
 SRCS_PARSER := \
 	$(addprefix $(PARSER_DIR), lexer.c \
 	free_parse.c \
-	token_list_utils.c)
+	token_list_utils.c \
+	lexer_utils.c )
 
 SRCS_EXEC := \
 	$(EXEC_DIR)echo.c \
@@ -71,13 +72,13 @@ RESET       := \033[0m
 
 .PHONY: all clean fclean re bonus norminette test help cleanlib
 
-cleanlib:
-	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
-	@make -C $(LIBFT_DIR) clean --no-print-directory
-
 all: header cleanlib $(NAME)
 	@echo "$(GREEN)✅ Compilation completed successfully!$(RESET)"
 	@echo "$(CYAN)🚀 Ready to use ./$(NAME)$(RESET)"
+
+cleanlib:
+	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
+	@make -C $(LIBFT_DIR) clean --no-print-directory
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo "$(YELLOW)🔗 Linking $(NAME)...$(RESET)"

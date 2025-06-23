@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 09:32:24 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/19 12:46:54 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/22 11:43:27 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_env_list(t_list *my_env)
 {
-	t_list *aux;
-	
+	t_list	*aux;
+
 	while (my_env)
 	{
 		aux = my_env->next;
@@ -27,7 +27,7 @@ void	free_env_list(t_list *my_env)
 
 void	free_token_list(t_token *tokens)
 {
-	t_token *aux;
+	t_token	*aux;
 
 	while (tokens)
 	{

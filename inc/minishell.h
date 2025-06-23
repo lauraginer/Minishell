@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 20:42:18 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/20 21:13:33 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:56:45 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 typedef enum e_token_type
 {
     TOKEN_WORD,      // For commands and arguments
-    TOKEN_S_QUOTES,  // For what's inside simple quotes
 	TOKEN_PIPE,      // For '|'
     TOKEN_REDIR_IN,  // For '<'
     TOKEN_REDIR_OUT, // For '>'
@@ -68,7 +67,9 @@ typedef struct s_parse
 {
 	t_token	*tokens;
 	char	*input;
-	int		count;
+	int		i;
+	int		q_flag;
+	char	quot;
 }	t_parse;
 
 typedef struct s_ast_node
@@ -88,17 +89,22 @@ int		main(int arg, char **argv, char **envp);
 void	main_loop(t_parse *parse, t_list *my_env);
 /*It copies each env var in a char* inside a linked list*/
 t_list	*copy_env_var(char **envp);
-
-//PARSER
-
 /*Initializates strcut t_parse*/
 t_parse *init_parse();
+
+//LEXER
+
 /*It split the input in tokens*/
 int		lexer(t_list *my_env, t_parse *parse);
-/*Filter to save what's inside quotes*/
-int		quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type);
-/*It fills the values of the token node and add it at the end of the list*/
-int		fill_and_add_token_node(t_parse *parse, t_list *my_env, t_token_type type, int j);
+/*It tokenizes operators (<, >, <<, >>, |)*/
+void	token_operator(t_list *my_env, t_parse *parse);
+/*It tokenizes words*/
+int		token_word(t_list *my_env, t_parse *parse, int j);
+/*It tokenizes input redir (<, <<)*/
+void	token_redir_in(t_list *my_env, t_parse *parse, int j);
+/*AÑADIR A .h:It tokenizer output redir (>, >>)*/
+void	token_redir_out(t_list *my_env, t_parse *parse, int j);
+
 
 //EXECUTE
 
@@ -124,12 +130,21 @@ void	free_token_list(t_token *tokens);
 /*It frees the struct parse*/
 void	free_parse(t_parse *parse);
 
-//utils
+//UTILS
 
 /*It creates a new token node and fills it*/
 t_token	*lstnew_token(char *value, t_token_type type);
 /*It add a token to the back of the list*/
 void	lstadd_back_token(t_token **tokens, t_token *new);
+/*It fills the values of the token node and add it at the end of the list*/
+void	fill_and_add_token_node(t_parse *parse, t_list *my_env, t_token_type type, int j);
+/*It checks if the char is a redirection or a pipe, and return 1 in that case*/
+int		is_operator(t_parse *parse);
+/*It checks if the char is not allowed, and return 1 in that case*/
+int		is_not_allowed(t_parse *parse);
 
+
+/*Para imprimir y chequear los tokens (HAY QUE BORRARLA LUEGO)*/
+void print_tokens(t_parse *parse);
 
 #endif
