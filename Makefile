@@ -6,7 +6,7 @@
 #    By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/22 09:55:06 by jcaro-lo         ###   ########.fr        #
+#    Updated: 2025/06/23 19:08:09 by jcaro-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ all: header cleanlib $(NAME)
 
 cleanlib:
 	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
-	@make -C $(LIBFT_DIR) clean --no-print-directory
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo "$(YELLOW)🔗 Linking $(NAME)...$(RESET)"
@@ -98,7 +98,7 @@ clean:
 	@echo "$(YELLOW)🧹 Cleaning object files...$(RESET)"
 	@rm -f $(OBJS)
 	@find $(SRCS_DIR) -name "*.o" -type f -delete 2>/dev/null || true
-	@make -C $(LIBFT_DIR) clean --no-print-directory
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 	@echo "$(GREEN)✨ Object files cleaned!$(RESET)"
 
 fclean: clean
