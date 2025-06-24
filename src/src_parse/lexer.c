@@ -6,11 +6,16 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/23 17:07:03 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:19:21 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	expander(t_list *my_env, t_parse *parse)
+{
+	
+}
 
 void	print_tokens(t_parse *parse)
 {
@@ -94,6 +99,7 @@ int	lexer(t_list *my_env, t_parse *parse)
 		else if (is_operator(parse))
 			token_operator(my_env, parse);
 	}
-	print_tokens(parse);
+	/*Aquí podría añadir un token tipo EOT(final de tokens)*/
+	print_tokens(parse);// esto hay que borrarlo, es para chequear los tokens
 	return (SUCCESS);
 }
