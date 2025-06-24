@@ -53,14 +53,16 @@ typedef struct s_token
     struct s_token *next;
 }   t_token;
 
-typedef struct s_parse
+typedef struct s_ms
 {
 	t_token	*tokens;
+	t_list	*my_env;
 	char	*input;
 	int		i;
-	int		q_flag;
+	int		exp_f; //flag to check if a char is '\"' o '$' outside of ''
+	int		s_quot; // flag to check if a char is ' outside of ""
 	char	quot;
-}	t_parse;
+}	t_ms;
 
 typedef struct s_ast_node
 {
@@ -76,24 +78,24 @@ typedef struct s_ast_node
 /*driver function*/
 int		main(int arg, char **argv, char **envp);
 /*infinite loop for waiting input*/
-void	main_loop(t_parse *parse, t_list *my_env);
+void	main_loop(t_ms *ms);
 /*It copies each env var in a char* inside a linked list*/
 t_list	*copy_env_var(char **envp);
-/*Initializates strcut t_parse*/
-t_parse *init_parse();
+/*Initializates strcut t_ms*/
+t_ms *init_ms();
 
 //LEXER
 
 /*It split the input in tokens*/
-int		lexer(t_list *my_env, t_parse *parse);
+int		lexer(t_ms *ms);
 /*It tokenizes operators (<, >, <<, >>, |)*/
-void	token_operator(t_list *my_env, t_parse *parse);
+void	token_operator(t_ms *ms);
 /*It tokenizes words*/
-int		token_word(t_list *my_env, t_parse *parse, int j);
+int		token_word(t_ms *ms, int j);
 /*It tokenizes input redir (<, <<)*/
-void	token_redir_in(t_list *my_env, t_parse *parse, int j);
+void	token_redir_in(t_ms *ms, int j);
 /*AÑADIR A .h:It tokenizer output redir (>, >>)*/
-void	token_redir_out(t_list *my_env, t_parse *parse, int j);
+void	token_redir_out(t_ms *ms, int j);
 
 
 //EXECUTE
@@ -117,8 +119,8 @@ int		execute_builtin(char **args);
 void	free_env_list(t_list *my_env);
 /*It frees the linked list of the tokens*/
 void	free_token_list(t_token *tokens);
-/*It frees the struct parse*/
-void	free_parse(t_parse *parse);
+/*It frees the struct ms*/
+void	free_ms(t_ms *ms);
 
 //UTILS
 
@@ -127,14 +129,14 @@ t_token	*lstnew_token(char *value, t_token_type type);
 /*It add a token to the back of the list*/
 void	lstadd_back_token(t_token **tokens, t_token *new);
 /*It fills the values of the token node and add it at the end of the list*/
-void	fill_and_add_token_node(t_parse *parse, t_list *my_env, t_token_type type, int j);
+void	fill_and_add_token_node(t_ms *ms, t_token_type type, int j);
 /*It checks if the char is a redirection or a pipe, and return 1 in that case*/
-int		is_operator(t_parse *parse);
+int		is_operator(t_ms *ms);
 /*It checks if the char is not allowed, and return 1 in that case*/
-int		is_not_allowed(t_parse *parse);
+int		is_not_allowed(t_ms *ms);
 
 
 /*Para imprimir y chequear los tokens (HAY QUE BORRARLA LUEGO)*/
-void print_tokens(t_parse *parse);
+void print_tokens(t_ms *ms);
 
 #endif

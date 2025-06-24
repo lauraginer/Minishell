@@ -1,105 +1,94 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/24 13:19:21 by jcaro-lo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../inc/minishell.h"
 
-void	expander(t_list *my_env, t_parse *parse)
-{
-	
-}
 
-void	print_tokens(t_parse *parse)
+
+void	print_tokens(t_ms *ms)
 {
 	t_token	*curr;
 
 	const char *token_to_str[] = {"TOKEN_WORD",
 		"TOKEN_PIPE", "TOKEN_REDIR_IN","TOKEN_REDIR_OUT",
 		"TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC"};
-	curr = parse->tokens;
+	curr = ms->tokens;
 	while (curr)
 	{
 		printf("TOKEN TYPE: %s\n", token_to_str[curr->type]);
 		printf("VALUE: %s\n\n", curr->value);
 		curr = curr->next;
 	}
-	free(parse);
-	parse = init_parse();
+	free(ms->tokens);
+	free(ms->input);
+	ms = init_ms();
 }
 
-void	token_operator(t_list *my_env, t_parse *parse)
+void	token_operator(t_ms *ms)
 {
 	int	j;
 
-	j = parse->i;
-	if (parse->input[parse->i] == '<')
-		token_redir_in(my_env, parse, j);
-	else if (parse->input[parse->i] == '>')
-		token_redir_out(my_env, parse, j);
+	j = ms->i;
+	if (ms->input[ms->i] == '<')
+		token_redir_in(ms, j);
+	else if (ms->input[ms->i] == '>')
+		token_redir_out(ms, j);
 	else
 	{
-		parse->i++;
-		fill_and_add_token_node(parse, my_env, TOKEN_PIPE, j);
+		ms->i++;
+		fill_and_add_token_node(ms, TOKEN_PIPE, j);
 	}
 }
 
-int	token_word(t_list *my_env, t_parse *parse, int j)
+int	token_word(t_ms *ms, int j)
 {
-	while (parse->input[parse->i] && !is_operator(parse)
-		&& !ft_is_space(parse->input[parse->i]) && !is_not_allowed(parse))
+	while (ms->input[ms->i] && !is_operator(ms)
+		&& !ft_is_space(ms->input[ms->i]) && !is_not_allowed(ms))
 	{
-		if (parse->input[parse->i] == '\"' || parse->input[parse->i] == '\'')
+		if (ms->input[ms->i] == '\"' || ms->input[ms->i] == '\'')
 		{
-			parse->quot = parse->input[parse->i];
-			parse->i++;
-			while (parse->input[parse->i] != parse->quot
-				&& parse->input[parse->i])
-				parse->i++;
-			if (parse->input[parse->i] == '\0')
+			ms->quot = ms->input[ms->i];
+			ms->i++;
+			while (ms->input[ms->i] != ms->quot && ms->input[ms->i])
+				ms->i++;
+			if (ms->input[ms->i] == '\0')
 			{
 				printf("Syntax error: quotes unclosed\n");
-				free(parse);
-				parse = init_parse();
+				free(ms->tokens);
+				free(ms->input);
+				ms = init_ms();
 				return (FAILURE);
 			}
 		}
-		parse->i++;
+		ms->i++;
 	}
-	if (j != parse->i)
-		fill_and_add_token_node(parse, my_env, TOKEN_WORD, j);
+	if (j != ms->i)
+		fill_and_add_token_node(ms, TOKEN_WORD, j);
 	return (SUCCESS);
 }
 
-int	lexer(t_list *my_env, t_parse *parse)
+int	lexer(t_ms *ms)
 {
 	int	j;
 
-	while (parse->input[parse->i])
+	while (ms->input[ms->i])
 	{
-		while (ft_is_space(parse->input[parse->i]))
-			parse->i++;
-		j = parse->i;
-		if (token_word(my_env, parse, j) == FAILURE)
+		while (ft_is_space(ms->input[ms->i]))
+			ms->i++;
+		j = ms->i;
+		if (token_word(ms, j) == FAILURE)
 			return (FAILURE);
-		else if (is_not_allowed(parse))
+		else if (is_not_allowed(ms))
 		{
 			printf("Syntax error: character not supported.\n");
-			free (parse);
-			parse = init_parse();
+			free (ms);
+			ms = init_ms();
 			return (FAILURE);
 		}
-		else if (is_operator(parse))
-			token_operator(my_env, parse);
+		else if (is_operator(ms))
+			token_operator(ms);
 	}
 	/*Aquí podría añadir un token tipo EOT(final de tokens)*/
-	print_tokens(parse);// esto hay que borrarlo, es para chequear los tokens
+	print_tokens(ms);// esto hay que borrarlo, es para chequear los tokens
+	//free (ms->input);
 	return (SUCCESS);
 }

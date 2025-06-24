@@ -2,19 +2,20 @@
 
 #include "../inc/minishell.h"
 
-t_parse	*init_parse(void)
+t_ms	*init_ms(void)
 {
-	t_parse	*parse;
+	t_ms	*ms;
 
-	parse = malloc(sizeof(t_parse));
-	if (!parse)
+	ms = malloc(sizeof(t_ms));
+	if (!ms)
 		return (NULL);
-	parse->tokens = NULL;
-	parse->input = NULL;
-	parse->i = 0;
-	parse->q_flag = 0;
-	parse->quot = '.';
-	return (parse);
+	ms->tokens = NULL;
+	ms->input = NULL;
+	ms->i = 0;
+	ms->exp_f = 0;
+	ms->s_quot = 0;
+	ms->quot = '.';
+	return (ms);
 }
 
 t_list	*copy_env_var(char **envp)
@@ -46,39 +47,38 @@ t_list	*copy_env_var(char **envp)
 	return (my_env);
 }
 
-void	main_loop(t_parse *parse, t_list *my_env)
+void	main_loop(t_ms *ms)
 {
 	while (1)
 	{
-		parse->input = readline("minishell> ");
-		if (!parse->input)
+		ms->input = readline("minishell> ");
+		if (!ms->input)
 		{
-			free_env_list(my_env);
-			//free(parse);
+			free_ms(ms);
+			//free(ms);
 			break ;
 		}
-		if (*(parse->input))
-			add_history(parse->input);
-		if (lexer(my_env, parse) == FAILURE)
+		if (*(ms->input))
+			add_history(ms->input);
+		if (lexer(ms) == FAILURE)
 			continue ;
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_parse	*parse;
-	t_list	*my_env;
+	t_ms	*ms;
 
 	(void)argc;
 	(void)argv;
-	my_env = copy_env_var(envp);
-	if (!my_env)
+	ms = init_ms();
+	if (!ms)
 		exit (1);
-	parse = init_parse();
-	if (!parse)
+	ms->my_env = copy_env_var(envp);
+	if (!ms->my_env)
 	{
-		free_env_list(my_env);
+		free_ms(ms);
 		exit (1);
-	}
-	main_loop(parse, my_env);
+	}	
+	main_loop(ms);
 }

@@ -28,11 +28,13 @@ void	free_token_list(t_token *tokens)
 	}
 }
 
-void	free_parse(t_parse *parse)
+void	free_ms(t_ms *ms)
 {
-	if (parse->input)
-		free (parse->input);
-	if (parse->tokens)
-		free_token_list(parse->tokens);
-	free(parse);
+	if (ms->input)
+		free (ms->input);
+	if (ms->tokens)
+		free_token_list(ms->tokens);
+	if (ms->my_env)
+		free_env_list(ms->my_env);
+	free(ms);
 }

@@ -30,26 +30,23 @@ void	lstadd_back_token(t_token **tokens, t_token *new)
 	}
 }
 
-void	fill_and_add_token_node(t_parse *parse,
-	t_list *my_env, t_token_type type, int j)
+void	fill_and_add_token_node(t_ms *ms, t_token_type type, int j)
 {
 	t_token	*node;
 	char	*value;
 
-	value = ft_substr(parse->input, j, parse->i - j);
+	value = ft_substr(ms->input, j, ms->i - j);
 	if (!value)
 	{
-		free_env_list(my_env);
-		free_parse(parse);
+		free_ms(ms);
 		exit (1);
 	}
 	node = lstnew_token(value, type);
 	if (!node)
 	{
 		free(value);
-		free_env_list(my_env);
-		free_parse(parse);
+		free_ms(ms);
 		exit(1);
 	}
-	lstadd_back_token(&(parse->tokens), node);
+	lstadd_back_token(&(ms->tokens), node);
 }

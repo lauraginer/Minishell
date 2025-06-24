@@ -2,44 +2,44 @@
 
 #include "../../inc/minishell.h"
 
-int	is_operator(t_parse *parse)
+int	is_operator(t_ms *ms)
 {
-	if (parse->input[parse->i] == '<'
-		|| parse->input[parse->i] == '>'
-		|| parse->input[parse->i] == '|')
+	if (ms->input[ms->i] == '<'
+		|| ms->input[ms->i] == '>'
+		|| ms->input[ms->i] == '|')
 		return (1);
 	return (0);
 }
 
-int	is_not_allowed(t_parse *parse)
+int	is_not_allowed(t_ms *ms)
 {
-	if (parse->input[parse->i] == '&'
-		|| parse->input[parse->i] == ';'
-		|| parse->input[parse->i] == '\\')
+	if (ms->input[ms->i] == '&'
+		|| ms->input[ms->i] == ';'
+		|| ms->input[ms->i] == '\\')
 		return (1);
 	return (0);
 }
 
-void	token_redir_in(t_list *my_env, t_parse *parse, int j)
+void	token_redir_in(t_ms *ms, int j)
 {
-	parse->i++;
-	if (parse->input[parse->i] == '<')
+	ms->i++;
+	if (ms->input[ms->i] == '<')
 	{
-		parse->i++;
-		fill_and_add_token_node(parse, my_env, TOKEN_REDIR_HEREDOC, j);
+		ms->i++;
+		fill_and_add_token_node(ms, TOKEN_REDIR_HEREDOC, j);
 	}
 	else
-		fill_and_add_token_node(parse, my_env, TOKEN_REDIR_IN, j);
+		fill_and_add_token_node(ms, TOKEN_REDIR_IN, j);
 }
 
-void	token_redir_out(t_list *my_env, t_parse *parse, int j)
+void	token_redir_out(t_ms *ms, int j)
 {
-	parse->i++;
-	if (parse->input[parse->i] == '>')
+	ms->i++;
+	if (ms->input[ms->i] == '>')
 	{
-		parse->i++;
-		fill_and_add_token_node(parse, my_env, TOKEN_REDIR_APPEND, j);
+		ms->i++;
+		fill_and_add_token_node(ms, TOKEN_REDIR_APPEND, j);
 	}
 	else
-		fill_and_add_token_node(parse, my_env, TOKEN_REDIR_OUT, j);
+		fill_and_add_token_node(ms, TOKEN_REDIR_OUT, j);
 }
