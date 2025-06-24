@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:05:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/23 19:43:01 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:10:39 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_list *copy_env_var(char **envp); // Ajusta la firma según tu implementación 
 
 int main(int argc, char **argv, char **envp)
 {
-	t_list *my_env;
-	
+	//t_list *my_env;
+	(void)envp;	
 	(void)argc;
 	
 	// Crear una copia de las variables de entorno
@@ -36,6 +36,7 @@ int main(int argc, char **argv, char **envp)
 	// free_env_list(my_env);
 
 	//builtin_echo(argv);*/
-	builtin_pwd(argv);
+	int exit_value = builtin_exit(argv);
+	printf("valor de exit: %d\n", exit_value);
 	return (0);
 }

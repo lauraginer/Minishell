@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/19 21:46:10 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/06/24 19:23:20 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,9 +43,11 @@ SRCS_PARSER := \
 	token_list_utils.c)
 
 SRCS_EXEC := \
-	$(EXEC_DIR)echo.c \
-	$(EXEC_DIR)pwd.c \
-	$(EXEC_DIR)env.c \
+	$(addprefix $(EXEC_DIR), echo.c \
+	pwd.c \
+	env.c \
+	exit.c \
+	test_env.c)\
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)
