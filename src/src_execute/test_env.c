@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:05:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/24 21:10:39 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:22:30 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ int main(int argc, char **argv, char **envp)
     print_current_dir();
     
     // Si el comando es "cd", llamar a builtin_cd
-    if (argv[1] && strcmp(argv[1], "cd") == 0)
-    {
+
         printf("\033[1;32m=== EJECUTANDO CD ===\033[0m\n");
         int result = builtin_cd(argv + 1, my_env); // argv+1 para que argv[0] sea "cd"
         printf("Resultado del comando cd: %d\n", result);
@@ -66,11 +65,6 @@ int main(int argc, char **argv, char **envp)
         // Mostrar el directorio actual después del cambio
         printf("\033[1;32m=== DESPUÉS DEL CD ===\033[0m\n");
         print_current_dir();
-    }
-    else
-    {
-        print_help();
-    }
     
     // Liberar memoria
     free_env_list(my_env);

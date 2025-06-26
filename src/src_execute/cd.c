@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/25 20:12:20 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/26 21:38:21 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,37 +28,36 @@
 	}
 	return(NULL);
 }*/
-int builtin_cd(char **args, t_list *my_env)
+int builtin_cd(char **args)
 {
 	int i;
-	t_list	*env;
-	//char *home_dir;
-	char *value_var;
-
+	char *target_dir; //guarda la ruta de destino a la que queremos cambiar
+	char current_dir[PATH_MAX]; //guarda la ruta completa del directorio actual despues de cambiar, PWD
+	char old_dir[PATH_MAX]; //guarda la ruta completa del directorio actual antes de cambiar, OLDPWD
+	
 	i = 0;
-	//home_dir = 
-	env = my_env;
-	while (env)
-	{
-		env->content;
-		env = env->next;
-	}
+
 	if (args[1])
 	{
 		if(args[1] && args[2])
 		{
-			printf("cd : too many arguments\n");
+			printf("cd: too many arguments\n");
 			return(1);
 		}
-		if(args[1][i] == '-')
+		/*if(args[1][i] == '-')
 			//cambia al directorio OLDPWD y mostrarlo
 		if(args[1] && (!args[1][i] == '-'))
-			//cambiar al directorio en cuestión
+			//cambiar al directorio en cuestión*/
 	}
 	else
 	{
-		value_var = getenv("HOME");
-		printf("valor de home: %s\n", value_var);
+		target_dir = getenv("HOME");
+		if(!target_dir)
+		{
+			printf("cd: No such file or directory\n");
+			return(1);
+		}
+		printf("valor de home: %s\n", target_dir);
 	}
 	
 	
@@ -74,3 +73,4 @@ setenv() / export (o tus propias funciones) → actualizar PWD y OLDPWD.
 
 ERRORES COMUNES A CONTROLAR: Ruta inexistente → muestra mensaje tipo cd: no such file or directory, Permisos denegados, 
 Demasiados argumentos (cd a b) → debes avisar, Falta de HOME o OLDPWD definidos*/
+
