@@ -6,62 +6,96 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/26 21:38:21 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/27 21:07:55 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/*char *find_dir(const char *name, t_list **my_env)
+int special_case(char *str)
 {
-	t_list *current_env;
-	size_t name_len = ft_strlen(name);
-	char *var_env;
-	
-	current_env = my_env;
-	while(current_env)
+	const char *target_dir;
+
+	if (ft_strncmp(str, "--", 3) == 0)
 	{
-		var_env = (char *)current_env->content;
-		if(ft_strncmp(var_env, name, name_len) == 0 && (var_env[name_len] == '=')) //si la variable coincide con la pasada
-			return(var_env + name_len + 1); //devuelve el valor	
-		current_env = current_env->next;
+		target_dir = getenv("HOME");
+		if (!target_dir)
+		{
+			printf("cd: HOME not set\n");
+			return (1);
+		}
+		if (chdir(target_dir) != 0)
+		{
+			perror("cd");
+			return (1);
+		}
+		return (0);
 	}
-	return(NULL);
-}*/
+	else if (str[0] == '-' && str[1] == '-' && str[2])
+	{
+		printf("cd: -%c: invalid option\n", str[2]);
+		return (1);
+	}
+	return (-1); //-1 si no es un caso especial
+}
+
 int builtin_cd(char **args)
 {
 	int i;
-	char *target_dir; //guarda la ruta de destino a la que queremos cambiar
+	int flag;
+	const char *target_dir; //guarda la ruta de destino a la que queremos cambiar
 	char current_dir[PATH_MAX]; //guarda la ruta completa del directorio actual despues de cambiar, PWD
 	char old_dir[PATH_MAX]; //guarda la ruta completa del directorio actual antes de cambiar, OLDPWD
 	
-	i = 0;
-
+	flag = special_case(args[1]);
 	if (args[1])
 	{
-		if(args[1] && args[2])
+		if (args[1] && args[2])
 		{
 			printf("cd: too many arguments\n");
-			return(1);
+			return (1);
 		}
-		/*if(args[1][i] == '-')
-			//cambia al directorio OLDPWD y mostrarlo
-		if(args[1] && (!args[1][i] == '-'))
-			//cambiar al directorio en cuestión*/
+		if (flag != -1)
+				return flag;
+		if (args[1][0] == '-')
+		{
+			target_dir = getenv("OLDPWD");
+			if (!target_dir)
+			{
+				printf("cd: OLDPWD not set\n");
+				return (1);
+			}
+			if (chdir(target_dir) != 0)
+			{
+				perror("cd");
+				return (1);
+			}
+			printf("%s\n", target_dir);
+			return (0);
+		}
+		if (chdir(args[1]) != 0) // si otro directorio especifico no existe
+		{
+			printf("cd: %s: No such file or directory\n", args[1]);
+			return (1);
+		}
+		return (0);
 	}
 	else
 	{
 		target_dir = getenv("HOME");
-		if(!target_dir)
+		if (!target_dir)
 		{
-			printf("cd: No such file or directory\n");
-			return(1);
+			printf("cd: HOME not set\n");
+			return (1);
 		}
-		printf("valor de home: %s\n", target_dir);
-	}
-	
-	
+		if (chdir(target_dir) != 0)
+		{
+			perror("cd");
+			return (1);
+		}
 		
+	}
+	return (0);
 }
 /*Para que cd funcione correctamente, necesitas tener acceso
 a las variables de entorno ya disponibles (como HOME, OLDPWD, PWD)

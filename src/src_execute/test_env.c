@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:05:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/26 18:22:30 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:05:30 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Declaraciones para evitar errores de compilación
 t_list *copy_env_var(char **envp); 
 void free_env_list(t_list *env_list);
-int builtin_cd(char **args, t_list *my_env);
+int builtin_cd(char **args);
 
 // Función para imprimir el directorio actual (ayuda a ver si el cd funcionó)
 void print_current_dir(void)
@@ -59,7 +59,7 @@ int main(int argc, char **argv, char **envp)
     // Si el comando es "cd", llamar a builtin_cd
 
         printf("\033[1;32m=== EJECUTANDO CD ===\033[0m\n");
-        int result = builtin_cd(argv + 1, my_env); // argv+1 para que argv[0] sea "cd"
+        int result = builtin_cd(argv); // argv+1 para que argv[0] sea "cd"
         printf("Resultado del comando cd: %d\n", result);
         
         // Mostrar el directorio actual después del cambio
