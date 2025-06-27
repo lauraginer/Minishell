@@ -11,7 +11,9 @@ t_ms	*init_ms(void)
 		return (NULL);
 	ms->tokens = NULL;
 	ms->input = NULL;
+	ms->sub_tokens = NULL;
 	ms->i = 0;
+	ms->exit_status = 0;//incluir en el .h
 	ms->exp_f = 0;
 	ms->s_quot = 0;
 	ms->quot = '.';

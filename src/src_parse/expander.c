@@ -9,6 +9,7 @@
 	ms->s_quot  --> tal vez no haga falta
 */
 
+//AÑADIR char **subtokens; a estructura principal
 
 /*It tells if there's any quote or $*/
 int	is_exp_token(char c)
@@ -33,128 +34,72 @@ void	search_expand(t_ms *ms, t_token *aux_t)
 	}
 }
 
-/*It checks if a given word is an enviroment word*/
-void	check_env(t_ms *ms, t_token *aux_t, int *count)
+/*It splits the token in sub_tokens if needed*/
+void	split_sub_token(t_ms *ms, t_token *aux_t, int *count)
 {
-	char	*word;
-	int		i;
-	t_list	*tmp;
-
-	tmp = ms->my_env;
-	i = 0;
-	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value == '_')
-		i++;
-	ms->i += i;
-	if (i == 0)
+	if ((*count) == 0)
 		return ;
-	word = malloc(sizeof(char) * (i + 1));
-	i = 0;
-	while (tmp)
-	{
-		if (ft_strncmp(word, (char *)(tmp->content), ft_strlen(word)) == 0)
-		{
-			(*count)++;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-	free (word);
-}
-
-int	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
-{
-	int	pos;
-
-	ms->i++;
-	pos = ms->i;
-	if (aux_t->value[ms->i] == '$' || aux_t->value[ms->i] == '0'
-		|| aux_t->value[ms->i] == '#' || aux_t->value[ms->i] == '-')
-		ms->i++;
-	else if (aux_t->value[ms->i] == '?')
-	{
-		*(count)++;
-		ms->i++;
-	}
-	else if (ft_is_space(aux_t->value[ms->i]) || aux_t->value[ms->i] == c)
-		(*count)++;
-	else
-		check_env(ms, aux_t, count);
-}
-
-/*It counts how many subtokens will be created 
-	due to the expand (to allocate the memory correctly)*/
-int	count_subtokens(t_ms *ms, t_token *aux_t)
-{
-	int	*count;
-	int	pos;
-
-	*count = 0;
+	ms->sub_tokens = malloc(sizeof(char *) * ((*count) + 1));
+	if (!ms->sub_tokens)
+		free_ms(ms);
 	ms->i = 0;
+	(*count) = 0;
 	while (aux_t->value[ms->i])
 	{
-		pos = ms->i;
-		while (aux_t->value[ms->i] && !is_exp_token(aux_t->value[ms->i]))
-			ms->i++;
-		if (pos != ms->i)
-			(*count)++;
+		split_norm_subt(ms, aux_t, count);
 		if (aux_t->value[ms->i] == '\'')
-		{
-			ms->i++;
-			pos = ms->i;
-			while (aux_t->value[ms->i] != '\'')
-				ms->i++;
-			if (pos != ms->i)
-				(*count)++;
-			ms->i++;
-		}
-		count += count_subtokens2(ms, aux_t, count);
+			split_squot_subt(ms, aux_t, count);
+		split_dquot_subt(ms, aux_t, count, sub_tokens);
 	}
-	return (count);
+	ms->sub_tokens[*count] == NULL;
 }
-
-int	count_subtokens2(t_ms *ms, t_token *aux_t, int *count)
+/*It joins the subtokens splitted*/
+void	join_subtokens(t_ms *ms, t_token *aux_t)
 {
-	int	pos;
+	char	*new_value;
+	char	*tmp;
+	int		i;
 
-	if (aux_t->value[ms->i] == '\"')
+	i = 0;
+	new_value = ms->sub_tokens[i];
+	while (ms->sub_tokens[i + 1])
 	{
-		ms->i++;
-		while (aux_t->value[ms->i] != '\"')
+		tmp = new_value;
+		new_value = ft_strjoin(new_value, ms->sub_tokens[i + 1]);
+		if (!new_value)
 		{
-			pos = ms->i;
-			while (aux_t->value[ms->i] != '\"' && aux_t->value[ms->i] != '$')
-				ms->i++;
-			if (pos != ms->i)
-				(*count)++;
-			if (aux_t->value[ms->i] == '$')
-				count += count_dolar_subtokens(ms, aux_t, count, '\"');
-			ms->i++;
+			free (tmp);
+			free_ms(ms);
 		}
+		free(tmp);
+		i++;
 	}
-	if (aux_t->value[ms->i] == '$')
-		count += count_dolar_subtokens(ms, aux_t, count, '\0');
-	ms->i++;
-	return (count);
+	free_subtokens(ms->sub_tokens);
+	free(aux_t->value);
+	aux_t->value = new_value;
 }
 
+
+/*main function to expand variables*/
 void	expander(t_ms *ms)
 {
-	t_list	*curr;
 	t_token	*aux_t;
-	int		pos;
-	int		count;
+	int		*count;
 
 	ms->i = 0;
 	aux_t = ms->tokens;
-	curr = ms->my_env;
 	while (aux_t)
 	{
 		if (aux_t->type == TOKEN_WORD)
 		{
-			count = 0;
+			(*count) = 0;
 			search_expand(ms, aux_t);
 			if (ms->exp_f == 1)
-				count += count_subtokens(ms, aux_t);
+			{
+				(*count) += count_subtokens(ms, aux_t);
+				split_sub_token(ms, aux_t, count);
+				join_subtokens(ms, aux_t);
+			}
 		}
 		aux_t = aux_t->next;
 	}
