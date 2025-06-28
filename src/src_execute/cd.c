@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/27 21:07:55 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/28 18:59:53 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int builtin_cd(char **args)
 			printf("cd: %s: No such file or directory\n", args[1]);
 			return (1);
 		}
+		if(chdir(args[1]) == 0) //manejas si el directorio existe
+			printf("jajas");
 		return (0);
 	}
 	else
