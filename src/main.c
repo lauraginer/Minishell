@@ -13,7 +13,6 @@ t_ms	*init_ms(void)
 	ms->input = NULL;
 	ms->sub_tokens = NULL;
 	ms->i = 0;
-	ms->exit_status = 0;//incluir en el .h
 	ms->exp_f = 0;
 	ms->s_quot = 0;
 	ms->quot = '.';
@@ -58,12 +57,15 @@ void	main_loop(t_ms *ms)
 		{
 			free_ms(ms);
 			//free(ms);
-			break ;
+			//break ;
 		}
 		if (*(ms->input))
 			add_history(ms->input);
 		if (lexer(ms) == FAILURE)
 			continue ;
+		expander(ms);
+		
+		ms = init_ms();
 	}
 }
 
@@ -74,13 +76,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	ms = init_ms();
+	ms->exit_status = 0;//incluir en el .h
 	if (!ms)
 		exit (1);
 	ms->my_env = copy_env_var(envp);
 	if (!ms->my_env)
-	{
 		free_ms(ms);
-		exit (1);
-	}	
 	main_loop(ms);
 }

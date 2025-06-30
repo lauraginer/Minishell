@@ -38,7 +38,7 @@ void	free_subtokens(char **sub_tokens)
 		free(sub_tokens[i]);
 		i++;
 	}
-	free (sub_tokens);
+	free(sub_tokens);
 }
 
 void	free_ms(t_ms *ms)

@@ -68,7 +68,7 @@ void	join_subtokens(t_ms *ms, t_token *aux_t)
 		new_value = ft_strjoin(new_value, ms->sub_tokens[i + 1]);
 		if (!new_value)
 		{
-			free (tmp);
+			free(tmp);
 			free_ms(ms);
 		}
 		free(tmp);

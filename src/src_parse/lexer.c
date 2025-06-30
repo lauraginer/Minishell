@@ -19,8 +19,6 @@ void	print_tokens(t_ms *ms)
 		curr = curr->next;
 	}
 	free(ms->tokens);
-	free(ms->input);
-	ms = init_ms();
 }
 
 void	token_operator(t_ms *ms)
@@ -89,6 +87,6 @@ int	lexer(t_ms *ms)
 	}
 	/*Aquí podría añadir un token tipo EOT(final de tokens)*/
 	print_tokens(ms);// esto hay que borrarlo, es para chequear los tokens
-	//free (ms->input);
+	free (ms->input);
 	return (SUCCESS);
 }

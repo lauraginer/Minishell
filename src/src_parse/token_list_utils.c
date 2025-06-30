@@ -37,16 +37,12 @@ void	fill_and_add_token_node(t_ms *ms, t_token_type type, int j)
 
 	value = ft_substr(ms->input, j, ms->i - j);
 	if (!value)
-	{
 		free_ms(ms);
-		exit (1);
-	}
 	node = lstnew_token(value, type);
 	if (!node)
 	{
 		free(value);
 		free_ms(ms);
-		exit(1);
 	}
 	lstadd_back_token(&(ms->tokens), node);
 }
