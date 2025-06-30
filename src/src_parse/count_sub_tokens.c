@@ -12,7 +12,7 @@ void	check_env_count(t_ms *ms, t_token *aux_t, int *count)
 
 	tmp = ms->my_env;
 	i = 0;
-	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value == '_')
+	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value[ms->i] == '_')
 		i++;
 	if (i == 0)
 		return ;
@@ -34,7 +34,7 @@ void	check_env_count(t_ms *ms, t_token *aux_t, int *count)
 }
 
 /*It counts subtokens created by dolar sign*/
-int	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
+void	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
 {
 	ms->i++;
 	if (aux_t->value[ms->i] == '$' || aux_t->value[ms->i] == '0'
@@ -53,12 +53,10 @@ int	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
 
 /*It counts how many subtokens will be created 
 	due to the expand (to allocate the memory correctly)*/
-int	count_subtokens(t_ms *ms, t_token *aux_t)
+void	count_subtokens(t_ms *ms, t_token *aux_t, int *count)
 {
-	int	*count;
 	int	pos;
 
-	*count = 0;
 	ms->i = 0;
 	while (aux_t->value[ms->i])
 	{
@@ -77,13 +75,12 @@ int	count_subtokens(t_ms *ms, t_token *aux_t)
 				(*count)++;
 			ms->i++;
 		}
-		(*count) += count_subtokens2(ms, aux_t, count);
+		count_subtokens2(ms, aux_t, count);
 	}
-	return (*count);
 }
 
 /*Second part of count subtokens*/
-int	count_subtokens2(t_ms *ms, t_token *aux_t, int *count)
+void	count_subtokens2(t_ms *ms, t_token *aux_t, int *count)
 {
 	int	pos;
 
@@ -98,12 +95,11 @@ int	count_subtokens2(t_ms *ms, t_token *aux_t, int *count)
 			if (pos != ms->i)
 				(*count)++;
 			if (aux_t->value[ms->i] == '$')
-				count += count_dolar_subtokens(ms, aux_t, count, '\"');
+				count_dolar_subtokens(ms, aux_t, count, '\"');
 			ms->i++;
 		}
 	}
 	if (aux_t->value[ms->i] == '$')
-		(*count) += count_dolar_subtokens(ms, aux_t, count, '\0');
+		count_dolar_subtokens(ms, aux_t, count, '\0');
 	ms->i++;
-	return (*count);
 }

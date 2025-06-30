@@ -86,7 +86,7 @@ int	lexer(t_ms *ms)
 			token_operator(ms);
 	}
 	/*Aquí podría añadir un token tipo EOT(final de tokens)*/
-	print_tokens(ms);// esto hay que borrarlo, es para chequear los tokens
+	//print_tokens(ms);// esto hay que borrarlo, es para chequear los tokens
 	free (ms->input);
 	return (SUCCESS);
 }

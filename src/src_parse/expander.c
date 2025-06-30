@@ -49,9 +49,9 @@ void	split_sub_token(t_ms *ms, t_token *aux_t, int *count)
 		split_norm_subt(ms, aux_t, count);
 		if (aux_t->value[ms->i] == '\'')
 			split_squot_subt(ms, aux_t, count);
-		split_dquot_subt(ms, aux_t, count, sub_tokens);
+		split_dquot_subt(ms, aux_t, count);
 	}
-	ms->sub_tokens[*count] == NULL;
+	ms->sub_tokens[*count] = NULL;
 }
 /*It joins the subtokens splitted*/
 void	join_subtokens(t_ms *ms, t_token *aux_t)
@@ -88,6 +88,9 @@ void	expander(t_ms *ms)
 
 	ms->i = 0;
 	aux_t = ms->tokens;
+	count = malloc (sizeof(int));
+	if (!count)
+		free_ms(ms);
 	while (aux_t)
 	{
 		if (aux_t->type == TOKEN_WORD)
@@ -96,11 +99,12 @@ void	expander(t_ms *ms)
 			search_expand(ms, aux_t);
 			if (ms->exp_f == 1)
 			{
-				(*count) += count_subtokens(ms, aux_t);
+				count_subtokens(ms, aux_t, count);
 				split_sub_token(ms, aux_t, count);
 				join_subtokens(ms, aux_t);
 			}
 		}
 		aux_t = aux_t->next;
 	}
+	print_tokens(ms);
 }

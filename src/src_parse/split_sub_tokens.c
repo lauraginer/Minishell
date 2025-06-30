@@ -25,6 +25,8 @@ void	split_squot_subt(t_ms *ms, t_token *aux_t, int *count)
 /*It split tokens not contained inside $, simple of double quotes*/
 void	split_norm_subt(t_ms *ms, t_token *aux_t, int *count)
 {
+	int	pos;
+
 	pos = ms->i;
 	while (aux_t->value[ms->i] && !is_exp_token(aux_t->value[ms->i]))
 		ms->i++;
@@ -70,10 +72,7 @@ void	split_dquot_subt(t_ms *ms, t_token *aux_t, int *count)
 /*It split tokens after dolar sign*/
 void	split_dolar_subt(t_ms *ms, t_token *aux_t, int *count, char c)
 {
-	int		pos;
-
 	ms->i++;
-	pos = ms->i;
 	if (aux_t->value[ms->i] == '$' || aux_t->value[ms->i] == '0'
 		|| aux_t->value[ms->i] == '#' || aux_t->value[ms->i] == '-')
 		ms->i++;
@@ -106,7 +105,7 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 
 	tmp = ms->my_env;
 	i = 0;
-	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value == '_')
+	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value[ms->i] == '_')
 		i++;
 	if (i == 0)
 		return ;
