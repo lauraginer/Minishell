@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:04:53 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/20 21:13:14 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:23:11 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,3 @@ int	builtin_echo(char **args)
 	builtin_echo(args);
 	return (0);
 }*/
-
-//gestiona la mierda esta del ./echo - -nn caca 

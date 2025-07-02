@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:55:54 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/20 21:28:10 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:09:49 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ int	builtin_env(char **args, t_list *my_env)
 	if (args[1])
 	{
 		if (args[1][0] == '-' && args[1][1] == '-')
-			ft_printf("env: unrecognized option '%s'\n", args[1]);
+			printf("env: unrecognized option '%s'\n", args[1]);
 		else if (args[1][0] == '-')
-			ft_printf("env: invalid option -- '%c'\n", args[1][1]);
+			printf("env: invalid option -- '%c'\n", args[1][1]);
 		else
-			ft_printf("env: '%s': No such file or directory\n", args[1]);
+			printf("env: '%s': No such file or directory\n", args[1]);
 		return (1);
 	}
 	while (current_env)
 	{
-		ft_printf("%s\n", (char *)current_env->content);
+		printf("%s\n", (char *)current_env->content);
 		current_env = current_env->next;
 	}
 	return (0);
