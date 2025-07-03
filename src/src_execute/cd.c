@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/28 18:59:53 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:52:05 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int special_case(char *str)
 {
 	const char *target_dir;
 
-	if (ft_strncmp(str, "--", 3) == 0)
+	if ((ft_strncmp(str, "--", 3) == 0) || ft_strncmp(str, "~", 2) == 0)
 	{
 		target_dir = getenv("HOME");
 		if (!target_dir)
