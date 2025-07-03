@@ -57,10 +57,13 @@ typedef struct s_ms
     t_token *tokens;
     t_list *my_env;
     char *input;
+	char	**sub_tokens;
     int i;
-    int exp_f;  // flag to check if a char is '\"' o '$' outside of ''
+    int exp_f;  /*Flag to confirm there's something to expand (' , " , $)
+				It let me know if I have to resize the value of the token*/
     int s_quot; // flag to check if a char is ' outside of ""
-    char quot;
+	int	exit_status; 
+    char quot;  //to define what type of quote is the current quote
 } t_ms;
 
 typedef struct s_ast_node
@@ -95,6 +98,43 @@ void token_redir_in(t_ms *ms, int j);
 /*AÑADIR A .h:It tokenizer output redir (>, >>)*/
 void token_redir_out(t_ms *ms, int j);
 
+// EXPANDER
+
+/*main function to expand variables*/
+void	expander(t_ms *ms);
+/*It joins the subtokens splitted*/
+void	join_subtokens(t_ms *ms, t_token *aux_t);
+/*It splits the token in sub_tokens if needed*/
+void	split_sub_token(t_ms *ms, t_token *aux_t, int *count);
+/*It change ms->exp_f to 1 if is_exp_token is true,
+ so that you know there's something to expand*/
+void	search_expand(t_ms *ms, t_token *aux_t);
+/*It tells if there's any quote or $*/
+int		is_exp_token(char c);
+/*It counts how many subtokens will be created 
+	due to the expand (to allocate the memory correctly)*/
+void	count_subtokens(t_ms *ms, t_token *aux_t, int *count);
+/*Second part of count subtokens*/
+void	count_subtokens2(t_ms *ms, t_token *aux_t, int *count);
+/*It counts subtokens created by dolar sign*/
+void	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c);
+/*It checks if a given word matches an enviroment
+	 variable to count it as subtoken*/
+void	check_env_count(t_ms *ms, t_token *aux_t, int *count);
+/*It split tokens inside simple quotes*/
+void	split_squot_subt(t_ms *ms, t_token *aux_t, int *count);
+/*It split tokens not contained inside $, simple of double quotes*/
+void	split_norm_subt(t_ms *ms, t_token *aux_t, int *count);
+/*It split tokens inside double quotes*/
+void	split_dquot_subt(t_ms *ms, t_token *aux_t, int *count);
+/*It split tokens after dolar sign*/
+void	split_dolar_subt(t_ms *ms, t_token *aux_t, int *count, char c);
+/*It checks if a given word matches an enviroment
+	 variable to split it as subtoken*/
+void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
+
+
+
 // EXECUTE
 
 // builtins
@@ -119,6 +159,8 @@ void free_env_list(t_list *my_env);
 void free_token_list(t_token *tokens);
 /*It frees the struct ms*/
 void free_ms(t_ms *ms);
+/*It frees the subtokens splitted*/
+void	free_subtokens(char **sub_tokens);
 
 // UTILS
 

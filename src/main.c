@@ -76,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	ms = init_ms();
-	ms->exit_status = 0;//incluir en el .h
+	ms->exit_status = 0;
 	if (!ms)
 		exit (1);
 	ms->my_env = copy_env_var(envp);

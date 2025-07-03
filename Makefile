@@ -30,14 +30,17 @@ SRCS_PARSER := \
 	$(addprefix $(PARSER_DIR), lexer.c \
 	free_parse.c \
 	token_list_utils.c \
-	lexer_utils.c )
+	lexer_utils.c \
+	expander.c \
+	count_sub_tokens.c \
+	split_sub_tokens.c)
 
-SRCS_EXEC := \
+#SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), echo.c \
 	pwd.c \
 	env.c \
 	exit.c \
-	test_env.c)\
+	test_env.c)
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)

@@ -1,9 +1,6 @@
 
 #include "../../inc/minishell.h"
 
-
-/*It checks if a given word matches an enviroment
-	 variable to count it as subtoken*/
 void	check_env_count(t_ms *ms, t_token *aux_t, int *count)
 {
 	char	*word;
@@ -33,7 +30,6 @@ void	check_env_count(t_ms *ms, t_token *aux_t, int *count)
 	free (word);
 }
 
-/*It counts subtokens created by dolar sign*/
 void	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
 {
 	ms->i++;
@@ -51,8 +47,6 @@ void	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
 		check_env_count(ms, aux_t, count);
 }
 
-/*It counts how many subtokens will be created 
-	due to the expand (to allocate the memory correctly)*/
 void	count_subtokens(t_ms *ms, t_token *aux_t, int *count)
 {
 	int	pos;
@@ -79,7 +73,6 @@ void	count_subtokens(t_ms *ms, t_token *aux_t, int *count)
 	}
 }
 
-/*Second part of count subtokens*/
 void	count_subtokens2(t_ms *ms, t_token *aux_t, int *count)
 {
 	int	pos;

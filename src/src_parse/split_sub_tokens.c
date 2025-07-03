@@ -2,7 +2,6 @@
 
 #include "../../inc/minishell.h"
 
-/*It split tokens inside simple quotes*/
 void	split_squot_subt(t_ms *ms, t_token *aux_t, int *count)
 {
 	int	pos;
@@ -22,7 +21,6 @@ void	split_squot_subt(t_ms *ms, t_token *aux_t, int *count)
 	ms->i++;
 }
 
-/*It split tokens not contained inside $, simple of double quotes*/
 void	split_norm_subt(t_ms *ms, t_token *aux_t, int *count)
 {
 	int	pos;
@@ -39,7 +37,6 @@ void	split_norm_subt(t_ms *ms, t_token *aux_t, int *count)
 	}
 }
 
-/*It split tokens inside double quotes*/
 void	split_dquot_subt(t_ms *ms, t_token *aux_t, int *count)
 {
 	int	pos;
@@ -69,7 +66,6 @@ void	split_dquot_subt(t_ms *ms, t_token *aux_t, int *count)
 	ms->i++;
 }
 
-/*It split tokens after dolar sign*/
 void	split_dolar_subt(t_ms *ms, t_token *aux_t, int *count, char c)
 {
 	ms->i++;
@@ -95,8 +91,6 @@ void	split_dolar_subt(t_ms *ms, t_token *aux_t, int *count, char c)
 		check_env_split(ms, aux_t, count);
 }
 
-/*It checks if a given word matches an enviroment
-	 variable to split it as subtoken*/
 void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 {
 	char	*word;

@@ -1,17 +1,6 @@
 
 #include "../../inc/minishell.h"
 
-/*
-	ms->exp_f --> flag to confirm there's something to expand (' , " , $)
-				It let me know if I have to resize the value of the token
-	
-	quot --> to define what type of quote is the current quote
-	ms->s_quot  --> tal vez no haga falta
-*/
-
-//AÑADIR char **subtokens; a estructura principal
-
-/*It tells if there's any quote or $*/
 int	is_exp_token(char c)
 {
 	if (c == '\"' || c == '\'' || c == '$')
@@ -19,8 +8,6 @@ int	is_exp_token(char c)
 	return (0);
 }
 
-/*It change ms->exp_f to 1 if is_exp_token is true,
- so that you know there's something to expand*/
 void	search_expand(t_ms *ms, t_token *aux_t)
 {
 	while (aux_t->value[ms->i])
@@ -34,7 +21,6 @@ void	search_expand(t_ms *ms, t_token *aux_t)
 	}
 }
 
-/*It splits the token in sub_tokens if needed*/
 void	split_sub_token(t_ms *ms, t_token *aux_t, int *count)
 {
 	if ((*count) == 0)
@@ -53,7 +39,7 @@ void	split_sub_token(t_ms *ms, t_token *aux_t, int *count)
 	}
 	ms->sub_tokens[*count] = NULL;
 }
-/*It joins the subtokens splitted*/
+
 void	join_subtokens(t_ms *ms, t_token *aux_t)
 {
 	char	*new_value;
@@ -79,8 +65,6 @@ void	join_subtokens(t_ms *ms, t_token *aux_t)
 	aux_t->value = new_value;
 }
 
-
-/*main function to expand variables*/
 void	expander(t_ms *ms)
 {
 	t_token	*aux_t;
