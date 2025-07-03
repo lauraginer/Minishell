@@ -1,4 +1,4 @@
-#¡¡INCLUIR CABECERO!!
+
 
 # ============================================================================= #
 #                                  MINISHELL                                    #
@@ -33,9 +33,11 @@ SRCS_PARSER := \
 	lexer_utils.c )
 
 SRCS_EXEC := \
-	$(EXEC_DIR)echo.c \
-	$(EXEC_DIR)pwd.c \
-	$(EXEC_DIR)env.c \
+	$(addprefix $(EXEC_DIR), echo.c \
+	pwd.c \
+	env.c \
+	exit.c \
+	test_env.c)\
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)
