@@ -33,7 +33,8 @@ SRCS_PARSER := \
 	lexer_utils.c \
 	expander.c \
 	count_sub_tokens.c \
-	split_sub_tokens.c)
+	split_sub_tokens.c \
+	split_sub_tokens_utils.c)
 
 #SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), echo.c \

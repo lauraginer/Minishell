@@ -2,13 +2,8 @@
 
 #include "../inc/minishell.h"
 
-t_ms	*init_ms(void)
+void	init_ms(t_ms *ms)
 {
-	t_ms	*ms;
-
-	ms = malloc(sizeof(t_ms));
-	if (!ms)
-		return (NULL);
 	ms->tokens = NULL;
 	ms->input = NULL;
 	ms->sub_tokens = NULL;
@@ -16,7 +11,6 @@ t_ms	*init_ms(void)
 	ms->exp_f = 0;
 	ms->s_quot = 0;
 	ms->quot = '.';
-	return (ms);
 }
 
 t_list	*copy_env_var(char **envp)
@@ -65,7 +59,7 @@ void	main_loop(t_ms *ms)
 			continue ;
 		expander(ms);
 		
-		ms = init_ms();
+		init_ms(ms);
 	}
 }
 
@@ -75,7 +69,8 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	ms = init_ms();
+	ms = ft_calloc(1, sizeof(t_ms));
+	init_ms(ms);
 	ms->exit_status = 0;
 	if (!ms)
 		exit (1);

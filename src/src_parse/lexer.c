@@ -53,7 +53,7 @@ int	token_word(t_ms *ms, int j)
 				printf("Syntax error: quotes unclosed\n");
 				free(ms->tokens);
 				free(ms->input);
-				ms = init_ms();
+				init_ms(ms);
 				return (FAILURE);
 			}
 		}
@@ -78,8 +78,8 @@ int	lexer(t_ms *ms)
 		else if (is_not_allowed(ms))
 		{
 			printf("Syntax error: character not supported.\n");
-			free (ms);
-			ms = init_ms();
+			free (ms->input);
+			init_ms(ms);
 			return (FAILURE);
 		}
 		else if (is_operator(ms))

@@ -25,7 +25,7 @@ void	split_sub_token(t_ms *ms, t_token *aux_t, int *count)
 {
 	if ((*count) == 0)
 		return ;
-	ms->sub_tokens = malloc(sizeof(char *) * ((*count) + 1));
+	ms->sub_tokens = ft_calloc((*count) + 1, sizeof(char *));
 	if (!ms->sub_tokens)
 		free_ms(ms);
 	ms->i = 0;
@@ -47,7 +47,9 @@ void	join_subtokens(t_ms *ms, t_token *aux_t)
 	int		i;
 
 	i = 0;
-	new_value = ms->sub_tokens[i];
+	new_value = ft_strdup(ms->sub_tokens[i]);
+	if (!new_value)
+		free_ms(ms);
 	while (ms->sub_tokens[i + 1])
 	{
 		tmp = new_value;
@@ -79,7 +81,9 @@ void	expander(t_ms *ms)
 	{
 		if (aux_t->type == TOKEN_WORD)
 		{
+			ms->i = 0;
 			(*count) = 0;
+			ms->exp_f = 0;
 			search_expand(ms, aux_t);
 			if (ms->exp_f == 1)
 			{

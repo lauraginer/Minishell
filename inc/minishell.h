@@ -47,31 +47,31 @@ typedef enum e_node_type
 
 typedef struct s_token
 {
-    t_token_type type;
-    char *value;
-    struct s_token *next;
+    t_token_type	type;
+    char			*value;
+    struct s_token	*next;
 } t_token;
 
 typedef struct s_ms
 {
-    t_token *tokens;
-    t_list *my_env;
-    char *input;
+    t_token	*tokens;
+    t_list	*my_env;
+    char	*input;
 	char	**sub_tokens;
-    int i;
-    int exp_f;  /*Flag to confirm there's something to expand (' , " , $)
-				It let me know if I have to resize the value of the token*/
-    int s_quot; // flag to check if a char is ' outside of ""
-	int	exit_status; 
-    char quot;  //to define what type of quote is the current quote
+    int		i;
+    int		exp_f;  /*Flag to confirm there's something to expand (' , " , $)
+					It let me know if I have to resize the value of the token*/
+    int		s_quot; // flag to check if a char is ' outside of ""
+	int		exit_status; 
+    char	quot;  //to define what type of quote is the current quote
 } t_ms;
 
 typedef struct s_ast_node
 {
-    t_node_type type;         // Tipo del nodo: comando, pipe, redirección, etc.
-    char *args;               // Argumentos del comando (por ejemplo, "ls", "-l", etc.)
-    struct s_ast_node *left;  // Hijo izquierdo (ej: primer comando en un pipe)
-    struct s_ast_node *right; // Hijo derecho (ej: segundo comando en un pipe)
+    t_node_type			type;   // Tipo del nodo: comando, pipe, redirección, etc.
+    char				*args;  // Argumentos del comando (por ejemplo, "ls", "-l", etc.)
+    struct s_ast_node	*left;  // Hijo izquierdo (ej: primer comando en un pipe)
+    struct s_ast_node	*right; // Hijo derecho (ej: segundo comando en un pipe)
 } t_ast_node;
 
 // MAIN
@@ -83,7 +83,7 @@ void main_loop(t_ms *ms);
 /*It copies each env var in a char* inside a linked list*/
 t_list *copy_env_var(char **envp);
 /*Initializates strcut t_ms*/
-t_ms *init_ms();
+void init_ms(t_ms *ms);
 
 // LEXER
 
@@ -129,10 +129,15 @@ void	split_norm_subt(t_ms *ms, t_token *aux_t, int *count);
 void	split_dquot_subt(t_ms *ms, t_token *aux_t, int *count);
 /*It split tokens after dolar sign*/
 void	split_dolar_subt(t_ms *ms, t_token *aux_t, int *count, char c);
+/*Second par of split_dquot_subt*/
+void	split_dquot_subt2(t_ms *ms, t_token *aux_t, int *count);
 /*It checks if a given word matches an enviroment
 	 variable to split it as subtoken*/
-void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
-
+ void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
+/*Second part of check_env_split*/
+void	check_env_split2(t_ms *ms, int *count);
+/*It replaes env variable by its value*/
+char	*replace_env(t_ms *ms, t_list *tmp, char *word);
 
 
 // EXECUTE

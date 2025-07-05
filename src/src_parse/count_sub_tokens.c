@@ -1,50 +1,29 @@
 
 #include "../../inc/minishell.h"
 
-void	check_env_count(t_ms *ms, t_token *aux_t, int *count)
-{
-	char	*word;
-	int		i;
-	t_list	*tmp;
-
-	tmp = ms->my_env;
-	i = 0;
-	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value[ms->i] == '_')
-		i++;
-	if (i == 0)
-		return ;
-	word = ft_substr(aux_t->value, ms->i, i);
-	if (!word)
-		free_ms(ms);
-	ms->i += i;
-	i = 0;
-	while (tmp)
-	{
-		if (ft_strncmp(word, (char *)(tmp->content), ft_strlen(word)) == 0)
-		{
-			(*count)++;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-	free (word);
-}
-
 void	count_dolar_subtokens(t_ms *ms, t_token *aux_t, int *count, char c)
 {
 	ms->i++;
 	if (aux_t->value[ms->i] == '$' || aux_t->value[ms->i] == '0'
 		|| aux_t->value[ms->i] == '#' || aux_t->value[ms->i] == '-')
+	{
+		(*count)++;
 		ms->i++;
+	}
 	else if (aux_t->value[ms->i] == '?')
 	{
 		(*count)++;
 		ms->i++;
 	}
-	else if (ft_is_space(aux_t->value[ms->i]) || aux_t->value[ms->i] == c)
+	else if (ft_is_space(aux_t->value[ms->i]) || aux_t->value[ms->i] == c
+		|| !ft_isalnum(aux_t->value[ms->i]))
 		(*count)++;
 	else
-		check_env_count(ms, aux_t, count);
+	{
+		while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value[ms->i] == '_')
+			ms->i++;
+		(*count)++;
+	}
 }
 
 void	count_subtokens(t_ms *ms, t_token *aux_t, int *count)
@@ -62,11 +41,9 @@ void	count_subtokens(t_ms *ms, t_token *aux_t, int *count)
 		if (aux_t->value[ms->i] == '\'')
 		{
 			ms->i++;
-			pos = ms->i;
 			while (aux_t->value[ms->i] != '\'')
 				ms->i++;
-			if (pos != ms->i)
-				(*count)++;
+			(*count)++;
 			ms->i++;
 		}
 		count_subtokens2(ms, aux_t, count);
@@ -75,24 +52,27 @@ void	count_subtokens(t_ms *ms, t_token *aux_t, int *count)
 
 void	count_subtokens2(t_ms *ms, t_token *aux_t, int *count)
 {
-	int	pos;
-
 	if (aux_t->value[ms->i] == '\"')
 	{
 		ms->i++;
-		while (aux_t->value[ms->i] != '\"')
+		if (aux_t->value[ms->i] == '\"')
 		{
-			pos = ms->i;
-			while (aux_t->value[ms->i] != '\"' && aux_t->value[ms->i] != '$')
+			(*count)++;
+			ms->i++;
+			return ;
+		}
+		while (aux_t->value[ms->i] != '\"' && aux_t->value[ms->i])
+		{
+			while (aux_t->value[ms->i] != '\"' && aux_t->value[ms->i] != '$'
+				&& aux_t->value[ms->i])
 				ms->i++;
-			if (pos != ms->i)
-				(*count)++;
+			(*count)++;
 			if (aux_t->value[ms->i] == '$')
 				count_dolar_subtokens(ms, aux_t, count, '\"');
-			ms->i++;
 		}
+		if (aux_t->value[ms->i] == '\"')
+			ms->i++;
 	}
 	if (aux_t->value[ms->i] == '$')
 		count_dolar_subtokens(ms, aux_t, count, '\0');
-	ms->i++;
 }
