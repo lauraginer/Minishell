@@ -53,13 +53,15 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 			ms->sub_tokens[*count] = replace_env(ms, tmp, word);
 		tmp = tmp->next;
 	}
-	check_env_split2(ms, count);
+	//free(word);
+	check_env_split2(ms, count, word);
 }
 
-void	check_env_split2(t_ms *ms, int *count)
+void	check_env_split2(t_ms *ms, int *count, char *word) // INCLUIR *word en el prototipo del .h
 {
 	if (!ms->sub_tokens[*count])
 	{
+		free (word);
 		ms->sub_tokens[*count] = ft_strdup("");
 		if (!ms->sub_tokens[*count])
 			free_ms(ms);

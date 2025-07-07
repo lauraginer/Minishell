@@ -18,7 +18,7 @@ void	print_tokens(t_ms *ms)
 		printf("VALUE: %s\n\n", curr->value);
 		curr = curr->next;
 	}
-	free(ms->tokens);
+	free_token_list(ms->tokens); // esto habra que añadirlo fuera de esta funcion antes de la ejecucion
 }
 
 void	token_operator(t_ms *ms)

@@ -94,5 +94,6 @@ void	expander(t_ms *ms)
 		}
 		aux_t = aux_t->next;
 	}
+	free(count);
 	print_tokens(ms);
 }
