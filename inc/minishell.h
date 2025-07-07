@@ -138,18 +138,18 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
 // EXECUTE
 
 // builtins
-int builtin_echo(char **args);
+int builtin_echo(char **args, t_ms *ms);
 int valid_flag(char *str);
 void print_arg(char *arg);
-int builtin_cd(char **args);
+int builtin_cd(char **args, t_ms *ms);
 int builtin_pwd(char **args);
 int control_nums(char *str);
-int builtin_exit(char **args);
+int builtin_exit(char **args, t_ms *ms);
 int builtin_env(char **args, t_list *my_env);
 int builtin_export(char **args);
 int builtin_unset(char **args);
 int is_builtin(char *cmd);
-int execute_builtin(char **args);
+int execute_builtin(char **args, t_ms *ms);
 
 // FREE
 

@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/04 23:10:51 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/05 16:27:43 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int special_case(char *str)
 			perror("getcwd");
 			return (1);
 		}
-		
 		if (chdir(target_dir) != 0)
 		{
 			perror("cd");
@@ -71,38 +70,46 @@ int special_case(char *str)
 	return (-1); //-1 si no es un caso especial
 }
 
-int builtin_cd(char **args)
+int builtin_cd(char **args, t_ms *ms)
 {
 	int flag;
 	const char *target_dir; //guarda la ruta de destino a la que queremos cambiar
 	char old_dir[PATH_MAX]; //guarda la ruta completa del directorio actual antes de cambiar, para OLDPWD
 	
 	if (!args) //solo hace falta para la prueba, cuando tengas la funcion principal QUITALO
+	{
+		ms->exit_status = 1;
 		return (1);
+	}
 	if (!args[1])
 	{
 		target_dir = getenv("HOME");
 		if (!target_dir)
 		{
 			printf("cd: HOME not set\n");
+			ms->exit_status = 1;
 			return (1);
 		}
 		if (getcwd(old_dir, PATH_MAX) == NULL)//guardamos el directorio actual antes de cambiarlo
 		{
 			perror("getcwd");
+			ms->exit_status = 1;
 			return (1);
 		}
 		if (chdir(target_dir) != 0)
 		{
 			perror("cd");
+			ms->exit_status = 1;
 			return (1);
 		}
 		update_pwd_env(old_dir);//actualizamos las variables de entorno
+		ms->exit_status = 0;
 		return (0);
 	}
 	if (args[2])
 	{
 		printf("cd: too many arguments\n");
+		ms->exit_status = 1;
 		return (1);
 	}
 	if (args[1][0] == '-' && !args[1][1])
@@ -111,36 +118,46 @@ int builtin_cd(char **args)
 		if (!target_dir)
 		{
 			printf("cd: OLDPWD not set\n");
+			ms->exit_status = 1;
 			return (1);
 		}
 		if (getcwd(old_dir, PATH_MAX) == NULL)//guardamos el directorio actual antes de cambiarlo
 		{
 			perror("getcwd");
+			ms->exit_status = 1;
 			return (1);
 		}
 		if (chdir(target_dir) != 0)
 		{
 			perror("cd");
+			ms->exit_status = 1;
 			return (1);
 		}
 		printf("%s\n", target_dir);
 		update_pwd_env(old_dir);//actualizamos las variables de entorno
+		ms->exit_status = 0;
 		return (0);
 	}
 	flag = special_case(args[1]);
 	if (flag != -1)
-		return flag;	
+	{
+		ms->exit_status = flag;
+		return flag;
+	}	
 	//Manejar rutas normales
 	if (getcwd(old_dir, PATH_MAX) == NULL) //guardamos el directorio actual antes de cambiarlo
 	{
 		perror("getcwd");
+		ms->exit_status = 1;
 		return (1);
 	}
 	if (chdir(args[1]) != 0)
 	{
 		printf("cd: %s: No such file or directory\n", args[1]);
+		ms->exit_status = 1;
 		return (1);
 	}
 	update_pwd_env(old_dir); //actualizamos las variables de entorno
+	ms->exit_status = 0;
 	return (0);
 }

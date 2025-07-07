@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:04:53 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/25 18:23:11 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/05 16:51:46 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	valid_flag(char *str)
 		i++;
 	if (str[i] == '\0')
 		return (1);
-
 	return (0);
 }
+
 void	print_arg(char *arg)
 {
 	int	j;
@@ -40,7 +40,7 @@ void	print_arg(char *arg)
 	}
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **args, t_ms *ms)
 {
 	int	i;
 	int	flag_n;
@@ -48,7 +48,10 @@ int	builtin_echo(char **args)
 	i = 1;
 	flag_n = 1;
 	if (!args[1])
+	{
+		ms->exit_status = 0;
 		return (write(1, "\n", 1), 0);
+	}
 	while (args[i] && valid_flag(args[i]))
 	{
 		flag_n = 0;
@@ -63,6 +66,7 @@ int	builtin_echo(char **args)
 	}
 	if (flag_n)
 		write(1, "\n", 1);
+	ms->exit_status = 0;
 	return (0);
 }
 
