@@ -1,49 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 20:49:30 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/19 21:50:35 by lginer-m         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../inc/minishell.h"
 
-// incluir TOKEN_S_QUOTES en t_token
-// para poder identificar qué NO tengo que expandir
-/*Lo de los espacios es un follon
-	Ejemplos:
-	* echo hola adios --> hola adios
-	* echo hola $USER --> hola user_name
-	* echo hola$USER --> holauser_name
-	
-	En este ultimo caso: si separo los tokens tendria
-	un WORD hola y un EXPAND $USER, ¿ PERO COMO SE CUANDO
-	HABIA UN ESPACIO Y CUANDO NO?
-	Voy a eliminar el TOKEN_EXPAND y en la fase de expansion
-	recorro todos los tokens y expando cuando me encuentre 
-	un $, excepto el TOKEN_S_QUOTES. 
-	No olvidar que $? se expande en la ejecucion	
-	
-	*/
-
-t_parse *init_parse()
+t_ms	*init_ms(void)
 {
-	t_parse *parse;
-	
-	parse = malloc(sizeof(t_parse));
-	if (!parse)
+	t_ms	*ms;
+
+	ms = malloc(sizeof(t_ms));
+	if (!ms)
 		return (NULL);
-	parse->tokens = NULL;
-	parse->input = NULL;
-	parse->count = 0;
-	return(0);
+	ms->tokens = NULL;
+	ms->input = NULL;
+	ms->sub_tokens = NULL;
+	ms->i = 0;
+	ms->exp_f = 0;
+	ms->s_quot = 0;
+	ms->quot = '.';
+	return (ms);
 }
 
-t_list *copy_env_var(char **envp)
+t_list	*copy_env_var(char **envp)
 {
 	int		i;
 	t_list	*new_node;
@@ -72,35 +48,39 @@ t_list *copy_env_var(char **envp)
 	return (my_env);
 }
 
-void	main_loop(t_parse *parse, t_list *my_env)
+void	main_loop(t_ms *ms)
 {
 	while (1)
 	{
-		parse->input = readline("minishell> ");
-		if (parse->input && *(parse->input))
-			add_history(parse->input);
-		else
-			break;
-		if (lexer(my_env, parse) == FAILURE)
-			continue;
+		ms->input = readline("minishell> ");
+		if (!ms->input)
+		{
+			free_ms(ms);
+			//free(ms);
+			//break ;
+		}
+		if (*(ms->input))
+			add_history(ms->input);
+		if (lexer(ms) == FAILURE)
+			continue ;
+		expander(ms);
+		
+		ms = init_ms();
 	}
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	t_parse	*parse;
-	t_list	*my_env;
+	t_ms	*ms;
 
 	(void)argc;
 	(void)argv;
-	my_env = copy_env_var(envp);
-	if (!my_env)
-		exit (1); //crear un enum de errores y meter el correspondiente aqui
-	parse = init_parse();
-	if (!parse)
-	{
-		free_env_list(my_env);
+	ms = init_ms();
+	ms->exit_status = 0;
+	if (!ms)
 		exit (1);
-	}	
-	main_loop(parse, my_env);
+	ms->my_env = copy_env_var(envp);
+	if (!ms->my_env)
+		free_ms(ms);
+	main_loop(ms);
 }

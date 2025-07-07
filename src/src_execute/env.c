@@ -6,13 +6,13 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:55:54 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/23 20:09:49 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:27:35 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	builtin_env(char **args, t_list *my_env)
+int	builtin_env(char **args, t_list *my_env, t_ms *ms)
 {
 	t_list	*current_env;
 
@@ -25,6 +25,7 @@ int	builtin_env(char **args, t_list *my_env)
 			printf("env: invalid option -- '%c'\n", args[1][1]);
 		else
 			printf("env: '%s': No such file or directory\n", args[1]);
+		ms->exit_status = 1;
 		return (1);
 	}
 	while (current_env)
@@ -32,6 +33,7 @@ int	builtin_env(char **args, t_list *my_env)
 		printf("%s\n", (char *)current_env->content);
 		current_env = current_env->next;
 	}
+	ms->exit_status = 0;
 	return (0);
 }
 /*

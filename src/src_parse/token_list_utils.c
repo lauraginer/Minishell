@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token_list_utils.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 17:54:18 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/17 18:09:34 by jcaro-lo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../inc/minishell.h"
 
@@ -38,4 +28,21 @@ void	lstadd_back_token(t_token **tokens, t_token *new)
 			curr = curr ->next;
 		curr -> next = new;
 	}
+}
+
+void	fill_and_add_token_node(t_ms *ms, t_token_type type, int j)
+{
+	t_token	*node;
+	char	*value;
+
+	value = ft_substr(ms->input, j, ms->i - j);
+	if (!value)
+		free_ms(ms);
+	node = lstnew_token(value, type);
+	if (!node)
+	{
+		free(value);
+		free_ms(ms);
+	}
+	lstadd_back_token(&(ms->tokens), node);
 }
