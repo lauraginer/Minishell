@@ -1,13 +1,13 @@
 
 #include "../../inc/minishell.h"
 
-char	*replace_env(t_ms *ms, t_list *tmp, char *word)
+char	*replace_env(t_ms *ms, t_list *tmp, char **word) //poner **word en .h
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	free (word);
+	free (*word);
 	while (((char *)tmp->content)[i])
 	{
 		if (((char *)tmp->content)[i] == '=')
@@ -18,14 +18,14 @@ char	*replace_env(t_ms *ms, t_list *tmp, char *word)
 	j = i;
 	while (((char *)tmp->content)[i])
 		i++;
-	word = malloc(sizeof(char) * (i - j + 1));
-	if (!word)
+	*word = malloc(sizeof(char) * (i - j + 1));
+	if (!(*word))
 		free_ms(ms);
 	i = 0;
 	while (((char *)tmp->content)[j])
-		word[i++] = ((char *)tmp->content)[j++];
-	word[i] = '\0';
-	return (word);
+		(*word)[i++] = ((char *)tmp->content)[j++];
+	(*word)[i] = '\0';
+	return (*word);
 }
 
 void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
@@ -50,14 +50,13 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 		if (ft_strlen(word) > len)
 			len = ft_strlen(word);
 		if (ft_strncmp(word, (char *)tmp->content, len) == 0)
-			ms->sub_tokens[*count] = replace_env(ms, tmp, word);
+			ms->sub_tokens[*count] = replace_env(ms, tmp, &word);
 		tmp = tmp->next;
 	}
-	//free(word);
 	check_env_split2(ms, count, word);
 }
 
-void	check_env_split2(t_ms *ms, int *count, char *word) // INCLUIR *word en el prototipo del .h
+void	check_env_split2(t_ms *ms, int *count, char *word) // INCLUIR **word en el prototipo del .h
 {
 	if (!ms->sub_tokens[*count])
 	{
