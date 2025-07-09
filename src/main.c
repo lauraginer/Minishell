@@ -57,6 +57,8 @@ void	main_loop(t_ms *ms)
 			add_history(ms->input);
 		if (lexer(ms) == FAILURE)
 			continue ;
+		if (syntax_checker(ms) == FAILURE)
+			continue ;
 		expander(ms);
 		
 		init_ms(ms);

@@ -51,7 +51,7 @@ int	token_word(t_ms *ms, int j)
 			if (ms->input[ms->i] == '\0')
 			{
 				printf("Syntax error: quotes unclosed\n");
-				free(ms->tokens);
+				free_token_list(ms->tokens);
 				free(ms->input);
 				init_ms(ms);
 				return (FAILURE);
