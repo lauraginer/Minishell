@@ -147,7 +147,7 @@ int control_nums(char *str);
 int builtin_exit(char **args, t_ms *ms);
 int builtin_env(char **args, t_list *my_env, t_ms *ms);
 int is_correct(char *arg);
-int builtin_export(char **args, t_list *my_env);
+int builtin_export(char **args, t_list *my_env, t_ms *ms);
 int builtin_unset(char **args);
 int is_builtin(char *cmd);
 int execute_builtin(char **args, t_ms *ms);
