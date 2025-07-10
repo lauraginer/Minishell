@@ -6,11 +6,11 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:05:33 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/13 19:05:39 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/06/20 21:26:14 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../inc/minishell.h"
 
 /*Lo que se nos da básicamente en la parte de ejecución es un AST (Árbol de Sintaxis Abstracta),
 y la forma en que lo ejecutamos es recorriéndolo recursivamente. Aquí hay un pseudocódigo que recorre un AST aritmético

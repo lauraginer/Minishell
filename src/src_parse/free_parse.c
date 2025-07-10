@@ -1,21 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   free_parse.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 09:32:24 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/19 12:46:54 by jcaro-lo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../inc/minishell.h"
 
 void	free_env_list(t_list *my_env)
 {
-	t_list *aux;
-	
+	t_list	*aux;
+
 	while (my_env)
 	{
 		aux = my_env->next;
@@ -27,7 +17,7 @@ void	free_env_list(t_list *my_env)
 
 void	free_token_list(t_token *tokens)
 {
-	t_token *aux;
+	t_token	*aux;
 
 	while (tokens)
 	{
@@ -38,11 +28,29 @@ void	free_token_list(t_token *tokens)
 	}
 }
 
-void	free_parse(t_parse *parse)
+void	free_subtokens(char **sub_tokens)
 {
-	if (parse->input)
-		free (parse->input);
-	if (parse->tokens)
-		free_token_list(parse->tokens);
-	free(parse);
+	int i;
+
+	i = 0;
+	while (sub_tokens[i])
+	{
+		free(sub_tokens[i]);
+		i++;
+	}
+	free(sub_tokens);
+}
+
+void	free_ms(t_ms *ms)
+{
+	if (ms->input)
+		free (ms->input);
+	if (ms->tokens)
+		free_token_list(ms->tokens);
+	if (ms->my_env)
+		free_env_list(ms->my_env);
+	if (ms->sub_tokens)
+		free_subtokens(ms->sub_tokens);
+	free(ms);
+	exit (1);
 }

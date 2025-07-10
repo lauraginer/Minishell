@@ -1,74 +1,92 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 12:43:09 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/06/19 13:01:47 by jcaro-lo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../inc/minishell.h"
 
-int	fill_and_add_token_node(t_parse *parse, t_list *my_env, t_token_type type, int j)
-{
-	t_token	*node;
-	char	*value;
 
-	value = ft_substr(parse->input, j, parse->count - j);
-	if(!value)
+
+void	print_tokens(t_ms *ms)
+{
+	t_token	*curr;
+
+	const char *token_to_str[] = {"TOKEN_WORD",
+		"TOKEN_PIPE", "TOKEN_REDIR_IN","TOKEN_REDIR_OUT",
+		"TOKEN_REDIR_APPEND", "TOKEN_REDIR_HEREDOC"};
+	curr = ms->tokens;
+	while (curr)
 	{
-		free_env_list(my_env);
-		free_parse(parse);
+		printf("TOKEN TYPE: %s\n", token_to_str[curr->type]);
+		printf("VALUE: %s\n\n", curr->value);
+		curr = curr->next;
 	}
-	node = lstnew_token(value, type);
-	if (!node)
-	{
-		free(value);
-		free_env_list(my_env);
-		free_parse(parse);
-	}
-	lstadd_back_token(&(parse->tokens), node);
-	return (SUCCESS);
+	free(ms->tokens);
 }
 
-int	quot_filt(t_parse *parse, t_list *my_env, char c, t_token_type type)
+void	token_operator(t_ms *ms)
 {
-	int		j;
+	int	j;
 
-	parse->count++;
-	j = parse->count;
-	while (parse->input[parse->count] != c && parse->input[parse->count] != '\0')
-		parse->count++;
-	if (parse->input[parse->count] == '\0')
-	{
-		printf("Syntax error: quotes unclosed");
-		return (FAILURE);
-	}
+	j = ms->i;
+	if (ms->input[ms->i] == '<')
+		token_redir_in(ms, j);
+	else if (ms->input[ms->i] == '>')
+		token_redir_out(ms, j);
 	else
-		fill_and_add_token_node(parse, my_env, type, j);
+	{
+		ms->i++;
+		fill_and_add_token_node(ms, TOKEN_PIPE, j);
+	}
+}
+
+int	token_word(t_ms *ms, int j)
+{
+	while (ms->input[ms->i] && !is_operator(ms)
+		&& !ft_is_space(ms->input[ms->i]) && !is_not_allowed(ms))
+	{
+		if (ms->input[ms->i] == '\"' || ms->input[ms->i] == '\'')
+		{
+			ms->quot = ms->input[ms->i];
+			ms->i++;
+			while (ms->input[ms->i] != ms->quot && ms->input[ms->i])
+				ms->i++;
+			if (ms->input[ms->i] == '\0')
+			{
+				printf("Syntax error: quotes unclosed\n");
+				free(ms->tokens);
+				free(ms->input);
+				init_ms(ms);
+				return (FAILURE);
+			}
+		}
+		ms->i++;
+	}
+	if (j != ms->i)
+		fill_and_add_token_node(ms, TOKEN_WORD, j);
 	return (SUCCESS);
 }
 
-int lexer(t_list *my_env, t_parse *parse)
+int	lexer(t_ms *ms)
 {
-	while (parse->input[parse->count])
+	int	j;
+
+	while (ms->input[ms->i])
 	{
-		while (ft_is_space(parse->input[parse->count]))
-			parse->count++;
-		if (parse->input[parse->count] == '\"')
+		while (ft_is_space(ms->input[ms->i]))
+			ms->i++;
+		j = ms->i;
+		if (token_word(ms, j) == FAILURE)
+			return (FAILURE);
+		else if (is_not_allowed(ms))
 		{
-			if (quot_filt(parse, my_env, '\"', TOKEN_WORD) == FAILURE)
-				return (FAILURE);
+			printf("Syntax error: character not supported.\n");
+			free (ms->input);
+			init_ms(ms);
+			return (FAILURE);
 		}
-		else if (parse->input[parse->count] == '\'')
-		{
-			if (quot_filt(parse, my_env, '\'', TOKEN_S_QUOTES) == FAILURE)
-				return (FAILURE);
-		}
-		parse->count++;
+		else if (is_operator(ms))
+			token_operator(ms);
 	}
+	/*Aquí podría añadir un token tipo EOT(final de tokens)*/
+	//print_tokens(ms);// esto hay que borrarlo, es para chequear los tokens
+	free (ms->input);
 	return (SUCCESS);
 }

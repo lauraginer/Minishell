@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/19 21:46:10 by lginer-m         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 
 # ============================================================================= #
@@ -40,12 +29,19 @@ SRCS := \
 SRCS_PARSER := \
 	$(addprefix $(PARSER_DIR), lexer.c \
 	free_parse.c \
-	token_list_utils.c)
+	token_list_utils.c \
+	lexer_utils.c \
+	expander.c \
+	count_sub_tokens.c \
+	split_sub_tokens.c \
+	split_sub_tokens_utils.c)
 
-SRCS_EXEC := \
-	$(EXEC_DIR)echo.c \
-	$(EXEC_DIR)pwd.c \
-	$(EXEC_DIR)env.c \
+#SRCS_EXEC := \
+	$(addprefix $(EXEC_DIR), echo.c \
+	pwd.c \
+	env.c \
+	exit.c \
+	test_env.c)
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)
@@ -71,13 +67,13 @@ RESET       := \033[0m
 
 .PHONY: all clean fclean re bonus norminette test help cleanlib
 
-cleanlib:
-	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
-	@make -C $(LIBFT_DIR) clean --no-print-directory
-
 all: header cleanlib $(NAME)
 	@echo "$(GREEN)✅ Compilation completed successfully!$(RESET)"
 	@echo "$(CYAN)🚀 Ready to use ./$(NAME)$(RESET)"
+
+cleanlib:
+	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo "$(YELLOW)🔗 Linking $(NAME)...$(RESET)"
@@ -97,7 +93,7 @@ clean:
 	@echo "$(YELLOW)🧹 Cleaning object files...$(RESET)"
 	@rm -f $(OBJS)
 	@find $(SRCS_DIR) -name "*.o" -type f -delete 2>/dev/null || true
-	@make -C $(LIBFT_DIR) clean --no-print-directory
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 	@echo "$(GREEN)✨ Object files cleaned!$(RESET)"
 
 fclean: clean
