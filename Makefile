@@ -34,7 +34,9 @@ SRCS_PARSER := \
 	expander.c \
 	count_sub_tokens.c \
 	split_sub_tokens.c \
-	split_sub_tokens_utils.c)
+	split_sub_tokens_utils.c \
+	syntax_checker.c \
+	transitions.c )
 
 #SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), echo.c \

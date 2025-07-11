@@ -1,7 +1,7 @@
 
 #include "../../inc/minishell.h"
 
-char	*replace_env(t_ms *ms, t_list *tmp, char **word) //poner **word en .h
+char	*replace_env(t_ms *ms, t_list *tmp, char **word)
 {
 	int	i;
 	int	j;
@@ -56,7 +56,7 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 	check_env_split2(ms, count, word);
 }
 
-void	check_env_split2(t_ms *ms, int *count, char *word) // INCLUIR *word en el prototipo del .h
+void	check_env_split2(t_ms *ms, int *count, char *word)
 {
 	if (!ms->sub_tokens[*count])
 	{

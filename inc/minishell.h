@@ -45,6 +45,15 @@ typedef enum e_node_type
     NODE_ENV_VAR,
 } t_node_type;
 
+typedef enum e_state
+{
+	S0,		//Start. It wait for command or redir
+	S1,		//After word (Arg or command)
+	S2,		//After redir. It wait for word (file or EOF)
+	S3,		//After redirection file
+	S4		//After pipe. It wait for new command or redir
+}	t_state;
+
 typedef struct s_token
 {
     t_token_type	type;
@@ -98,6 +107,22 @@ void token_redir_in(t_ms *ms, int j);
 /*AÑADIR A .h:It tokenizer output redir (>, >>)*/
 void token_redir_out(t_ms *ms, int j);
 
+
+// SYNTAX CHECKER
+
+/*AUTOMATA (DFA) to check if the syntax written by the user is correct*/
+int	syntax_checker(t_ms *ms);
+/*It checks the ongoing state to follow the corresponding transition function*/
+int syntax_checker2(t_token *aux_t, t_state *st);
+/*Transition function from 0 to the next*/
+int	transit_0(t_token *aux_t, t_state *st);
+/*Transition function from 1 or 2 to the next*/
+int	transit_1_2(t_token *aux_t, t_state *st);
+/*Transition function from 3 or 4 to the next*/
+int	transit_3_4(t_token *aux_t, t_state *st);
+/*Function to check if the token is a redirection token*/
+int	is_redir(t_token *token);
+
 // EXPANDER
 
 /*main function to expand variables*/
@@ -106,9 +131,9 @@ void	expander(t_ms *ms);
 void	join_subtokens(t_ms *ms, t_token *aux_t);
 /*It splits the token in sub_tokens if needed*/
 void	split_sub_token(t_ms *ms, t_token *aux_t, int *count);
-/*It change ms->exp_f to 1 if is_exp_token is true,
- so that you know there's something to expand*/
-void	search_expand(t_ms *ms, t_token *aux_t);
+/*It checks if there's something to expand 
+	and start the expansion if needed*/
+void	start_expand(t_ms *ms, t_token *aux_t, int *count);
 /*It tells if there's any quote or $*/
 int		is_exp_token(char c);
 /*It counts how many subtokens will be created 
@@ -135,9 +160,9 @@ void	split_dquot_subt2(t_ms *ms, t_token *aux_t, int *count);
 	 variable to split it as subtoken*/
  void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
 /*Second part of check_env_split*/
-void	check_env_split2(t_ms *ms, int *count);
+void	check_env_split2(t_ms *ms, int *count, char *word);
 /*It replaes env variable by its value*/
-char	*replace_env(t_ms *ms, t_list *tmp, char *word);
+char	*replace_env(t_ms *ms, t_list *tmp, char **word);
 
 
 // EXECUTE

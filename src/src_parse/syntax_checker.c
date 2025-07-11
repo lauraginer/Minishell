@@ -1,13 +1,4 @@
 
-/*typedef enum e_state
-{
-	S0,		//Start. It wait for command or redir
-	S1,		//After word (Arg or command)
-	S2,		//After redir. It wait for word (file or EOF)
-	S3,		//After redirection file
-	S4		//After pipe. It wait for new command or redir
-}	t_state;*/
-
 #include "../../inc/minishell.h"
 
 int	is_redir(t_token *token)
@@ -34,7 +25,7 @@ int	syntax_checker(t_ms *ms)
 			break ;
 		aux_t = aux_t->next;
 	}
-	if (*st == S0 || *st == S2 || *st == S4)
+	if (*st == S2 || *st == S4)
 	{
 		printf("Syntax error\n");
 		free_token_list(ms->tokens);

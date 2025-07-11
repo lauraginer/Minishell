@@ -8,7 +8,7 @@ int	is_exp_token(char c)
 	return (0);
 }
 
-void	search_expand(t_ms *ms, t_token *aux_t)
+void	start_expand(t_ms *ms, t_token *aux_t, int *count)
 {
 	while (aux_t->value[ms->i])
 	{
@@ -18,6 +18,12 @@ void	search_expand(t_ms *ms, t_token *aux_t)
 			break ;
 		}
 		ms->i++;
+	}
+	if (ms->exp_f == 1)
+	{
+		count_subtokens(ms, aux_t, count);
+		split_sub_token(ms, aux_t, count);
+		join_subtokens(ms, aux_t);
 	}
 }
 
@@ -84,16 +90,10 @@ void	expander(t_ms *ms)
 			ms->i = 0;
 			(*count) = 0;
 			ms->exp_f = 0;
-			search_expand(ms, aux_t);
-			if (ms->exp_f == 1)
-			{
-				count_subtokens(ms, aux_t, count);
-				split_sub_token(ms, aux_t, count);
-				join_subtokens(ms, aux_t);
-			}
+			start_expand(ms, aux_t, count);
 		}
 		aux_t = aux_t->next;
 	}
 	free(count);
-	print_tokens(ms);
+	print_tokens(ms);// ESTO HAY QUE QUITARLO DE AQUI
 }
