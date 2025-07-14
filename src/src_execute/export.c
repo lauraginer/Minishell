@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 21:03:16 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/09 19:04:40 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/14 21:07:47 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,19 @@ int env_exportable(char *var, t_list **my_env)
 {
 	t_list *current = *my_env;
 	char *env;
+	char *equal_sign;
+	size_t var_len;
 	
+	equal_sign = ft_strchr(var, '=');
+	if(equal_sign)
+		var_len = equal_sign - var;
+	else
+		var_len = ft_strlen(var);
 	while(current)
 	{
 		env = (char *)current->content;
-		if(ft_strcmp(env, var) == 0)
+		if(ft_strncmp(env, var, var_len) == 0 && 
+          (env[var_len] == '=' || env[var_len] == '\0'))
 			return (0); //si ya existe la variable, no hacer nada
 		current = current->next;
 	}
@@ -79,29 +87,27 @@ int update_env_var(char *var, t_list **my_env) //REAPASA QUE ES UNA LOCURA
     equal_sign = ft_strchr(var, '=');
     if (!equal_sign)
         return (0); // No hay '=', no es una variable para actualizar
-    
     name_len = equal_sign - var;
     name = ft_substr(var, 0, name_len);
     if (!name)
         return (1); // Error de memoria
-    
     current = *my_env; // Desreferenciar el puntero doble
     while (current)
     {
         char *env_entry = (char *)current->content;
         if (ft_strncmp(env_entry, name, name_len) == 0 && 
-            (env_entry[name_len] == '=' || env_entry[name_len] == '\0'))
+            (env_entry[name_len] == '=' || env_entry[name_len] == '\0'))//reemplazar la variable existente
         {
-            // Reemplazar la variable existente
+    
             free(current->content);
             current->content = ft_strdup(var);
             free(name);
-            return (current->content ? 0 : 1); // Verificar si ft_strdup tuvo éxito
+            return (current->content ? 0 : 1); //verificar si ft_strdup tuvo éxito
         }
         current = current->next;
     }
     free(name);
-    return (add_to_env(var, my_env)); // Añadir nueva variable
+    return (add_to_env(var, my_env)); //añadir nueva variable
 }
 
 int builtin_export(char **args, t_list *my_env, t_ms *ms)
@@ -135,7 +141,7 @@ int builtin_export(char **args, t_list *my_env, t_ms *ms)
 		}
 		else
 		{
-			if (env_exportable(args[i], &my_env) != 0) //gestiona sin signo
+			if(env_exportable(args[i], &my_env) != 0) //gestiona sin signo
 			{
 				ms->exit_status = 1;
 				printf("export: error: could not allocate memory\n");

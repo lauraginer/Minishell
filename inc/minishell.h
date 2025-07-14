@@ -136,6 +136,9 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
 
 
 // EXECUTE
+ 
+//utils
+int	ft_strcmp(const char *s1, const char *s2);
 
 // builtins
 int builtin_echo(char **args, t_ms *ms);
@@ -147,6 +150,9 @@ int control_nums(char *str);
 int builtin_exit(char **args, t_ms *ms);
 int builtin_env(char **args, t_list *my_env, t_ms *ms);
 int is_correct(char *arg);
+int add_to_env(char *var, t_list **my_env);
+int env_exportable(char *var, t_list **my_env);
+int update_env_var(char *var, t_list **my_env);
 int builtin_export(char **args, t_list *my_env, t_ms *ms);
 int builtin_unset(char **args);
 int is_builtin(char *cmd);
