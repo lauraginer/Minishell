@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/09 16:44:52 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/15 17:58:54 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int builtin_pwd(char **args, t_ms *ms);
 int builtin_exit(char **args, t_ms *ms);
 int builtin_env(char **args, t_list *my_env, t_ms *ms);
 int builtin_export(char **args, t_list *my_env, t_ms *ms);
-int builtin_unset(char **args, t_ms *ms);
+int builtin_unset(char **args, t_list **my_env, t_ms *ms);
 
 /*para comprobar si un comando es builtin, Y si lo es, 
 ejecútalo directamente sin hacer fork (esto es importante porque algunos built-ins

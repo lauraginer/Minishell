@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:05:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/14 21:23:33 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:13:17 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,28 @@ int main(int argc, char **argv, char **envp)
 
     // Comprobar si se pasan argumentos específicos o usar los de la línea de comandos
     if (argc > 1) {
-        builtin_export(argv, my_env, &ms); // Usar los argumentos de la línea de comandos
+        // Crear un array de argumentos que incluya "export" como primer elemento
+        char **export_args = malloc(sizeof(char*) * (argc + 1));
+        export_args[0] = "export";
+        for (int i = 1; i < argc; i++) {
+            export_args[i] = argv[i];
+        }
+        export_args[argc] = NULL;
+        
+        printf("Ejecutando: export");
+        for (int i = 1; i < argc; i++) {
+            printf(" %s", argv[i]);
+        }
+        printf("\n");
+        
+        builtin_export(export_args, &my_env, &ms);
+        
+        // Mostrar el resultado
+        printf("\n=== Variables después del export ===\n");
+        char *show_args[2] = {"export", NULL};
+        builtin_export(show_args, &my_env, &ms);
+        
+        free(export_args);
     } else {
         // Pruebas automáticas de casos especiales
         printf("===== Pruebas de casos especiales con export =====\n\n");
@@ -128,33 +149,33 @@ int main(int argc, char **argv, char **envp)
         test_args[0] = "export";
         test_args[1] = "VAR_WITHOUT_VALUE";
         test_args[2] = NULL;
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
         
         printf("\nTEST 2: Añadir una variable con valor\n");
         test_args[1] = "VAR_WITH_VALUE=hello";
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
         
         printf("\nTEST 3: Actualizar la variable anterior\n");
         test_args[1] = "VAR_WITH_VALUE=updated_value";
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
         
         printf("\nTEST 4: Nombre inválido que empieza con número\n");
         test_args[1] = "1INVALID_VAR=value";
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
         
         printf("\nTEST 5: Nombre inválido con carácter no permitido\n");
         test_args[1] = "INVALID-VAR=value";
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
         
         printf("\nTEST 6: Múltiples variables en un solo comando\n");
         test_args[1] = "MULTI_VAR1=value1";
         test_args[2] = "MULTI_VAR2=value2";
         test_args[3] = NULL;
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
         
         printf("\nTEST 7: Mostrar todas las variables\n");
         test_args[1] = NULL;
-        builtin_export(test_args, my_env, &ms);
+        builtin_export(test_args, &my_env, &ms);
     }
 
     // Liberar memoria si se creó el entorno
