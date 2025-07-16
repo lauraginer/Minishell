@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 20:28:39 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/15 17:30:34 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:33:09 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,29 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+
+int update_pwd_env(const char *old_dir)
+{
+	char current_dir[PATH_MAX];
+	
+	if (getcwd(current_dir, PATH_MAX) == NULL) //obtenemos el directorio actual después del cambio
+	{
+		perror("getcwd");
+		return (1);
+	}
+	if (setenv("OLDPWD", old_dir, 1) != 0) //actualizamos las variables de entorno
+	{
+		perror("setenv OLDPWD");
+		return (1);
+	}
+	if (setenv("PWD", current_dir, 1) != 0)
+	{
+		perror("setenv PWD");
+		return (1);
+	}
+	return (0);
+}
+
 int update_env_var(char *var, t_list **my_env) //REPASA QUE ES UN POCO LOCURA
 {
     char *name;

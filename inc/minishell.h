@@ -155,7 +155,11 @@ int add_to_env(char *var, t_list **my_env); //añade una var-env a través de no
 int env_exportable(char *var, t_list **my_env); //maneja el caso de una var-env sin valor
 void print_env(t_list **my_env); //imprie las variables con diferente formato segun si tienen o no valor
 int builtin_export(char **args, t_list **my_env, t_ms *ms); //imprime var-envs, crea y añade según la petición del usuario
-int builtin_unset(char **args, t_list **my_env, t_ms *ms);
+int remove_env(char *var, t_list **my_env); //elimina var-envs, para el comando unset
+int builtin_unset(char **args, t_list **my_env, t_ms *ms); //elimina var-envs
+int handle_cd_home(t_ms *ms); //maneja cd sin argumentos (HOME)
+int handle_cd_oldpwd(t_ms *ms); //maneja cd - (OLDPWD)
+int handle_cd_path(char *path, t_ms *ms); //maneja cd con ruta específica
 int is_builtin(char *cmd); //comprueba si es un builtin de otros comandos
 int execute_builtin(char **args, t_ms *ms); //ejecuta los builtins segun el argc entrante
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:05:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/15 16:13:17 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:21:22 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,38 @@ int main(int argc, char **argv, char **envp)
         
         printf("\nTEST 7: Mostrar todas las variables\n");
         test_args[1] = NULL;
+        builtin_export(test_args, &my_env, &ms);
+        
+        printf("\n\n===== Pruebas de UNSET =====\n\n");
+        
+        printf("TEST 8: Eliminar una variable existente\n");
+        test_args[0] = "unset";
+        test_args[1] = "VAR_WITH_VALUE";
+        test_args[2] = NULL;
+        builtin_unset(test_args, &my_env, &ms);
+        printf("Exit status: %d\n", ms.exit_status);
+        
+        printf("\nTEST 9: Intentar eliminar una variable que no existe\n");
+        test_args[1] = "NONEXISTENT_VAR";
+        builtin_unset(test_args, &my_env, &ms);
+        printf("Exit status: %d\n", ms.exit_status);
+        
+        printf("\nTEST 10: Eliminar con nombre inválido\n");
+        test_args[1] = "123INVALID";
+        builtin_unset(test_args, &my_env, &ms);
+        printf("Exit status: %d\n", ms.exit_status);
+        
+        printf("\nTEST 11: Eliminar múltiples variables\n");
+        test_args[1] = "VAR_WITHOUT_VALUE";
+        test_args[2] = "MULTI_VAR1";
+        test_args[3] = NULL;
+        builtin_unset(test_args, &my_env, &ms);
+        printf("Exit status: %d\n", ms.exit_status);
+        
+        printf("\nTEST 12: Mostrar variables después de unset\n");
+        test_args[0] = "export";
+        test_args[1] = NULL;
+        test_args[2] = NULL;
         builtin_export(test_args, &my_env, &ms);
     }
 
