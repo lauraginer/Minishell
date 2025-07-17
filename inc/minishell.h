@@ -137,15 +137,18 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count);
 
 // EXECUTE
  
-//utils
+//bs_utils
 int	ft_strcmp(const char *s1, const char *s2); //strcmp por si acaso
 int update_env_var(char *var, t_list **my_env); //actualiza las variables de env(pensada para export)
+int update_pwd_env(const char *old_dir); //actualiza las variables PWD y OLDPWD
+void print_env(t_list **my_env); //imprie las variables con diferente formato segun si tienen o no valor
 
 // builtins
 int builtin_echo(char **args, t_ms *ms); //muestra por pantalla el argc de forma diferente segun la flag
 int valid_flag(char *str); //comprueba si la flag es valida
 void print_arg(char *arg); //imprime el arg (funcion dividida)
 int builtin_cd(char **args, t_ms *ms); //permite ir a un directorio especifico o el moverse entre ellos segun las flags
+int special_case(char *str); //maneja casos especiales de cd (~ y --)
 int builtin_pwd(char **args, t_ms *ms); //muestra por pantalla la ruta actual
 int control_nums(char *str); //mismo que ft_isdigit pero maneja + y - 
 int builtin_exit(char **args, t_ms *ms); //salida del programa, retornando diferentes códigos
@@ -153,7 +156,6 @@ int builtin_env(char **args, t_list *my_env, t_ms *ms); //imprime las variables 
 int is_correct(char *arg); //comprueba si la nomenclatura de la var de env es correcta
 int add_to_env(char *var, t_list **my_env); //añade una var-env a través de nodos a la lista
 int env_exportable(char *var, t_list **my_env); //maneja el caso de una var-env sin valor
-void print_env(t_list **my_env); //imprie las variables con diferente formato segun si tienen o no valor
 int builtin_export(char **args, t_list **my_env, t_ms *ms); //imprime var-envs, crea y añade según la petición del usuario
 int remove_env(char *var, t_list **my_env); //elimina var-envs, para el comando unset
 int builtin_unset(char **args, t_list **my_env, t_ms *ms); //elimina var-envs

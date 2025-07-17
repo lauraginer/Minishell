@@ -6,11 +6,11 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 21:03:33 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:14:02 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/16 21:48:40 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int	remove_env(char *var, t_list **my_env)
 {

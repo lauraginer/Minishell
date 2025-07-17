@@ -35,11 +35,18 @@ SRCS_PARSER := \
 	count_sub_tokens.c \
 	split_sub_tokens.c)
 
-#SRCS_EXEC := \
-	$(addprefix $(EXEC_DIR), echo.c \
+BUILTINS_DIR := $(EXEC_DIR)built-ins/
+
+SRCS_EXEC := \
+	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \
 	env.c \
 	exit.c \
+	export.c \
+	unset.c \
+	cd.c \
+	built-ins.c \
+	bs_utils.c \
 	test_env.c)
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)

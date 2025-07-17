@@ -6,11 +6,11 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:05:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:21:22 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/16 21:48:39 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 // Declaraciones para evitar errores de compilación
 t_list *copy_env_var(char **envp)

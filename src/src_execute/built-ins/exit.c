@@ -6,11 +6,11 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:35:35 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/05 16:18:05 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/16 21:48:37 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int	control_nums(char *str)
 {

@@ -6,11 +6,11 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:32:50 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/16 21:48:36 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int special_case(char *str)
 {

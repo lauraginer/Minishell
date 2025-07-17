@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/15 17:58:54 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:48:35 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int builtin_cd(char **args, t_ms *ms);
 int builtin_pwd(char **args, t_ms *ms);
