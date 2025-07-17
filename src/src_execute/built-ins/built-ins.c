@@ -3,26 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:48:35 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/17 19:54:22 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-int builtin_cd(char **args, t_ms *ms);
-int builtin_pwd(char **args, t_ms *ms);
-int builtin_exit(char **args, t_ms *ms);
-int builtin_env(char **args, t_list *my_env, t_ms *ms);
-int builtin_export(char **args, t_list *my_env, t_ms *ms);
-int builtin_unset(char **args, t_list **my_env, t_ms *ms);
-
 /*para comprobar si un comando es builtin, Y si lo es, 
 ejecútalo directamente sin hacer fork (esto es importante porque algunos built-ins
 como cd o exit tienen que afectar directamente al shell, no a un hijo).*/
-int is_builtin(char *cmd);
+int is_builtin(char *cmd); //referencia a la estructura s_ast_node y dentro de ella a cmd
 
 int execute_builtin(char **args, t_ms *ms)
 {
@@ -50,11 +43,13 @@ int execute_builtin(char **args, t_ms *ms)
 
 //Una vez tengas el AST y estés en la fase de ejecución, harás algo como:
 if (is_builtin(node->args[0]))
-    exec_builtin(node->args);
+    execute_builtin(node->args);
 else
-    exec_external_command(node->args);
-
-	
-int main() //main de prueba para comprobar los builtins
 {
+	if(check_command_exists(cmd) == 0)
+		execute_external_command(node->args);
+	else
+		//print error y exit
 }
+    
+
