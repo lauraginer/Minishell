@@ -52,16 +52,17 @@ typedef struct s_token
 
 typedef struct s_ms
 {
-    t_token	*tokens;
-    t_list	*my_env;
-    char	*input;
-	char	**sub_tokens;
-    int		i;
-    int		exp_f;  /*Flag to confirm there's something to expand (' , " , $)
-					It let me know if I have to resize the value of the token*/
-    int		s_quot; // flag to check if a char is ' outside of ""
-	int		exit_status; 
-    char	quot;  //to define what type of quote is the current quote
+    t_token		*tokens;	 // First element of the token list
+    t_list		*my_env;	 // copy of the env variables
+	t_ast_node	*f_ast_node; //First ast node
+    char		*input;		 // input introduces by the user
+	char		**sub_tokens;// It contains the sub tokens generated on the expansion
+    int			i;			 // Counter
+    int			exp_f;  	 /*Flag to confirm there's something to expand (' , " , $)
+							 It let me know if I have to resize the value of the token*/
+    int			s_quot; 	 // flag to check if a char is ' outside of ""
+	int			exit_status; 
+    char		quot;  		 //to define what type of quote is the current quote
 } t_ms;
 
 typedef struct s_ast_node
