@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/17 19:54:22 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/21 11:25:22 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int execute_builtin(char **args, t_ms *ms)
 	else if (ft_strncmp(args[0], "env", 4) == 0)
 		result = builtin_env(args, ms->my_env, ms);
 	else if (ft_strncmp(args[0], "export", 7) == 0)
-		result = builtin_export(args, ms->my_env, ms);
+		result = builtin_export(args, &ms->my_env, ms);
 	else if (ft_strncmp(args[0], "unset", 6) == 0)
-		result = builtin_unset(args);
+		result = builtin_unset(args, &ms->my_env, ms);
 	
 	ms->exit_status = result;
 	return (result);

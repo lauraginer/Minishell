@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/17 21:33:07 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/21 10:56:09 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ execute_external_command(s_ast_node *args) //referencia dentro de la estructura 
 }
 
 char *get_command_path(char *cmd, t_list *my_env); //CMD_PATH
+//Busca en cada directorio de la variable de entorno PATH si el comando existe allí.
 
 /*añadir nuevas variables o una lista dentro de la lista principal,
 fijate en los elementos que tiene añadido pablo en su lista minishell*/
