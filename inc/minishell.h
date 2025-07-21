@@ -34,17 +34,6 @@ typedef enum e_token_type
     TOKEN_REDIR_HEREDOC, // For '<<'
 } t_token_type;
 
-typedef enum e_node_type
-{
-    NODE_CMD,
-    NODE_PIPE,
-    NODE_REDIR_IN,
-    NODE_REDIR_OUT,
-    NODE_REDIR_APPEND,
-    NODE_REDIR_HEREDOC,
-    NODE_ENV_VAR,
-} t_node_type;
-
 typedef enum e_state
 {
 	S0,		//Start. It wait for command or redir
@@ -77,8 +66,8 @@ typedef struct s_ms
 
 typedef struct s_ast_node
 {
-    t_node_type			type;   // Tipo del nodo: comando, pipe, redirección, etc.
-    char				*args;  // Argumentos del comando (por ejemplo, "ls", "-l", etc.)
+    t_token_type		type;   // Tipo del nodo: comando, pipe, redirección, etc.
+    char				**args;  // Argumentos del comando (por ejemplo, "ls", "-l", etc.)
     struct s_ast_node	*left;  // Hijo izquierdo (ej: primer comando en un pipe)
     struct s_ast_node	*right; // Hijo derecho (ej: segundo comando en un pipe)
 } t_ast_node;
