@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:55:54 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/07 21:27:35 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:48:37 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int	builtin_env(char **args, t_list *my_env, t_ms *ms)
 {
