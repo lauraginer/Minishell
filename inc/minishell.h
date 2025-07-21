@@ -156,13 +156,13 @@ char	*replace_env(t_ms *ms, t_list *tmp, char **word);
 
 // EXECUTE
  
-//bs_utils
+// BS_UTILS
 int	ft_strcmp(const char *s1, const char *s2); //strcmp por si acaso
 int update_env_var(char *var, t_list **my_env); //actualiza las variables de env(pensada para export)
 int update_pwd_env(const char *old_dir); //actualiza las variables PWD y OLDPWD
 void print_env(t_list **my_env); //imprie las variables con diferente formato segun si tienen o no valor
 
-// builtins
+// BUILTINS
 int builtin_echo(char **args, t_ms *ms); //muestra por pantalla el argc de forma diferente segun la flag
 int valid_flag(char *str); //comprueba si la flag es valida
 void print_arg(char *arg); //imprime el arg (funcion dividida)
@@ -183,6 +183,10 @@ int handle_cd_oldpwd(t_ms *ms); //maneja cd - (OLDPWD)
 int handle_cd_path(char *path, t_ms *ms); //maneja cd con ruta específica
 int is_builtin(char *cmd); //comprueba si es un builtin de otros comandos
 int execute_builtin(char **args, t_ms *ms); //ejecuta los builtins segun el argc entrante
+
+// EXECUTE_PID
+int	execute_external_command(s_ast_node **args, t_ms **ms);
+
 
 // FREE
 
