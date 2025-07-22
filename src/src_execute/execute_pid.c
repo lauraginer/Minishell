@@ -6,38 +6,47 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/21 10:56:09 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:57:46 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-execute_external_command(s_ast_node *args) //referencia dentro de la estructura a args
+execute_external_command(t_ast_node **args, t_ms **ms) //referencia dentro de la estructura a args
 {
-	s_ast_node *current;
+	t_ast_node *current;
 	pid_t pid;
 	int status;
 	
 	current = args;
 	pid = fork();
-	if (pid == 0) // Proceso hijo
+	ms->exit_status = 1;
+	if(pid == 0) //proceso hijo
 	{
-   		// Reemplazas el proceso hijo con el comando
-    	execve(cmd_path, args, envp);
-   		// Si execve falla:
-    	perror("execve");
-    	exit(127);
+   		//reemplazas el proceso hijo con el comando execve
+    	if(execve(cmd_path, current, envp) == -1)
+		{
+			perror("execve"); //si execve falla
+    		ms->exit_status = 127;
+			exit(ms->exit_status);
+		}
 	}
-	else if (pid < 0)
-    	perror("fork");
-	else // Proceso padre
-	{
-  		waitpid(pid, &status, 0);
-    	// Aquí puedes guardar el exit_status si quieres
+	else if(pid > 0) //proceso padre
+    {
+  		waitpid(pid, &status, 0);//espera al proceso hijo y sigue a su ritmo
+		if(WIFEXITED(status))
+			WEXITSTATUS(status) = ms->exit_status;
 	}
+	else 
+		perror("fork");
+	printf("el pid en cuestión es: %d\n", pid);
+	return(ms->exit_status);
 }
 
-char *get_command_path(char *cmd, t_list *my_env); //CMD_PATH
+char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
+{
+	getcwd(my_env);
+}
 //Busca en cada directorio de la variable de entorno PATH si el comando existe allí.
 
 /*añadir nuevas variables o una lista dentro de la lista principal,
