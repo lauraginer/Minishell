@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/22 18:57:46 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/22 20:16:57 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,13 @@ execute_external_command(t_ast_node **args, t_ms **ms) //referencia dentro de la
 }
 
 char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
-{
-	getcwd(my_env);
+{	
+	char *path_dir;
+	
+	path_dir = getenv("PATH")
+	if(!path_dir)
+		return(1);
+	//if(getcwd(my_env);
 }
 //Busca en cada directorio de la variable de entorno PATH si el comando existe allí.
 
