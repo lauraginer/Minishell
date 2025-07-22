@@ -185,7 +185,7 @@ int is_builtin(char *cmd); //comprueba si es un builtin de otros comandos
 int execute_builtin(char **args, t_ms *ms); //ejecuta los builtins segun el argc entrante
 
 // EXECUTE_PID
-int	execute_external_command(s_ast_node **args, t_ms **ms);
+int	execute_external_command(t_ast_node **args, t_ms **ms);
 
 
 // FREE

@@ -6,15 +6,15 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/21 21:26:11 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/22 18:57:46 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-execute_external_command(s_ast_node **args, t_ms **ms) //referencia dentro de la estructura a args
+execute_external_command(t_ast_node **args, t_ms **ms) //referencia dentro de la estructura a args
 {
-	s_ast_node *current;
+	t_ast_node *current;
 	pid_t pid;
 	int status;
 	
