@@ -10,6 +10,7 @@ void	init_ms(t_ms *ms)
 	ms->i = 0;
 	ms->exp_f = 0;
 	ms->s_quot = 0;
+	ms->redir_f = 0;
 	ms->quot = '.';
 }
 
@@ -60,7 +61,7 @@ void	main_loop(t_ms *ms)
 		if (syntax_checker(ms) == FAILURE)
 			continue ;
 		expander(ms);
-		ms->f_ast_node = ast_pipe(ms);
+		ms->f_ast_node = ast_pipe(ms, ms->tokens);
 		init_ms(ms);
 	}
 }

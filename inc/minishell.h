@@ -61,7 +61,8 @@ typedef struct s_ms
     int			exp_f;  	 /*Flag to confirm there's something to expand (' , " , $)
 							 It let me know if I have to resize the value of the token*/
     int			s_quot; 	 // flag to check if a char is ' outside of ""
-	int			exit_status; 
+	int			exit_status;
+	int			redir_f;	 //Flag to count the number of the redirections during the ast construction 
     char		quot;  		 //to define what type of quote is the current quote
 } t_ms;
 
@@ -154,6 +155,18 @@ void	check_env_split2(t_ms *ms, int *count, char *word);
 /*It replaes env variable by its value*/
 char	*replace_env(t_ms *ms, t_list *tmp, char **word);
 
+//AST
+
+/*It creates a pipe node*/
+t_ast_node	*ast_pipe(t_ms *ms, t_token *token);
+/*It creates a redirection node*/
+t_ast_node	*ast_redirection(t_ms *ms, t_token *token);
+/*It creates a file node*/
+t_ast_node	*ast_file(t_ms *ms, t_token *token);
+/*It creates a command node*/
+t_ast_node	*ast_cmd(t_ms *ms, t_token *token);
+/*It creates and alloc memory for a new node*/
+t_ast_node	*new_ast_node(t_token_type type, t_ms *ms);
 
 // EXECUTE
  

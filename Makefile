@@ -36,7 +36,8 @@ SRCS_PARSER := \
 	split_sub_tokens.c \
 	split_sub_tokens_utils.c \
 	syntax_checker.c \
-	transitions.c )
+	transitions.c \
+	ast.c )
 
 BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
