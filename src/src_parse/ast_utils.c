@@ -22,12 +22,10 @@ int	argument_counter(t_token *token)
 	tmp = token;
 	while (tmp && tmp->type != TOKEN_PIPE)
 	{
-		if (is_redir(token->type))
-			tmp = tmp->next->next;
+		if (is_redir(tmp))
+			tmp = tmp->next;
 		else
-			arg_count++;
-		if (!tmp)
-			break ;
+			count++;
 		tmp = tmp->next;
 	}
 	return (count);

@@ -16,10 +16,10 @@ t_ast_node	*ast_cmd(t_ms *ms, t_token *token)
 		tmp = token;
 		while (tmp && tmp->type != TOKEN_PIPE)
 		{
-			if (is_redir(token->type))
-				tmp = tmp->next->next;
+			if (is_redir(tmp))
+				tmp = tmp->next;
 			else
-				new_node->args[arg_count++] = ft_strdup(token->value);
+				new_node->args[arg_count++] = ft_strdup(tmp->value);
 			tmp = tmp->next;
 		}
 		new_node->args[arg_count] = NULL;
@@ -31,9 +31,7 @@ t_ast_node	*ast_cmd(t_ms *ms, t_token *token)
 t_ast_node	*ast_file(t_ms *ms, t_token *token)
 {
 	t_ast_node	*new_node;
-	int			i;
 
-	i = 0;
 	new_node = new_ast_node(TOKEN_WORD, ms);
 	new_node->args = malloc(sizeof(char *) * 2);
 	if (!new_node->args)
@@ -86,7 +84,7 @@ t_ast_node	*ast_pipe(t_ms *ms, t_token *token)
 			new_node->right = ast_pipe(ms, tmp->next);
 			return (new_node);
 		}
-		token = token->next;
+		tmp = tmp->next;
 	}
 	return (ast_redirection(ms, token));
 }

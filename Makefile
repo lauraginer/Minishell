@@ -42,7 +42,7 @@ SRCS_PARSER := \
 
 BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
-SRCS_EXEC := \
+#SRCS_EXEC := \
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \
 	env.c \
