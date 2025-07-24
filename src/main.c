@@ -61,7 +61,7 @@ void	main_loop(t_ms *ms)
 		if (syntax_checker(ms) == FAILURE)
 			continue ;
 		expander(ms);
-		ms->f_ast_node = ast_pipe(ms, ms->tokens);
+		ms->f_ast_node = ast_main(ms, ms->tokens);
 		init_ms(ms);
 	}
 }

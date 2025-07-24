@@ -30,7 +30,7 @@ void	free_token_list(t_token *tokens)
 
 void	free_subtokens(char **sub_tokens)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (sub_tokens[i])
