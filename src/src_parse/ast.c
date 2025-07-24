@@ -1,21 +1,31 @@
 
 #include "../../inc/minishell.h"
 
-
-t_ast_node	*new_ast_node(t_token_type type, t_ms *ms)
-{
-	t_ast_node	*new_node;
-
-	new_node = ft_calloc(1, sizeof(t_ast_node));
-	if (!new_node)
-		free_ms(ms);
-	new_node->type = type;
-	return (new_node);
-}
-
 t_ast_node	*ast_cmd(t_ms *ms, t_token *token)
 {
-	
+	t_token		*tmp;
+	t_ast_node	*new_node;
+	int			arg_count;
+
+	arg_count = argument_counter(token);
+	if (arg_count > 0)
+	{
+		new_node = new_ast_node(TOKEN_WORD, ms);
+		new_node->args = malloc(sizeof(char *) * (arg_count + 1));
+		arg_count = 0;
+		tmp = token;
+		while (tmp && tmp->type != TOKEN_PIPE)
+		{
+			if (is_redir(token->type))
+				tmp = tmp->next->next;
+			else
+				new_node->args[arg_count++] = ft_strdup(token->value);
+			tmp = tmp->next;
+		}
+		new_node->args[arg_count] = NULL;
+		return (new_node);
+	}
+	return (NULL);
 }
 
 t_ast_node	*ast_file(t_ms *ms, t_token *token)
@@ -25,10 +35,10 @@ t_ast_node	*ast_file(t_ms *ms, t_token *token)
 
 	i = 0;
 	new_node = new_ast_node(TOKEN_WORD, ms);
-	new_node->args = malloc(sizeof(char*) * 2);
+	new_node->args = malloc(sizeof(char *) * 2);
 	if (!new_node->args)
 		free_ms(ms);
-	new_node->args[0] = token->value; // cuidado al liberar el ast, creo que lo libero tambien en tokens
+	new_node->args[0] = ft_strdup(token->value);
 	new_node->args[1] = NULL;
 	return (new_node);
 }
@@ -42,7 +52,7 @@ t_ast_node	*ast_redirection(t_ms *ms, t_token *token)
 	ms->redir_f++;
 	redir_cnt = 0;
 	tmp = token;
-	while (tmp)
+	while (tmp && tmp->type != TOKEN_PIPE)
 	{
 		if (is_redir(tmp))
 		{
@@ -74,9 +84,18 @@ t_ast_node	*ast_pipe(t_ms *ms, t_token *token)
 			new_node->left = ast_redirection(ms, token);
 			ms->redir_f = 0;
 			new_node->right = ast_pipe(ms, tmp->next);
-			return(new_node);
+			return (new_node);
 		}
 		token = token->next;
 	}
 	return (ast_redirection(ms, token));
+}
+
+t_ast_node	*ast_main(t_ms *ms, t_token *token)
+{
+	t_ast_node	*new_node;
+
+	new_node = ast_pipe(ms, token);
+	free_token_list(ms->tokens);
+	return (new_node);
 }
