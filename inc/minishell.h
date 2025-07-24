@@ -57,6 +57,14 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_ast_node
+{
+	t_token_type		type;	//Token type: WORD, REDIR OR PIPE
+	char				**args;	//Command arguments("ls", "-l", etc.)
+	struct s_ast_node	*left;	//Left branch
+	struct s_ast_node	*right;	//Right branch
+}	t_ast_node;
+
 typedef struct s_ms
 {
 	t_token		*tokens;		//First element of the token list
@@ -76,14 +84,6 @@ typedef struct s_ms
 	char		quot;			/*to define what type of quote
 								 is the current quote*/
 }	t_ms;
-
-typedef struct s_ast_node
-{
-	t_token_type		type;	//Token type: WORD, REDIR OR PIPE
-	char				**args;	//Command arguments("ls", "-l", etc.)
-	struct s_ast_node	*left;	//Left branch
-	struct s_ast_node	*right;	//Right branch
-}	t_ast_node;
 
 // MAIN
 

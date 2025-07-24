@@ -64,6 +64,8 @@ void	main_loop(t_ms *ms)
 		ms->f_ast_node = ast_main(ms, ms->tokens);
 		init_ms(ms);
 	}
+	/*hay un monton de still reachable de valgrind que son mios al hacer CTRL + C,
+	habra que meterlo en el manejo de señales*/
 }
 
 int	main(int argc, char **argv, char **envp)
