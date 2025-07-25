@@ -42,7 +42,13 @@ SRCS_PARSER := \
 
 BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
+<<<<<<< HEAD
 #SRCS_EXEC := \
+=======
+SRCS_EXEC := \
+	$(addprefix $(EXEC_DIR), execute_pid.c \
+	utils_ex.c) \
+>>>>>>> lginer-m
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \
 	env.c \
@@ -51,8 +57,8 @@ BUILTINS_DIR := $(EXEC_DIR)built-ins/
 	unset.c \
 	cd.c \
 	built-ins.c \
-	bs_utils.c \
-	test_env.c)
+	bs_utils.c)
+	# test_env.c) # Comentado temporalmente - tiene su propio main
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)

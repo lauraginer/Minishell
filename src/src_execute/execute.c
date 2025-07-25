@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:05:33 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/06/20 21:26:14 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/25 13:44:59 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,23 @@ int eval(t_node node)
    return (node.value);
 }
 
-//El pseudocódigo sería algo así:
+//Funcion principal del executor:
 
-int execute(t_node node)
+int main_execute(t_node node)
 {
- if (node.type == PIPE)
-   return (execute_pipe(node.left, node.right));
- else
-   return (execute_simple_command(node.value));
+	if (node->type == TOKEN_PIPE)
+		return (execute_pipe(node, ms));
+	else if (is_builtin(node->args[0]))
+        return execute_builtin(node, ms);
+ 	else
+   		return (execute_external_command(node, ms, STDIN, STDOUT));
 }
 
 /*Para manejar file descriptors y crear procesos con fork():
 Esto es el núcleo de la parte de ejecución, además de trabajar un poco con las redirecciones,
 donde bbásicamente abrimos un archivo y luego redirigimos (usando dup2) la entrada o salida estándar a ese archivo.
 En el caso de here-doc (<<), redirigimos la entrada estándar a un pipe.*/
-int execute_pipe()
+int execute_pipe(t_ast_node *pipe_node, t_ms *ms)
 {
    pipe(pipe_fds);
    left_pid = fork();
@@ -54,3 +56,13 @@ int execute_pipe()
       // asegurarse de cerrar también los pipe_fds en el padre
    }
 }
+    // Crear pipe
+    // Fork para comando izquierdo
+    // Fork para comando derecho
+    // Conectar stdout del izquierdo con stdin del derecho
+    // Esperar a ambos procesos
+
+/*Luego tienes que modificar el execute external commands para que integre los pipes
+ 	// Si input_fd != STDIN, hacer dup2
+    // Si output_fd != STDOUT, hacer dup2
+    // Ejecutar comando*/
