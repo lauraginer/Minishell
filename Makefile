@@ -36,13 +36,19 @@ SRCS_PARSER := \
 	split_sub_tokens.c \
 	split_sub_tokens_utils.c \
 	syntax_checker.c \
-	transitions.c )
+	transitions.c \
+	ast.c \
+	ast_utils.c )
 
 BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
+<<<<<<< HEAD
+#SRCS_EXEC := \
+=======
 SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), execute_pid.c \
 	utils_ex.c) \
+>>>>>>> lginer-m
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \
 	env.c \
