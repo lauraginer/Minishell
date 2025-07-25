@@ -86,6 +86,8 @@ void main_loop(t_ms *ms);
 t_list *copy_env_var(char **envp);
 /*Initializates strcut t_ms*/
 void init_ms(t_ms *ms);
+/*Temporal function to execute simple commands without pipes*/
+void execute_simple_tokens(t_ms *ms);
 
 // LEXER
 
@@ -186,7 +188,7 @@ int handle_cd_home(t_ms *ms); //maneja cd sin argumentos (HOME)
 int handle_cd_oldpwd(t_ms *ms); //maneja cd - (OLDPWD)
 int handle_cd_path(char *path, t_ms *ms); //maneja cd con ruta específica
 int is_builtin(char *cmd); //comprueba si es un builtin de otros comandos
-int execute_builtin(char **args, t_ms *ms); //ejecuta los builtins segun el argc entrante
+int execute_builtin(t_ast_node *node, t_ms *ms); //ejecuta los builtins segun el argc entrante
 
 // EXECUTE_PID
 int	execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env);
@@ -194,6 +196,7 @@ char *get_command_path(char *cmd, t_list *my_env);
 char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
+void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
 
 
 // FREE

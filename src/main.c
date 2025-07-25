@@ -1,5 +1,3 @@
-
-
 #include "../inc/minishell.h"
 
 void	init_ms(t_ms *ms)
@@ -60,7 +58,9 @@ void	main_loop(t_ms *ms)
 		if (syntax_checker(ms) == FAILURE)
 			continue ;
 		expander(ms);
-		// TODO: Implementar ast_pipe cuando el parser esté listo
+		// Ejecutor temporal para comandos simples (sin pipes)
+		//execute_simple_tokens(ms);
+		//implementar ast_pipe cuando el parser esté listo
 		// ms->f_ast_node = ast_pipe(ms);
 		ms->f_ast_node = NULL; // Temporal hasta implementar parser
 		init_ms(ms);

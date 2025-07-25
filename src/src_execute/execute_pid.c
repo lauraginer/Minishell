@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/25 02:46:41 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/25 12:29:31 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 		perror("fork");
 		(*ms)->exit_status = 1;
 	}
-	
 	free(cmd_path);
 	return((*ms)->exit_status);
 }
@@ -92,7 +91,7 @@ char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
 	full_path = manage_relative_or_absolute_path(cmd);
 	if(full_path)
 		return(full_path); //comprueba si la ruta es directa
-	path_env = get_env_value("PATH", my_env); //obtienes la variable Path del entorno
+	path_env = get_env_value("PATH", my_env); //obtienes la variable path del entorno
 	if(!path_env)
 		return(NULL);
 	path_dirs = ft_split(path_env, ':');
@@ -101,13 +100,13 @@ char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
 	while(path_dirs[i]) //recorres cada directorio de path
 	{
 		temp_path = ft_strjoin(path_dirs[i], "/");
-		if (!temp_path)
+		if(!temp_path)
 			break;
 		full_path = ft_strjoin(temp_path, cmd);
 		free(temp_path); // Liberar memoria temporal
 		if(!full_path)
 			break;
-		if (access(full_path, F_OK | X_OK) == 0) 
+		if(access(full_path, F_OK | X_OK) == 0) 
         {
             ft_free_split(path_dirs);
             return (full_path);
