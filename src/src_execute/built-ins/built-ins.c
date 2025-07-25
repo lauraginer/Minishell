@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/21 11:25:22 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/25 02:28:01 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int execute_builtin(char **args, t_ms *ms)
 	return (result);
 }
 
-//Una vez tengas el AST y estés en la fase de ejecución, harás algo como:
+/* TODO: Una vez tengas el AST y estés en la fase de ejecución, harás algo como:
 if (is_builtin(node->args[0]))
     execute_builtin(node->args);
 else
@@ -51,5 +51,6 @@ else
 	else
 		//print error y exit
 }
+*/
     
 

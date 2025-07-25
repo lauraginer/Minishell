@@ -49,8 +49,8 @@ SRCS_EXEC := \
 	unset.c \
 	cd.c \
 	built-ins.c \
-	bs_utils.c \
-	test_env.c)
+	bs_utils.c)
+	# test_env.c) # Comentado temporalmente - tiene su propio main
 	
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
 OBJS := $(ALL_SRCS:.c=.o)

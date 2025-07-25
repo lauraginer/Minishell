@@ -50,7 +50,7 @@ void	free_ast(t_ast_node *ast)
 	{
 		while (ast->args[i])
 		{
-			free(ast->args[i])
+			free(ast->args[i]);
 			i++;
 		}
 		free(ast->args);
