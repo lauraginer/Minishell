@@ -61,8 +61,8 @@ void	main_loop(t_ms *ms)
 		// Ejecutor temporal para comandos simples (sin pipes)
 		//execute_simple_tokens(ms);
 		//implementar ast_pipe cuando el parser esté listo
-		// ms->f_ast_node = ast_pipe(ms);
-		ms->f_ast_node = NULL; // Temporal hasta implementar parser
+		ms->f_ast_node = ast_main(ms, ms->tokens);
+		//ms->f_ast_node = NULL; // Temporal hasta implementar parser
 		init_ms(ms);
 	}
 }
