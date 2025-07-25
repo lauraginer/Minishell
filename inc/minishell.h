@@ -98,8 +98,6 @@ void		main_loop(t_ms *ms);
 t_list		*copy_env_var(char **envp);
 /*Initializates strcut t_ms*/
 void init_ms(t_ms *ms);
-/*Temporal function to execute simple commands without pipes*/
-void execute_simple_tokens(t_ms *ms);
 
 // LEXER
 
