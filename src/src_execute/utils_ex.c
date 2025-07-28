@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:37:03 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/25 19:51:11 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:34:10 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,3 +42,16 @@ static void free_args_array(char **args)
 	}
 	free(args);
 }*/
+
+// Función básica para debuggear el AST - versión simplificada
+void debug_ast(t_ast_node *root)
+{
+	printf("\n🌳 AST DEBUG:\n");
+	if (!root)
+	{
+		printf("❌ AST is NULL\n\n");
+		return;
+	}
+	debug_ast_recursive(root, 0);
+	printf("🌳 END DEBUG\n\n");
+}

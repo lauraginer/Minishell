@@ -1,4 +1,3 @@
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -222,7 +221,7 @@ char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
 void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
-
+void debug_ast(t_ast_node *root); // Función para debuggear el AST
 
 // FREE
 
