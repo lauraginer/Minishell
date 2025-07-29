@@ -22,6 +22,7 @@ LIBS := -lreadline
 SRCS_DIR := src/
 PARSER_DIR := $(SRCS_DIR)src_parse/
 EXEC_DIR := $(SRCS_DIR)src_execute/
+SIGNAL_DIR := $(SRCS_DIR)src_signal/
 
 SRCS := \
 	$(SRCS_DIR)main.c \
@@ -55,8 +56,11 @@ SRCS_EXEC := \
 	built-ins.c \
 	bs_utils.c)
 	# test_env.c) # Comentado temporalmente - tiene su propio main
-	
-ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
+
+SRCS_PARSER := \
+	$(addprefix $(SIGNAL_DIR), signals.c)
+
+ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC) $(SIGNAL_DIR)
 OBJS := $(ALL_SRCS:.c=.o)
 
 # ============================================================================= #
