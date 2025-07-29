@@ -191,6 +191,7 @@ int	ft_strcmp(const char *s1, const char *s2); //strcmp por si acaso
 int update_env_var(char *var, t_list **my_env); //actualiza las variables de env(pensada para export)
 int update_pwd_env(const char *old_dir); //actualiza las variables PWD y OLDPWD
 void print_env(t_list **my_env); //imprie las variables con diferente formato segun si tienen o no valor
+void debug_ast(t_ast_node *root);
 
 // BUILTINS
 int builtin_echo(char **args, t_ms *ms); //muestra por pantalla el argc de forma diferente segun la flag
@@ -221,7 +222,6 @@ char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
 void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
-void debug_ast(t_ast_node *root); // Función para debuggear el AST
 
 // FREE
 
