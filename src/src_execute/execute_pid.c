@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pid.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/25 12:29:31 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/29 19:28:44 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char *get_env_value(char *name, t_list *my_env)
 	while(current)
 	{
 		if(ft_strncmp(current->content, name, len) == 0 && ((char *)current->content)[len] == '=')
-            return (((char *)current->content) + len + 1);
+            return(((char *)current->content) + len + 1);
 		current = current->next;
 	}
 	return(NULL);
@@ -109,7 +109,7 @@ char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
 		if(access(full_path, F_OK | X_OK) == 0) 
         {
             ft_free_split(path_dirs);
-            return (full_path);
+            return(full_path);
         }
         free(full_path);
         i++;
@@ -117,6 +117,7 @@ char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
     ft_free_split(path_dirs);
     return (NULL);	
 }
+
 //Busca en cada directorio de la variable de entorno PATH si el comando existe allí.
 
 /*añadir nuevas variables o una lista dentro de la lista principal,
