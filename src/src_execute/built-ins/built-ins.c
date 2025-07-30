@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:41:09 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/25 13:12:26 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/30 22:47:19 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 /*para comprobar si un comando es builtin, Y si lo es, 
 ejecútalo directamente sin hacer fork (esto es importante porque algunos built-ins
 como cd o exit tienen que afectar directamente al shell, no a un hijo).*/
+
+int needs_parent_execution(char *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (ft_strcmp(cmd, "cd") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "export") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "unset") == 0)
+		return (1);
+	if (ft_strcmp(cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
 
 int is_builtin(char *cmd)
 {
@@ -60,16 +75,28 @@ int execute_builtin(t_ast_node *node, t_ms *ms)
 	return (result);
 }
 
-/* TODO: Una vez tengas el AST y estés en la fase de ejecución, harás algo como:
-if (is_builtin(node->args[0]))
-    execute_builtin(node->args);
-else
+int execute_builtin_with_fork(t_ast_node *node, t_ms *ms) //ejecuta solo los bs que van en proceso hijo
 {
-	if(check_command_exists(cmd) == 0)
-		execute_external_command(node->args);
+	pid_t pid;
+	int status;
+	
+	pid = fork();
+	if(pid == 0)
+	{
+		execute_builtin(node, ms);
+		exit(ms->exit_status);
+	}
+	else if(pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		if(WIFEXITED(status))
+			ms->exit_status = WEXITSTATUS(status);
+		return (ms->exit_status);
+	}
 	else
-		//print error y exit
+	{
+		perror("fork");
+		ms->exit_status = 1;
+		return (ms->exit_status);
+	}
 }
-*/
-    
-

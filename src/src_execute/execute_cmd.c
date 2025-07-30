@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_pid.c                                      :+:      :+:    :+:   */
+/*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/25 12:29:31 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/30 19:37:58 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,6 @@ int execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 	return((*ms)->exit_status);
 }
 
-char *manage_relative_or_absolute_path(char *cmd)
-{
-	if(cmd[0] == '/' || cmd[0] == '.' || ft_strchr(cmd, '/'))
-	{
-		if(access(cmd, F_OK | X_OK) == 0) //verifica si existe y es ejecutable
-			return(ft_strdup(cmd));
-		return(NULL);
-	}
-	return(NULL);
-}
-
 char *get_env_value(char *name, t_list *my_env)
 {
 	t_list	*current;
@@ -74,49 +63,70 @@ char *get_env_value(char *name, t_list *my_env)
 	while(current)
 	{
 		if(ft_strncmp(current->content, name, len) == 0 && ((char *)current->content)[len] == '=')
-            return (((char *)current->content) + len + 1);
+            return(((char *)current->content) + len + 1);
 		current = current->next;
 	}
 	return(NULL);
 }
-char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
-{	
-	char *path_env;
-	char **path_dirs; //subcadenas divididas por el signo ':'
-	char *full_path;
+
+// Función auxiliar para buscar comando en un directorio específico
+static char *search_in_directory(char *dir, char *cmd)
+{
 	char *temp_path;
+	char *full_path;
+	
+	temp_path = ft_strjoin(dir, "/");
+	if (!temp_path)
+		return (NULL);
+	full_path = ft_strjoin(temp_path, cmd);
+	free(temp_path);
+	if (!full_path)
+		return (NULL);
+	if (access(full_path, F_OK | X_OK) == 0)
+		return (full_path);
+	free(full_path);
+	return (NULL);
+}
+
+// Función auxiliar para buscar en todos los directorios del PATH
+static char *search_in_path_dirs(char **path_dirs, char *cmd)
+{
+	char *full_path;
 	int i;
 	
 	i = 0;
-	full_path = manage_relative_or_absolute_path(cmd);
-	if(full_path)
-		return(full_path); //comprueba si la ruta es directa
-	path_env = get_env_value("PATH", my_env); //obtienes la variable path del entorno
-	if(!path_env)
-		return(NULL);
-	path_dirs = ft_split(path_env, ':');
-	if(!path_dirs)
-		return(NULL);
-	while(path_dirs[i]) //recorres cada directorio de path
+	while (path_dirs[i])
 	{
-		temp_path = ft_strjoin(path_dirs[i], "/");
-		if(!temp_path)
-			break;
-		full_path = ft_strjoin(temp_path, cmd);
-		free(temp_path); // Liberar memoria temporal
-		if(!full_path)
-			break;
-		if(access(full_path, F_OK | X_OK) == 0) 
-        {
-            ft_free_split(path_dirs);
-            return (full_path);
-        }
-        free(full_path);
-        i++;
-    }
-    ft_free_split(path_dirs);
-    return (NULL);	
+		full_path = search_in_directory(path_dirs[i], cmd);
+		if (full_path)
+		{
+			ft_free_split(path_dirs);
+			return (full_path);
+		}
+		i++;
+	}
+	ft_free_split(path_dirs);
+	return (NULL);
 }
+
+char *get_command_path(char *cmd, t_list *my_env) //CMD_PATH
+{	
+	char *path_env;
+	char **path_dirs;
+	char *full_path;
+	
+	full_path = manage_relative_or_absolute_path(cmd);
+	if (full_path)
+		return (full_path);
+	path_env = get_env_value("PATH", my_env);
+	if (!path_env)
+		return (NULL);
+	path_dirs = ft_split(path_env, ':');
+	if (!path_dirs)
+		return (NULL);
+	return (search_in_path_dirs(path_dirs, cmd));
+}
+
 //Busca en cada directorio de la variable de entorno PATH si el comando existe allí.
 
 /*añadir nuevas variables o una lista dentro de la lista principal,

@@ -44,7 +44,7 @@ SRCS_PARSER := \
 BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
 SRCS_EXEC := \
-	$(addprefix $(EXEC_DIR), execute_pid.c \
+	$(addprefix $(EXEC_DIR), execute_cmd.c \
 	utils_ex.c) \
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \

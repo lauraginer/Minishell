@@ -63,6 +63,7 @@ void	main_loop(t_ms *ms)
 		//execute_simple_tokens(ms);
 		//implementar ast_pipe cuando el parser esté listo
 		ms->f_ast_node = ast_main(ms, ms->tokens);
+		debug_ast(ms->f_ast_node);
 		//ms->f_ast_node = NULL; // Temporal hasta implementar parser
 		init_ms(ms);
 	}
