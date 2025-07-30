@@ -214,8 +214,10 @@ int handle_cd_oldpwd(t_ms *ms); //maneja cd - (OLDPWD)
 int handle_cd_path(char *path, t_ms *ms); //maneja cd con ruta específica
 int is_builtin(char *cmd); //comprueba si es un builtin de otros comandos
 int execute_builtin(t_ast_node *node, t_ms *ms); //ejecuta los builtins segun el argc entrante
+int execute_builtin_with_fork(t_ast_node *node, t_ms *ms); //ejecuta builtins que pueden usar fork
+int needs_parent_execution(char *cmd); //detecta si un builtin necesita ejecutarse en el padre
 
-// EXECUTE_PID
+// EXECUTE_CMD
 int	execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env);
 char *get_command_path(char *cmd, t_list *my_env);
 char *manage_relative_or_absolute_path(char *cmd);

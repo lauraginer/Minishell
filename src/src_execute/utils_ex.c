@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:37:03 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/28 19:31:33 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/30 19:27:57 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,16 @@ void ft_free_split(char **split)
 	free(split);
 }
 
-/*Función auxiliar para liberar array de argumentos
-static void free_args_array(char **args)
+char *manage_relative_or_absolute_path(char *cmd)
 {
-	int i;
-	
-	if (!args)
-		return;
-	i = 0;
-	while (args[i])
+	if(cmd[0] == '/' || cmd[0] == '.' || ft_strchr(cmd, '/'))
 	{
-		free(args[i]);
-		i++;
+		if(access(cmd, F_OK | X_OK) == 0) //verifica si existe y es ejecutable
+			return(ft_strdup(cmd));
+		return(NULL);
 	}
-	free(args);
-}*/
+	return(NULL);
+}
 
 // Función recursiva simplificada
 static void debug_ast_recursive(t_ast_node *node, int depth)
