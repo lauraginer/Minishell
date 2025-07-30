@@ -57,10 +57,10 @@ SRCS_EXEC := \
 	bs_utils.c)
 	# test_env.c) # Comentado temporalmente - tiene su propio main
 
-SRCS_PARSER := \
+SRCS_SIGNALS := \
 	$(addprefix $(SIGNAL_DIR), signals.c)
 
-ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC) $(SIGNAL_DIR)
+ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC) $(SRCS_SIGNALS)
 OBJS := $(ALL_SRCS:.c=.o)
 
 # ============================================================================= #
