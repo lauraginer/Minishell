@@ -6,18 +6,17 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:05:33 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/30 22:50:12 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/31 16:06:01 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 //Funcion principal del executor:
-
 int execute_ast(t_ast_node *node, t_ms *ms)
 {
 	ms->exit_status = 0;
-	if(!node)
+	if(!node || !ms)
 	{
 		ms->exit_status = 1;
 		return(ms->exit_status);
@@ -99,5 +98,5 @@ int execute_pipe(t_ast_node *pipe_node, t_ms *ms)
 	//PROCESO PADRE: cerrar pipes y esperar hijos
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	return (wait_children(left_pid, right_pid, ms));
+	return(wait_children(left_pid, right_pid, ms));
 }

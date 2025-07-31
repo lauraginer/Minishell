@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:37:03 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/30 19:27:57 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/07/31 16:41:02 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,35 @@ char *manage_relative_or_absolute_path(char *cmd)
 {
 	if(cmd[0] == '/' || cmd[0] == '.' || ft_strchr(cmd, '/'))
 	{
-		if(access(cmd, F_OK | X_OK) == 0) //verifica si existe y es ejecutable
+		if(access(cmd, F_OK | X_OK) == 0)
 			return(ft_strdup(cmd));
 		return(NULL);
 	}
 	return(NULL);
+}
+
+char *get_heredoc_delimiter(t_ast_node *node, t_ms *ms)
+{
+	if (!node->right || !node->right->args || !node->right->args[0])
+	{
+		ms->exit_status = 1;
+		return (NULL);
+	}
+	return (node->right->args[0]);
+}
+
+int handle_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms)
+{
+	if (get_signal == SIGINT)
+	{
+		if (line)
+			free(line);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		ms->exit_status = 130;
+		return (130);
+	}
+	return (0);
 }
 
 // Función recursiva simplificada

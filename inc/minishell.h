@@ -225,7 +225,20 @@ char *get_command_path(char *cmd, t_list *my_env);
 char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
+char *get_heredoc_delimiter(t_ast_node *node, t_ms *ms);
+int handle_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms);
 void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
+
+// EXECUTE (AST)
+int execute_ast(t_ast_node *node, t_ms *ms);
+int execute_pipe(t_ast_node *pipe_node, t_ms *ms);
+
+// REDIRECTIONS
+int execute_redirection(t_ast_node *node, t_ms *ms);
+int handle_input(t_ast_node *node, t_ms *ms);
+int handle_output(t_ast_node *node, t_ms *ms);
+int handle_append(t_ast_node *node, t_ms *ms);
+int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2]);
 
 //SIGNALS
 

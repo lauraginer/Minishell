@@ -45,7 +45,9 @@ BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
 SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), execute_cmd.c \
-	utils_ex.c) \
+	execute.c \
+	utils_ex.c \
+	redirections.c) \
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \
 	env.c \
