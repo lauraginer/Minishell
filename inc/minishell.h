@@ -23,6 +23,8 @@
 #define SUCCESS 0
 #define FAILURE 1
 
+extern volatile sig_atomic_t get_signal;
+
 // Forward declarations for proof the PIDs process
 typedef struct s_ast_node t_ast_node;
 
@@ -224,6 +226,12 @@ char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
 void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
+
+//SIGNALS
+
+void	signal_handler(int sig);
+void	setup_signals(void);
+void	signal_logic(void);
 
 // FREE
 

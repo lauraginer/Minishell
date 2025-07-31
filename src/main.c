@@ -1,5 +1,7 @@
 #include "../inc/minishell.h"
 
+volatile sig_atomic_t get_signal = 0;
+
 void	init_ms(t_ms *ms)
 {
 	ms->tokens = NULL;
@@ -47,11 +49,7 @@ void	main_loop(t_ms *ms)
 	{
 		ms->input = readline("minishell> ");
 		if (!ms->input)
-		{
 			free_ms(ms);
-			//free(ms);
-			//break ;
-		}
 		if (*(ms->input))
 			add_history(ms->input);
 		if (lexer(ms) == FAILURE)
@@ -77,6 +75,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	setup_signals();
 	ms = ft_calloc(1, sizeof(t_ms));
 	init_ms(ms);
 	ms->exit_status = 0;
