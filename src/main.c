@@ -48,21 +48,29 @@ void	main_loop(t_ms *ms)
 	while (1)
 	{
 		ms->input = readline("minishell> ");
-		if (!ms->input)
+		if(!ms->input)//señal Ctrl+D (EOF)
+		{
+			printf("exit\n");
 			free_ms(ms);
+			exit(ms->exit_status);
+		}
 		if (*(ms->input))
 			add_history(ms->input);
+		if (!*(ms->input) || is_empty_line(ms->input)) //para saltar líneas vacías
+		{
+			free(ms->input);
+			ms->input = NULL;
+			continue;
+		}
 		if (lexer(ms) == FAILURE)
 			continue ;
 		if (syntax_checker(ms) == FAILURE)
 			continue ;
 		expander(ms);
-		// Ejecutor temporal para comandos simples (sin pipes)
-		//execute_simple_tokens(ms);
-		//implementar ast_pipe cuando el parser esté listo
 		ms->f_ast_node = ast_main(ms, ms->tokens);
-		debug_ast(ms->f_ast_node);
-		//ms->f_ast_node = NULL; // Temporal hasta implementar parser
+		//debug_ast(ms->f_ast_node);
+		if (ms->f_ast_node)
+			execute_ast(ms->f_ast_node, ms); //parte execute
 		init_ms(ms);
 	}
 	/*hay un monton de still reachable de valgrind que son mios al hacer CTRL + C,

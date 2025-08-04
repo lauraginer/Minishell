@@ -275,4 +275,7 @@ int			is_not_allowed(t_ms *ms);
 /*Para imprimir y chequear los tokens (HAY QUE BORRARLA LUEGO)*/
 void		print_tokens(t_ms *ms);
 
+/*Utility functions*/
+int			is_empty_line(char *line);
+
 #endif
