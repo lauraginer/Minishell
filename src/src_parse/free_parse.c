@@ -74,5 +74,5 @@ void	free_ms(t_ms *ms)
 	if (ms->f_ast_node)
 		free_ast(ms->f_ast_node);
 	free(ms);
-	exit (1);
+	exit(ms->exit_status);
 }

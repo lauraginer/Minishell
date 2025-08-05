@@ -52,7 +52,7 @@ void	main_loop(t_ms *ms)
 		{
 			printf("exit\n");
 			free_ms(ms);
-			exit(ms->exit_status);
+			//exit(ms->exit_status);
 		}
 		if (*(ms->input))
 			add_history(ms->input);
