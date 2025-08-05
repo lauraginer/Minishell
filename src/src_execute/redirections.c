@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 19:42:23 by lauragm           #+#    #+#             */
-/*   Updated: 2025/07/31 16:34:33 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/05 21:35:48 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2])
 	while (1)
 	{
 		line = readline("> ");
-		if (handle_heredoc_signal(line, pipe_fd, ms))
+		if (handle_heredoc_signal(line, pipe_fd, ms)) //necesitas manejar bien tanto el control d y c
 			return (ms->exit_status);
 		if (!line || ft_strcmp(line, delimiter) == 0) //si coincide line y delimiter
 		{
