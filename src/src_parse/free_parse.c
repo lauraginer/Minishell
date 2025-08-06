@@ -63,6 +63,9 @@ void	free_ast(t_ast_node *ast)
 
 void	free_ms(t_ms *ms)
 {
+	int	exit_status;
+	
+	exit_status = ms->exit_status;
 	if (ms->input)
 		free (ms->input);
 	if (ms->tokens)
@@ -74,5 +77,5 @@ void	free_ms(t_ms *ms)
 	if (ms->f_ast_node)
 		free_ast(ms->f_ast_node);
 	free(ms);
-	exit(ms->exit_status);
+	exit(exit_status);
 }
