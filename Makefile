@@ -47,7 +47,7 @@ SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), execute_cmd.c \
 	execute.c \
 	utils_ex.c \
-	utils_main.c \
+	utils_ex2.c \
 	redirections.c) \
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \

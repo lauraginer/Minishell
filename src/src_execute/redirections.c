@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 19:42:23 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/05 21:35:48 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:34:04 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,28 +144,21 @@ int handle_append(t_ast_node *node, t_ms *ms)
 int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2])
 {
 	char *delimiter;
-	char *line;
+	int result;
+	int saved_stdin; //para restaurar el stdin original
 	
 	delimiter = get_heredoc_delimiter(node, ms);
 	if (!delimiter)
 		return (ms->exit_status);
-	while (1)
-	{
-		line = readline("> ");
-		if (handle_heredoc_signal(line, pipe_fd, ms)) //necesitas manejar bien tanto el control d y c
-			return (ms->exit_status);
-		if (!line || ft_strcmp(line, delimiter) == 0) //si coincide line y delimiter
-		{
-			if(line)
-				free(line);
-			break;
-		}
-		write(pipe_fd[1], line, ft_strlen(line));
-		write(pipe_fd[1], "\n", 1); 
-		free(line);
-	}
-	close(pipe_fd[1]); //Cerrar escritura (envía EOF al pipe)
-	dup2(pipe_fd[0], STDIN_FILENO); //stdin lee del pipe
-	close(pipe_fd[0]); //Cerrar lectura original
-	return (execute_ast(node->left, ms));  //ejecutar comando
+	result = read_heredoc_lines(delimiter, pipe_fd, ms);
+	if (result == 130)
+		return (130);
+	saved_stdin = dup(STDIN_FILENO);
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
+	close(pipe_fd[0]);
+	result = execute_ast(node->left, ms);
+	dup2(saved_stdin, STDIN_FILENO); 
+	close(saved_stdin);
+	return (result);
 }

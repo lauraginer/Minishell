@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:04:53 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:48:37 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/06 18:12:13 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,3 @@ int	builtin_echo(char **args, t_ms *ms)
 	return (ms->exit_status = 0);
 }
 
-/*int	main(int argc, char **args)
-{
-	(void)argc;
-	builtin_echo(args);
-	return (0);
-}*/

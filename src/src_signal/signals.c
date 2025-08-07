@@ -33,3 +33,24 @@ void	signal_logic(void)
 	}
 	get_signal = 0;
 }
+
+void	heredoc_signal_handler(int sig)
+{
+	get_signal = sig;
+	// No llamar signal_logic() aquí para heredoc
+}
+
+void	setup_heredoc_signals(void)
+{
+	struct sigaction	sa_int;
+	
+	sa_int.sa_handler = &heredoc_signal_handler;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0; // SIN SA_RESTART para que readline falle
+	sigaction(SIGINT, &sa_int, NULL);
+}
+
+void	restore_signals(void)
+{
+	setup_signals(); // Restaurar configuración normal
+}

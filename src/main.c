@@ -52,7 +52,7 @@ void	main_loop(t_ms *ms)
 		{
 			printf("exit\n");
 			free_ms(ms);
-			//exit(ms->exit_status);
+			exit(ms->exit_status);
 		}
 		if (*(ms->input))
 			add_history(ms->input);
@@ -68,7 +68,6 @@ void	main_loop(t_ms *ms)
 			continue ;
 		expander(ms);
 		ms->f_ast_node = ast_main(ms, ms->tokens);
-		//debug_ast(ms->f_ast_node);
 		if (ms->f_ast_node)
 			execute_ast(ms->f_ast_node, ms); //parte execute
 		init_ms(ms);

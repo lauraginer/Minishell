@@ -8,11 +8,14 @@ char	*replace_env(t_ms *ms, t_list *tmp, char **word)
 
 	i = 0;
 	free (*word);
-	while (((char *)tmp->content)[i])
-	{
-		if (((char *)tmp->content)[i] == '=')
-			break ;
+	while (((char *)tmp->content)[i] && ((char *)tmp->content)[i] != '=')
 		i++;
+	if (((char *)tmp->content)[i] == '\0')
+	{
+		*word = ft_strdup("");
+		if (!(*word))
+			free_ms(ms);
+		return (*word);
 	}
 	i++;
 	j = i;
@@ -45,11 +48,12 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 	while (tmp)
 	{
 		len = 0;
-		while (((char *)tmp->content)[len] != '=')
+		while (((char *)tmp->content)[len] && ((char *)tmp->content)[len] != '=')
 			len++;
 		if (ft_strlen(word) > len)
 			len = ft_strlen(word);
-		if (ft_strncmp(word, (char *)tmp->content, len) == 0)
+		if (ft_strncmp(word, (char *)tmp->content, len) == 0 && 
+			(((char *)tmp->content)[len] == '=' || ((char *)tmp->content)[len] == '\0'))
 			ms->sub_tokens[*count] = replace_env(ms, tmp, &word);
 		tmp = tmp->next;
 	}

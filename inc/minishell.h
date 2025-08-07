@@ -194,6 +194,7 @@ int update_env_var(char *var, t_list **my_env); //actualiza las variables de env
 int update_pwd_env(const char *old_dir); //actualiza las variables PWD y OLDPWD
 void print_env(t_list **my_env); //imprie las variables con diferente formato segun si tienen o no valor
 void debug_ast(t_ast_node *root);
+void free_ms_content(t_ms *ms);
 
 // BUILTINS
 int builtin_echo(char **args, t_ms *ms); //muestra por pantalla el argc de forma diferente segun la flag
@@ -226,7 +227,8 @@ char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
 char *get_heredoc_delimiter(t_ast_node *node, t_ms *ms);
-int handle_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms);
+int read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms);
+int is_empty_line(char *line);
 void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
 
 // EXECUTE (AST)
@@ -243,7 +245,10 @@ int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2]);
 //SIGNALS
 
 void	signal_handler(int sig);
+void	heredoc_signal_handler(int sig);
 void	setup_signals(void);
+void	setup_heredoc_signals(void);
+void	restore_signals(void);
 void	signal_logic(void);
 
 // FREE
