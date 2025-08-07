@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 21:24:51 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/06 22:45:52 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/07 21:29:29 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	is_empty_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
-			&& line[i] != '\r')
+		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
 			return (0);
 		i++;
 	}
@@ -38,7 +37,7 @@ static int	check_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms)
 			free(line);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		restore_signals();
+		setup_signals();
 		ms->exit_status = 130;
 		return (130);
 	}
@@ -87,6 +86,6 @@ int read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms)
 			break; // Salir si encontró delimitador o EOF
 	}
 	// Restaurar configuración normal de señales
-	restore_signals();
+	setup_signals();
 	return (0);
 }

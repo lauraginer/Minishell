@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 19:42:23 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/06 17:34:04 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/07 20:57:31 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int handle_input(t_ast_node *node, t_ms *ms)
 {
 	int fd;
 	char *filename;
+	int saved_fd;
+	int result;
 	
 	if (!node->right || !node->right->args || !node->right->args[0])
 	{
@@ -90,15 +92,20 @@ int handle_input(t_ast_node *node, t_ms *ms)
 		ms->exit_status = 1;
 		return(ms->exit_status);
 	}
+	saved_fd = dup(STDIN_FILENO);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	return(execute_ast(node->left, ms)); //ejecutar el nodo izquierdo cuando se ha aplicado la redireccion
+	result = execute_ast(node->left, ms);
+	dup2(saved_fd, STDIN_FILENO);
+	return(result); //ejecutar el nodo izquierdo cuando se ha aplicado la redireccion
 }
 
 int handle_output(t_ast_node *node, t_ms *ms)
 {
 	int fd;
 	char *filename;
+	int saved_fd;
+	int result;
 	
 	if (!node->right || !node->right->args || !node->right->args[0])
 	{
@@ -113,15 +120,20 @@ int handle_output(t_ast_node *node, t_ms *ms)
 		ms->exit_status = 1;
 		return(ms->exit_status);
 	}
+	saved_fd = dup(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	return(execute_ast(node->left, ms));
+	result = execute_ast(node->left, ms);
+	dup2(saved_fd, STDOUT_FILENO);
+	return(result);
 }
 
 int handle_append(t_ast_node *node, t_ms *ms)
 {
 	int fd;
 	char *filename;
+	int result;
+	int saved_fd;
 	
 	if (!node->right || !node->right->args || !node->right->args[0])
 	{
@@ -136,9 +148,12 @@ int handle_append(t_ast_node *node, t_ms *ms)
 		ms->exit_status = 1;
 		return(ms->exit_status);
 	}
+	saved_fd = dup(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	return(execute_ast(node->left, ms));
+	result = execute_ast(node->left, ms);
+	dup2(saved_fd, STDOUT_FILENO);
+	return(result);
 }
 
 int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2])
@@ -149,7 +164,11 @@ int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2])
 	
 	delimiter = get_heredoc_delimiter(node, ms);
 	if (!delimiter)
+	{
+		ms->exit_status = 1;
 		return (ms->exit_status);
+	}
+		
 	result = read_heredoc_lines(delimiter, pipe_fd, ms);
 	if (result == 130)
 		return (130);
