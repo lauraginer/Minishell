@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 21:24:51 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/07 21:29:29 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/08/09 01:03:02 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_empty_line(char *line)
 	return (1);
 }
 
-static int	check_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms)
+int	check_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms)
 {
 	if (get_signal == SIGINT)
 	{
@@ -44,7 +44,7 @@ static int	check_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms)
 	return (0);
 }
 
-static int	process_heredoc_line(char *line, char *delimiter, int pipe_fd[2])
+int	process_heredoc_line(char *line, char *delimiter, int pipe_fd[2])
 {
 	if (!line)
 	{
@@ -66,26 +66,21 @@ int read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms)
 {
 	char *line;
 	
-	// Configurar señales específicas para heredoc (sin SA_RESTART)
 	setup_heredoc_signals();
 	while (1)
 	{
-		// Verificar si llegó SIGINT antes de readline
-		if (check_heredoc_signal(NULL, pipe_fd, ms))
-			return (130);
-		// Leer línea del usuario con prompt ">"
 		line = readline("> ");
-		// Verificar si llegó SIGINT durante o después de readline
-		if (check_heredoc_signal(line, pipe_fd, ms))
+		if (get_signal == SIGINT)
 		{
-			write(1, "\n", 1); // Nueva línea después de ^C
-			return (130);
+			if (check_heredoc_signal(line, pipe_fd, ms))
+			{
+				write(1, "\n", 1);
+				return (130);
+			}
 		}
-		// Procesar línea: EOF, delimitador o escribir al pipe
 		if (process_heredoc_line(line, delimiter, pipe_fd))
-			break; // Salir si encontró delimitador o EOF
+			break; 
 	}
-	// Restaurar configuración normal de señales
 	setup_signals();
 	return (0);
 }

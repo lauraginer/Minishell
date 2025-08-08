@@ -4,6 +4,12 @@ volatile sig_atomic_t get_signal = 0;
 
 void	init_ms(t_ms *ms)
 {
+	if (ms->f_ast_node)
+	{
+		free_ast(ms->f_ast_node);
+		free(ms->f_ast_node);
+		ms->f_ast_node = NULL;
+	}
 	ms->tokens = NULL;
 	ms->input = NULL;
 	ms->sub_tokens = NULL;
@@ -69,7 +75,10 @@ void	main_loop(t_ms *ms)
 		expander(ms);
 		ms->f_ast_node = ast_main(ms, ms->tokens);
 		if (ms->f_ast_node)
-			execute_ast(ms->f_ast_node, ms); //parte execute
+		{
+			if (process_heredocs(ms->f_ast_node, ms) == 0)
+				execute_ast(ms->f_ast_node, ms);
+		}
 		init_ms(ms);
 	}
 	/*hay un monton de still reachable de valgrind que son mios al hacer CTRL + C,

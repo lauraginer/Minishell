@@ -226,10 +226,13 @@ char *get_command_path(char *cmd, t_list *my_env);
 char *manage_relative_or_absolute_path(char *cmd);
 char *get_env_value(char *name, t_list *my_env);
 void ft_free_split(char **split);
-char *get_heredoc_delimiter(t_ast_node *node, t_ms *ms);
 int read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms);
 int is_empty_line(char *line);
 void execute_simple_tokens(t_ms *ms); // Ejecutor temporal para comandos simples
+
+// HEREDOC PREPROCESSING
+int process_heredocs(t_ast_node *node, t_ms *ms);
+int create_heredoc_pipe(char *delimiter, t_ms *ms);
 
 // EXECUTE (AST)
 int execute_ast(t_ast_node *node, t_ms *ms);
@@ -240,7 +243,6 @@ int execute_redirection(t_ast_node *node, t_ms *ms);
 int handle_input(t_ast_node *node, t_ms *ms);
 int handle_output(t_ast_node *node, t_ms *ms);
 int handle_append(t_ast_node *node, t_ms *ms);
-int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2]);
 
 //SIGNALS
 
@@ -248,7 +250,6 @@ void	signal_handler(int sig);
 void	heredoc_signal_handler(int sig);
 void	setup_signals(void);
 void	setup_heredoc_signals(void);
-void	restore_signals(void);
 void	signal_logic(void);
 
 // FREE
@@ -282,5 +283,8 @@ void		print_tokens(t_ms *ms);
 
 /*Utility functions*/
 int			is_empty_line(char *line);
+
+int get_input_fd(char *filename, t_ms *ms);
+int is_string_numeric(char *filename);
 
 #endif

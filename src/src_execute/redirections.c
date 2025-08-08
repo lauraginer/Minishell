@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 19:42:23 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/07 20:57:31 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/08/09 00:42:36 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int execute_redirection(t_ast_node *node, t_ms *ms)
 {
-	int temp_pipe_fd[2];
-	
 	ms->exit_status = 0;
 	if (node->type == TOKEN_REDIR_IN)
 		return (handle_input(node, ms));
@@ -25,13 +23,9 @@ int execute_redirection(t_ast_node *node, t_ms *ms)
 		return (handle_append(node, ms));
 	else if (node->type == TOKEN_REDIR_HEREDOC)
 	{
-		if (pipe(temp_pipe_fd) == -1)
-		{
-			perror("pipe");
-			ms->exit_status = 1;
-			return(ms->exit_status);
-		}
-		return (handle_heredoc(node, ms, temp_pipe_fd));
+		printf("Error: heredoc not preprocessed\n");
+		ms->exit_status = 1;
+		return (ms->exit_status);
 	}
 	else
 	{
@@ -85,19 +79,17 @@ int handle_input(t_ast_node *node, t_ms *ms)
 		return(ms->exit_status);
 	}
 	filename = node->right->args[0];
-	fd = open(filename, O_RDONLY);
+	fd = get_input_fd(filename, ms);
 	if (fd == -1)
-	{
-		perror(filename);
-		ms->exit_status = 1;
 		return(ms->exit_status);
-	}
 	saved_fd = dup(STDIN_FILENO);
 	dup2(fd, STDIN_FILENO);
-	close(fd);
+	if (!is_string_numeric(filename))
+		close(fd);
 	result = execute_ast(node->left, ms);
 	dup2(saved_fd, STDIN_FILENO);
-	return(result); //ejecutar el nodo izquierdo cuando se ha aplicado la redireccion
+	close(saved_fd);
+	return(result);
 }
 
 int handle_output(t_ast_node *node, t_ms *ms)
@@ -154,30 +146,4 @@ int handle_append(t_ast_node *node, t_ms *ms)
 	result = execute_ast(node->left, ms);
 	dup2(saved_fd, STDOUT_FILENO);
 	return(result);
-}
-
-int handle_heredoc(t_ast_node *node, t_ms *ms, int pipe_fd[2])
-{
-	char *delimiter;
-	int result;
-	int saved_stdin; //para restaurar el stdin original
-	
-	delimiter = get_heredoc_delimiter(node, ms);
-	if (!delimiter)
-	{
-		ms->exit_status = 1;
-		return (ms->exit_status);
-	}
-		
-	result = read_heredoc_lines(delimiter, pipe_fd, ms);
-	if (result == 130)
-		return (130);
-	saved_stdin = dup(STDIN_FILENO);
-	close(pipe_fd[1]);
-	dup2(pipe_fd[0], STDIN_FILENO);
-	close(pipe_fd[0]);
-	result = execute_ast(node->left, ms);
-	dup2(saved_stdin, STDIN_FILENO); 
-	close(saved_stdin);
-	return (result);
 }

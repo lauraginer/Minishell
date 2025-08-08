@@ -7,7 +7,7 @@
 NAME := minishell
 CC := cc
 CFLAGS := -g -Wall -Werror -Wextra \
-		#-g -fsanitize=address,undefined \
+		-g -fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
 LIBFT_DIR := libft
@@ -48,6 +48,7 @@ SRCS_EXEC := \
 	execute.c \
 	utils_ex.c \
 	utils_ex2.c \
+	heredoc.c \
 	redirections.c) \
 	$(addprefix $(BUILTINS_DIR), echo.c \
 	pwd.c \

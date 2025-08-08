@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:37:03 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/06 22:36:16 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/09 00:42:28 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,37 @@ char *manage_relative_or_absolute_path(char *cmd)
 	return(NULL);
 }
 
-char *get_heredoc_delimiter(t_ast_node *node, t_ms *ms)
+int is_string_numeric(char *filename)
 {
-	if (!node->right || !node->right->args || !node->right->args[0])
+	int i;
+	
+	if (!filename || !filename[0])
+		return (0);
+	i = 0;
+	while (filename[i])
 	{
-		ms->exit_status = 1;
-		return (NULL);
+		if (!ft_isdigit(filename[i]))
+			return (0);
+		i++;
 	}
-	return (node->right->args[0]);
+	return (1);
 }
 
+int get_input_fd(char *filename, t_ms *ms)
+{
+	int fd;
+	
+	if (is_string_numeric(filename))
+		fd = ft_atoi(filename);
+	else
+	{
+		fd = open(filename, O_RDONLY);
+		if (fd == -1)
+		{
+			perror(filename);
+			ms->exit_status = 1;
+			return (-1);
+		}
+	}
+	return (fd);
+}
