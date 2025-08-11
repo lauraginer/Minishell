@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/30 19:37:58 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/11 18:29:46 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 	int status;
 	char *cmd_path;
 	char **argv;
-	char **envp;
+	char **envp; //CAUSA FALLO: se necesita convertir a un array, y no pasarlo como NULL
 	
 	cmd_path = get_command_path((*args)->args[0], my_env); 
 	if (!cmd_path)

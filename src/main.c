@@ -57,7 +57,6 @@ void	main_loop(t_ms *ms)
 		{
 			printf("exit\n");
 			free_ms(ms);
-			exit(ms->exit_status);// esto esta metido en free_ms()
 		}
 		if (*(ms->input))
 			add_history(ms->input);
@@ -97,8 +96,11 @@ int	main(int argc, char **argv, char **envp)
 	ms->exit_status = 0;
 	if (!ms)
 		exit (1);
-	ms->my_env = copy_env_var(envp);
-	if (!ms->my_env)
-		free_ms(ms);
+	if (envp && *envp)
+	{
+		ms->my_env = copy_env_var(envp);
+		if (!ms->my_env)
+        	free_ms(ms);
+	}
 	main_loop(ms);
 }
