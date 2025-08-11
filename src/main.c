@@ -69,6 +69,7 @@ void	main_loop(t_ms *ms)
 		}
 		if (lexer(ms) == FAILURE)
 			continue ;
+		//hay que comprobar el SHLVL (incrementar +1 cuando apa)
 		if (syntax_checker(ms) == FAILURE)
 			continue ;
 		expander(ms);
