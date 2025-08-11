@@ -7,7 +7,6 @@ void	init_ms(t_ms *ms)
 	if (ms->f_ast_node)
 	{
 		free_ast(ms->f_ast_node);
-		free(ms->f_ast_node);
 		ms->f_ast_node = NULL;
 	}
 	ms->tokens = NULL;
@@ -58,7 +57,7 @@ void	main_loop(t_ms *ms)
 		{
 			printf("exit\n");
 			free_ms(ms);
-			exit(ms->exit_status);
+			exit(ms->exit_status);// esto esta metido en free_ms()
 		}
 		if (*(ms->input))
 			add_history(ms->input);

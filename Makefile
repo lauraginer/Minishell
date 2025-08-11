@@ -62,7 +62,8 @@ SRCS_EXEC := \
 	# test_env.c) # Comentado temporalmente - tiene su propio main
 
 SRCS_SIGNALS := \
-	$(addprefix $(SIGNAL_DIR), signals.c)
+	$(addprefix $(SIGNAL_DIR), signals.c \
+	utils_signals.c)
 
 ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC) $(SRCS_SIGNALS)
 OBJS := $(ALL_SRCS:.c=.o)

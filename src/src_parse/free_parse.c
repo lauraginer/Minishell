@@ -59,6 +59,7 @@ void	free_ast(t_ast_node *ast)
 		free_ast(ast->left);
 	if (ast->right)
 		free_ast(ast->right);
+	free(ast);
 }
 
 void	free_ms(t_ms *ms)
