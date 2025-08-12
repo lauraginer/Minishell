@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:04:53 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/06 18:12:13 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/12 19:30:13 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,3 @@ int	builtin_echo(char **args, t_ms *ms)
 		write(1, "\n", 1);
 	return (ms->exit_status = 0);
 }
-

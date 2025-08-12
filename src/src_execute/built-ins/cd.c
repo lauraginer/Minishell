@@ -3,19 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 18:48:05 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:48:36 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/12 21:16:59 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-int special_case(char *str)
+static int error_exit_status(t_ms *ms)
 {
-	const char *target_dir;
-	char old_dir[PATH_MAX];
+	ms->exit_status = 1;
+	return (1);
+}
+int	special_case(char *str)
+{
+	const char	*target_dir;
+	char		old_dir[PATH_MAX];
 
 	if ((ft_strncmp(str, "--", 3) == 0) || ft_strncmp(str, "~", 2) == 0)
 	{
@@ -43,61 +48,55 @@ int special_case(char *str)
 		printf("cd: -%c: invalid option\n", str[2]);
 		return (1);
 	}
-	return (-1); //-1 si no es un caso especial
+	return (-1);
 }
 
-int handle_cd_home(t_ms *ms)
+int	handle_cd_home(t_ms *ms)
 {
-	const char *target_dir;
-	char old_dir[PATH_MAX];
-	
+	const char	*target_dir;
+	char		old_dir[PATH_MAX];
+
 	target_dir = getenv("HOME");
 	if (!target_dir)
 	{
 		printf("cd: HOME not set\n");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	if (getcwd(old_dir, PATH_MAX) == NULL)
 	{
 		perror("getcwd");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	update_pwd_env(old_dir);
 	ms->exit_status = 0;
 	return (0);
 }
 
-int handle_cd_oldpwd(t_ms *ms)
+int	handle_cd_oldpwd(t_ms *ms)
 {
-	const char *target_dir;
-	char old_dir[PATH_MAX];
-	
+	const char	*target_dir;
+	char		old_dir[PATH_MAX];
+
 	target_dir = getenv("OLDPWD");
 	if (!target_dir)
 	{
 		printf("cd: OLDPWD not set\n");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	if (getcwd(old_dir, PATH_MAX) == NULL)
 	{
 		perror("getcwd");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	printf("%s\n", target_dir);
 	update_pwd_env(old_dir);
@@ -105,43 +104,37 @@ int handle_cd_oldpwd(t_ms *ms)
 	return (0);
 }
 
-int handle_cd_path(char *path, t_ms *ms)
+int	handle_cd_path(char *path, t_ms *ms)
 {
-	char old_dir[PATH_MAX];
-	
+	char	old_dir[PATH_MAX];
+
 	if (getcwd(old_dir, PATH_MAX) == NULL)
 	{
 		perror("getcwd");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	if (chdir(path) != 0)
 	{
 		printf("cd: %s: No such file or directory\n", path);
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	update_pwd_env(old_dir);
 	ms->exit_status = 0;
 	return (0);
 }
 
-int builtin_cd(char **args, t_ms *ms)
+int	builtin_cd(char **args, t_ms *ms)
 {
-	int flag;
-	
+	int	flag;
+
 	if (!args)
-	{
-		ms->exit_status = 1;
-		return (1);
-	}
+		return (error_exit_status(ms));
 	if (!args[1])
 		return (handle_cd_home(ms));
 	if (args[2])
 	{
 		printf("cd: too many arguments\n");
-		ms->exit_status = 1;
-		return (1);
+		return (error_exit_status(ms));
 	}
 	if (args[1][0] == '-' && !args[1][1])
 		return (handle_cd_oldpwd(ms));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 21:03:33 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:48:40 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/12 18:44:30 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,15 @@ int	remove_env(char *var, t_list **my_env)
 	t_list	*current;
 	t_list	*prev;
 	int		var_len;
-	char	*env_entry;
 
 	current = *my_env;
 	prev = NULL;
 	var_len = ft_strlen(var);
 	while (current)
 	{
-		env_entry = (char *)current->content;
-		if ((ft_strncmp(env_entry, var, var_len) == 0)
-			&& (env_entry[var_len] == '=' || env_entry[var_len] == '\0'))
+		if ((ft_strncmp((char *)current->content, var, var_len) == 0)
+			&& (((char *)current->content)[var_len] == '='
+			|| ((char *)current->content)[var_len] == '\0'))
 		{
 			if (prev == NULL)
 				*my_env = current->next;

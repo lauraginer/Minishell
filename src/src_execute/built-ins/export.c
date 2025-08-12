@@ -3,114 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 21:03:16 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/16 21:48:38 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/12 19:25:29 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-static void print_error_ex(char *arg, t_ms *ms)
+static void	print_error_ex(char *arg, t_ms *ms)
 {
 	printf("export: %s: not a valid identifier\n", arg);
-	ms->exit_status = 1;	
+	ms->exit_status = 1;
 }
 
-int is_correct(char *arg) //verifica si es correcto el nombre del env
+int	add_to_env(char *var, t_list **my_env)
 {
-	int i;
+	t_list	*new_node;
+	char	*new_var;
 
-	i = 0;
-	if(!arg || !*arg)
-		return (0);
-	if(!ft_isalpha(arg[0]) && arg[0] != '_')
-		return(0);
-	while(arg[i] && arg[i] != '=') //llega hasta el signo igual para gestionarlo despues
+	new_var = ft_strdup(var);
+	if (!new_var)
+		return (1);
+	new_node = ft_lstnew(new_var);
+	if (!new_node)
 	{
-		if(!ft_isalnum(arg[i]) && arg[i] != '_')
-			return(0);
-		i++;
+		free(new_var);
+		return (1);
 	}
-	return(1);
+	ft_lstadd_back(my_env, new_node);
+	return (0);
 }
 
-int add_to_env(char *var, t_list **my_env)
+static int	handle_no_args_export(t_list **my_env)
 {
-    t_list *new_node;
-    char *new_var;
-
-    new_var = ft_strdup(var); //copia del env que entra
-    if(!new_var)
-        return(1);
-    new_node = ft_lstnew(new_var); //creamos nuevo nodo individual que contiene el puntero a la cadena duplicada
-    if(!new_node)
-    {
-        free(new_var);
-        return(1);
-    }
-    ft_lstadd_back(my_env, new_node); //pasamos el anterior nodo al final de la lista my_env y next apunta a new_node
-    return (0);
-}
-
-int env_exportable(char *var, t_list **my_env)
-{
-	t_list *current = *my_env;
-	char *env;
-	char *equal_sign;
-	size_t var_len;
-	
-	equal_sign = ft_strchr(var, '=');
-	if(equal_sign)
-		var_len = equal_sign - var;
-	else
-		var_len = ft_strlen(var);
-	while(current)
-	{
-		env = (char *)current->content;
-		if(ft_strncmp(env, var, var_len) == 0 && 
-          (env[var_len] == '=' || env[var_len] == '\0'))
-			return (0); //si ya existe la variable, no hacer nada
-		current = current->next;
-	}
-	return(add_to_env(var, my_env)); // Si no está, la añade sin valor
-}
-
-int builtin_export(char **args, t_list **my_env, t_ms *ms)
-{
-	t_list *current_env;
-	int i;
+	t_list	*current_env;
 
 	current_env = *my_env;
+	print_env(&current_env);
+	return (0);
+}
+
+static int	process_export_arg(char *arg, t_list **my_env, t_ms *ms)
+{
+	if (!is_correct(arg))
+	{
+		print_error_ex(arg, ms);
+		return (1);
+	}
+	if (ft_strchr(arg, '='))
+	{
+		if (update_env_var(arg, my_env) != 0)
+		{
+			ms->exit_status = 1;
+			printf("export: error: could not allocate memory\n");
+			return (1);
+		}
+	}
+	else if (env_exportable(arg, my_env) != 0)
+	{
+		ms->exit_status = 1;
+		printf("export: error: could not allocate memory\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	builtin_export(char **args, t_list **my_env, t_ms *ms)
+{
+	int	i;
+
 	i = 1;
 	ms->exit_status = 0;
-	if(!args[1])
+	if (!args[1])
+		return (handle_no_args_export(my_env));
+	while (args[i])
 	{
-		print_env(&current_env);
-		return (0);
-	}
-	while(args[i])//leemos cada argumento porque no existe un limite válido
-	{
-		if(!is_correct(args[i]))
-			print_error_ex(args[i], ms);
-		else if(ft_strchr(args[i], '=')) //busca en cualquier pos
-		{
-			if (update_env_var(args[i], my_env) != 0)
-			{
-				ms->exit_status = 1;
-				printf("export: error: could not allocate memory\n");
-			}
-		}
-		else
-		{
-			if(env_exportable(args[i], my_env) != 0) //gestiona sin signo
-			{
-				ms->exit_status = 1;
-				printf("export: error: could not allocate memory\n");
-			}
-		}
+		process_export_arg(args[i], my_env, ms);
 		i++;
 	}
-	return(ms->exit_status);
+	return (ms->exit_status);
 }

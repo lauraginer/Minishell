@@ -6,7 +6,7 @@
 /*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 22:35:35 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/07/21 12:14:33 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/08/12 19:28:26 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,25 @@ int	control_nums(char *str)
 	}
 	return (1);
 }
+
 int	builtin_exit(char **args, t_ms *ms)
 {
-	int exit_code;
+	int	exit_code;
 
 	printf("exit\n");
-	
-	if (!args || !args[0]) //verificación de seguridad para el test, luego QUITAS
-		return (1);
-		
 	if (args[1])
 	{
 		if (!control_nums(args[1]))
 		{
 			printf("exit: '%s': numeric argument required\n", args[1]);
 			ms->exit_status = 255;
-			exit(ms->exit_status); // Salimos con código 255
+			exit(ms->exit_status);
 		}
 		else if (args[2])
 		{
 			printf("exit: too many arguments\n");
 			ms->exit_status = 1;
-			return (ms->exit_status); // No salimos, pero devolvemos estado de error
+			return (ms->exit_status);
 		}
 		else
 		{

@@ -1,6 +1,7 @@
 #include "../inc/minishell.h"
 
 volatile sig_atomic_t get_signal = 0;
+volatile sig_atomic_t g_heredoc_interrupted = 0;
 
 void	init_ms(t_ms *ms)
 {
