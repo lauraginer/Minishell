@@ -22,6 +22,7 @@ void	increase_shlvl(t_ms *ms)
 			free(ms->my_env->content);
 			ms->my_env->content = ft_strjoin("SHLVL=" , shlvl);
 			free(shlvl);
+			break ;
 		}
 		aux = aux->next;
 	}
@@ -47,6 +48,7 @@ void	decrease_shlvl(t_ms *ms)
 			free(ms->my_env->content);
 			ms->my_env->content = ft_strjoin("SHLVL=" , shlvl);
 			free(shlvl);
+			break ;
 		}
 		aux = aux->next;
 	}
