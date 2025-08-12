@@ -186,6 +186,11 @@ t_ast_node	*new_ast_node(t_token_type type, t_ms *ms);
 /*It counts how many arguments has a command node*/
 int			argument_counter(t_token *token);
 
+//UPDATE SHLVEL
+
+void		increase_shlvl(t_ms *ms);
+void		decrease_shlvl(t_ms *ms);
+
 // EXECUTE
  
 // BS_UTILS

@@ -55,6 +55,7 @@ void	main_loop(t_ms *ms)
 		ms->input = readline("minishell> ");
 		if(!ms->input)//señal Ctrl+D (EOF)
 		{
+			decrease_shlvl(ms);
 			printf("exit\n");
 			free_ms(ms);
 		}
@@ -102,5 +103,6 @@ int	main(int argc, char **argv, char **envp)
 		if (!ms->my_env)
         	free_ms(ms);
 	}
+	increase_shlvl(ms);
 	main_loop(ms);
 }

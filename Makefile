@@ -39,7 +39,8 @@ SRCS_PARSER := \
 	syntax_checker.c \
 	transitions.c \
 	ast.c \
-	ast_utils.c )
+	ast_utils.c \
+	update_shlvl.c )
 
 BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
