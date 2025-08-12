@@ -291,5 +291,5 @@ int			is_empty_line(char *line);
 
 int get_input_fd(char *filename, t_ms *ms);
 int is_string_numeric(char *filename);
-
+void restore_normal_signals();
 #endif

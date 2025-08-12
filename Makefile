@@ -7,7 +7,7 @@
 NAME := minishell
 CC := cc
 CFLAGS := -g -Wall -Werror -Wextra \
-		-g -fsanitize=address,undefined \
+		-fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
 LIBFT_DIR := libft

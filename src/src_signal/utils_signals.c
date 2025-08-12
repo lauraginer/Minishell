@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_signals.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 01:07:08 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/12 13:59:35 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:39:34 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void	heredoc_signal_handler(int sig)
 	if (sig == SIGINT)
 	{
 		get_signal = SIGINT;
-	
-		if (RL_ISSTATE(RL_STATE_READCMD)) // Solo interrumpir readline si está activo
+		if (RL_ISSTATE(RL_STATE_READCMD))
 			rl_done = 1;
 	}
 }
@@ -26,9 +25,9 @@ void	heredoc_signal_handler(int sig)
 void	setup_heredoc_signals(void)
 {
 	struct sigaction	sa_int;
-	
-	sa_int.sa_handler = &heredoc_signal_handler;
+
+	sa_int.sa_handler = heredoc_signal_handler;
 	sigemptyset(&sa_int.sa_mask);
-	sa_int.sa_flags = 0; // SIN SA_RESTART para que readline falle
+	sa_int.sa_flags = 0;
 	sigaction(SIGINT, &sa_int, NULL);
 }

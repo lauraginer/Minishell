@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:55:54 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/06 18:12:08 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/12 19:29:41 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	builtin_env(char **args, t_list *my_env, t_ms *ms)
 {
 	t_list	*current_env;
+	char	*env_var;
 
 	current_env = my_env;
 	if (args[1])
@@ -30,7 +31,7 @@ int	builtin_env(char **args, t_list *my_env, t_ms *ms)
 	}
 	while (current_env)
 	{
-		char *env_var = (char *)current_env->content;
+		env_var = (char *)current_env->content;
 		if (ft_strchr(env_var, '='))
 			printf("%s\n", env_var);
 		current_env = current_env->next;

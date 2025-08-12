@@ -2,7 +2,7 @@
 #include "../../inc/minishell.h"
 
 void	signal_handler(int sig)
-{  
+{
 	get_signal = sig;
 	signal_logic();
 }
@@ -33,4 +33,3 @@ void	signal_logic(void)
 	}
 	get_signal = 0;
 }
-
