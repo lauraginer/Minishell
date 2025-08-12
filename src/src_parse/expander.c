@@ -68,7 +68,7 @@ void	join_subtokens(t_ms *ms, t_token *aux_t)
 		free(tmp);
 		i++;
 	}
-	free_subtokens(ms->sub_tokens);
+	free_double_char(ms->sub_tokens);
 	free(aux_t->value);
 	aux_t->value = new_value;
 }

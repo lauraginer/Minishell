@@ -12,16 +12,16 @@ void	increase_shlvl(t_ms *ms)
 	aux = ms->my_env;
 	while (aux)
 	{
-		if (ft_strncmp(((char *)ms->my_env->content), "SHLVL=", 6) == 0)
+		if (ft_strncmp(((char *)aux->content), "SHLVL=", 6) == 0)
 		{
-			shlvl = ft_substr(((char *)ms->my_env->content), 6,
-					(ft_strlen(((char *)ms->my_env->content) - 6)));
+			shlvl = ft_substr(((char *)aux->content), 6,
+					(ft_strlen(((char *)aux->content)) - 6));
 			lvl = ft_atoi(shlvl);
 			lvl++;
 			free(shlvl);
 			shlvl = ft_itoa(lvl);
-			free(ms->my_env->content);
-			ms->my_env->content = ft_strjoin("SHLVL=", shlvl);
+			free(aux->content);
+			aux->content = ft_strjoin("SHLVL=", shlvl);
 			free(shlvl);
 			break ;
 		}
@@ -40,16 +40,16 @@ void	decrease_shlvl(t_ms *ms)
 	aux = ms->my_env;
 	while (aux)
 	{
-		if (ft_strncmp(((char *)ms->my_env->content), "SHLVL=", 6) == 0)
+		if (ft_strncmp(((char *)aux->content), "SHLVL=", 6) == 0)
 		{
-			shlvl = ft_substr(((char *)ms->my_env->content), 6,
-					(ft_strlen(((char *)ms->my_env->content) - 6)));
+			shlvl = ft_substr(((char *)aux->content), 6,
+					(ft_strlen(((char *)aux->content)) - 6));
 			lvl = ft_atoi(shlvl);
 			lvl--;
 			free(shlvl);
 			shlvl = ft_itoa(lvl);
-			free(ms->my_env->content);
-			ms->my_env->content = ft_strjoin("SHLVL=", shlvl);
+			free(aux->content);
+			aux->content = ft_strjoin("SHLVL=", shlvl);
 			free(shlvl);
 			break ;
 		}

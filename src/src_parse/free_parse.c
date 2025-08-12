@@ -28,17 +28,17 @@ void	free_token_list(t_token *tokens)
 	}
 }
 
-void	free_subtokens(char **sub_tokens)
+void	free_double_char(char **double_char)
 {
 	int	i;
 
 	i = 0;
-	while (sub_tokens[i])
+	while (double_char[i])
 	{
-		free(sub_tokens[i]);
+		free(double_char[i]);
 		i++;
 	}
-	free(sub_tokens);
+	free(double_char);
 }
 
 void	free_ast(t_ast_node *ast)
@@ -74,7 +74,7 @@ void	free_ms(t_ms *ms)
 	if (ms->my_env)
 		free_env_list(ms->my_env);
 	if (ms->sub_tokens)
-		free_subtokens(ms->sub_tokens);
+		free_double_char(ms->sub_tokens);
 	if (ms->f_ast_node)
 		free_ast(ms->f_ast_node);
 	free(ms);

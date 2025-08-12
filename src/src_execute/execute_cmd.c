@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/11 18:29:46 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:37:56 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+char	**get_env_arr(t_ms *ms, t_list *my_env)
+{
+	char	**envp;
+	int		i;
+	t_list	*aux;
+
+	i = ft_lstsize(my_env);
+	envp = malloc(sizeof(char *) * (i + 1));
+	if (!envp)
+		free_ms(ms);
+	aux = my_env;
+	i = 0;
+	while (aux)
+	{
+		envp[i] = ft_strdup(((char *)aux->content));
+		if (!envp[i])
+		{
+			free_double_char(envp);
+			free_ms(ms);
+		}
+		aux = aux->next;
+		i++;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
 
 int execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 {
@@ -28,7 +55,7 @@ int execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 		return (127);
 	}
 	argv = (*args)->args; //Los argumentos del comando
-	envp = NULL; //por ahora NULL
+	envp = get_env_arr(*ms, my_env); //por ahora NULL
 	pid = fork();
 	if(pid == 0) //proceso hijo
 	{
@@ -49,6 +76,7 @@ int execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 		perror("fork");
 		(*ms)->exit_status = 1;
 	}
+	free_double_char(envp);
 	free(cmd_path);
 	return((*ms)->exit_status);
 }

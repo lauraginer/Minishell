@@ -266,7 +266,7 @@ void		free_token_list(t_token *tokens);
 /*It frees the struct ms*/
 void		free_ms(t_ms *ms);
 /*It frees the subtokens splitted*/
-void		free_subtokens(char **sub_tokens);
+void		free_double_char(char **double_char);
 /*It frees the abstract syntax tree*/
 void		free_ast(t_ast_node *ast);
 
