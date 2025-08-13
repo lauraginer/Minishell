@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:29:02 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 11:29:06 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:05:23 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	free_ast(t_ast_node *ast)
 void	free_ms(t_ms *ms)
 {
 	int	exit_status;
-	
+
 	exit_status = ms->exit_status;
 	if (ms->input)
 		free (ms->input);

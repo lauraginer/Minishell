@@ -6,13 +6,13 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:29:20 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 11:29:29 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:40:16 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	print_tokens(t_ms *ms)
+/*void	print_tokens(t_ms *ms)
 {
 	t_token	*curr;
 
@@ -26,8 +26,8 @@ void	print_tokens(t_ms *ms)
 		printf("VALUE: %s\n\n", curr->value);
 		curr = curr->next;
 	}
-	//free_token_list(ms->tokens); // esto habra que añadirlo fuera de esta funcion antes de la ejecucion
-}
+	//free_token_list(ms->tokens);
+}*/
 
 void	token_operator(t_ms *ms)
 {
@@ -93,8 +93,10 @@ int	lexer(t_ms *ms)
 		else if (is_operator(ms))
 			token_operator(ms);
 	}
-	/*Aquí podría añadir un token tipo EOT(final de tokens)*/
-	//print_tokens(ms);// esto hay que borrarlo, es para chequear los tokens
 	free (ms->input);
 	return (SUCCESS);
 }
+/*
+	To display the tokens obtained (to check it), include before free(ms->input):
+	print_tokens(ms);
+*/

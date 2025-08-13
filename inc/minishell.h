@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:32:56 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 11:32:58 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:06:21 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,9 @@ void		split_dquot_subt2(t_ms *ms, t_token *aux_t, int *count);
 	 variable to split it as subtoken*/
 void		check_env_split(t_ms *ms, t_token *aux_t, int *count);
 /*Second part of check_env_split*/
-void		check_env_split2(t_ms *ms, int *count, char *word);
+void	check_env_split2(t_ms *ms, t_token *aux_t, char *word);
+/*Third part of check_env_split*/
+void		check_env_split3(t_ms *ms, int *count, char *word);
 /*It replaes env variable by its value*/
 char		*replace_env(t_ms *ms, t_list *tmp, char **word);
 
