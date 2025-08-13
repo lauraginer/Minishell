@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:30:37 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 11:30:40 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:45:48 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	signal_handler(int sig)
 {
-	get_signal = sig;
+	g_signal = sig;
 	signal_logic();
 }
 
@@ -35,12 +35,12 @@ void	setup_signals(void)
 
 void	signal_logic(void)
 {
-	if (get_signal == SIGINT)
+	if (g_signal == SIGINT)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	get_signal = 0;
+	g_signal = 0;
 }

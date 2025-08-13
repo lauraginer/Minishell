@@ -6,14 +6,13 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:53:03 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/13 12:42:05 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:45:45 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-volatile sig_atomic_t	get_signal = 0;
-volatile sig_atomic_t get_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
 
 void	init_ms(t_ms *ms)
 {

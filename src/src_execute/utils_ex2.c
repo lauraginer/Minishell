@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 21:24:51 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/13 12:28:11 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:45:50 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	is_empty_line(char *line)
 
 int	check_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms)
 {
-	if (get_signal == SIGINT)
+	if (g_signal == SIGINT)
 	{
-		get_signal = 0;
+		g_signal = 0;
 		if (line)
 			free(line);
 		close(pipe_fd[0]);
@@ -71,7 +71,7 @@ int	read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms)
 	while (1)
 	{
 		line = readline("> ");
-		if (get_signal == SIGINT)
+		if (g_signal == SIGINT)
 		{
 			if (check_heredoc_signal(line, pipe_fd, ms))
 			{

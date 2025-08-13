@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 01:07:08 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/13 12:30:05 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:45:51 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	heredoc_signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		get_signal = SIGINT;
+		g_signal = SIGINT;
 		if (RL_ISSTATE(RL_STATE_READCMD))
 			rl_done = 1;
 	}
