@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 11:31:07 by jcaro-lo          #+#    #+#             */
+/*   Updated: 2025/08/13 11:31:24 by jcaro-lo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 volatile sig_atomic_t get_signal = 0;
-volatile sig_atomic_t g_heredoc_interrupted = 0;
 
 void	init_ms(t_ms *ms)
 {
