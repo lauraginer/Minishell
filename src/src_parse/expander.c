@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 11:28:48 by jcaro-lo          #+#    #+#             */
+/*   Updated: 2025/08/13 12:05:09 by jcaro-lo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
@@ -95,5 +106,10 @@ void	expander(t_ms *ms)
 		aux_t = aux_t->next;
 	}
 	free(count);
-	//print_tokens(ms);// ESTO HAY QUE QUITARLO DE AQUI
 }
+/*
+	To display the tokens obtained after being 
+	splitted(to check it), include after free(count):
+	
+	print_tokens(ms);
+*/
