@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 11:53:03 by lauragm           #+#    #+#             */
+/*   Updated: 2025/08/13 12:11:23 by lauragm          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-volatile sig_atomic_t get_signal = 0;
-volatile sig_atomic_t g_heredoc_interrupted = 0;
+volatile sig_atomic_t	get_signal = 0;
 
 void	init_ms(t_ms *ms)
 {
@@ -49,12 +60,27 @@ t_list	*copy_env_var(char **envp)
 	return (my_env);
 }
 
+static void	process_input(t_ms *ms)
+{
+	if (lexer(ms) == FAILURE)
+		return ;
+	if (syntax_checker(ms) == FAILURE)
+		return ;
+	expander(ms);
+	ms->f_ast_node = ast_main(ms, ms->tokens);
+	if (ms->f_ast_node)
+	{
+		if (process_heredocs(ms->f_ast_node, ms) == 0)
+			execute_ast(ms->f_ast_node, ms);
+	}
+}
+
 void	main_loop(t_ms *ms)
 {
 	while (1)
 	{
 		ms->input = readline("minishell> ");
-		if(!ms->input)//señal Ctrl+D (EOF)
+		if (!ms->input)
 		{
 			decrease_shlvl(ms);
 			printf("exit\n");
@@ -62,28 +88,15 @@ void	main_loop(t_ms *ms)
 		}
 		if (*(ms->input))
 			add_history(ms->input);
-		if (!*(ms->input) || is_empty_line(ms->input)) //para saltar líneas vacías
+		if (!*(ms->input) || is_empty_line(ms->input))
 		{
 			free(ms->input);
 			ms->input = NULL;
-			continue;
-		}
-		if (lexer(ms) == FAILURE)
 			continue ;
-		//hay que comprobar el SHLVL (incrementar +1 cuando apa)
-		if (syntax_checker(ms) == FAILURE)
-			continue ;
-		expander(ms);
-		ms->f_ast_node = ast_main(ms, ms->tokens);
-		if (ms->f_ast_node)
-		{
-			if (process_heredocs(ms->f_ast_node, ms) == 0)
-				execute_ast(ms->f_ast_node, ms);
 		}
+		process_input(ms);
 		init_ms(ms);
 	}
-	/*hay un monton de still reachable de valgrind que son mios al hacer CTRL + C,
-	habra que meterlo en el manejo de señales*/
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -102,7 +115,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ms->my_env = copy_env_var(envp);
 		if (!ms->my_env)
-        	free_ms(ms);
+			free_ms(ms);
 	}
 	increase_shlvl(ms);
 	main_loop(ms);

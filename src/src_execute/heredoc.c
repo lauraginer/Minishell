@@ -6,16 +6,16 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 20:58:00 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/09 00:29:46 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/13 11:37:31 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int create_heredoc_pipe(char *delimiter, t_ms *ms)
+int	create_heredoc_pipe(char *delimiter, t_ms *ms)
 {
-	int pipe_fd[2];
-	int result;
+	int	pipe_fd[2];
+	int	result;
 
 	if (pipe(pipe_fd) == -1)
 	{
@@ -23,7 +23,7 @@ int create_heredoc_pipe(char *delimiter, t_ms *ms)
 		ms->exit_status = 1;
 		return (-1);
 	}
-	result = read_heredoc_lines(delimiter, pipe_fd, ms); // mi función original para leer las líneas
+	result = read_heredoc_lines(delimiter, pipe_fd, ms);
 	if (result == 130)
 	{
 		close(pipe_fd[0]);
@@ -31,7 +31,7 @@ int create_heredoc_pipe(char *delimiter, t_ms *ms)
 		return (-1);
 	}
 	close(pipe_fd[1]);
-	return (pipe_fd[0]); // Devolver file descriptor de lectura
+	return (pipe_fd[0]);
 }
 
 static int	validate_heredoc_node(t_ast_node *node, t_ms *ms)
@@ -61,12 +61,12 @@ static int	transform_heredoc_node(t_ast_node *node, int heredoc_fd, t_ms *ms)
 	return (0);
 }
 
-int process_heredocs(t_ast_node *node, t_ms *ms)
+int	process_heredocs(t_ast_node *node, t_ms *ms)
 {
 	int	heredoc_fd;
-	
+
 	if (!node)
-		return (0);	
+		return (0);
 	ms->exit_status = 0;
 	if (process_heredocs(node->left, ms) != 0)
 		return (ms->exit_status);
@@ -84,5 +84,3 @@ int process_heredocs(t_ast_node *node, t_ms *ms)
 	}
 	return (ms->exit_status);
 }
-
-

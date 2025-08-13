@@ -206,6 +206,7 @@ int builtin_echo(char **args, t_ms *ms); //muestra por pantalla el argc de forma
 int valid_flag(char *str); //comprueba si la flag es valida
 void print_arg(char *arg); //imprime el arg (funcion dividida)
 int builtin_cd(char **args, t_ms *ms); //permite ir a un directorio especifico o el moverse entre ellos segun las flags
+int handle_home_cases(void); //maneja casos de cd a HOME
 int special_case(char *str); //maneja casos especiales de cd (~ y --)
 int builtin_pwd(char **args, t_ms *ms); //muestra por pantalla la ruta actual
 int control_nums(char *str); //mismo que ft_isdigit pero maneja + y - 

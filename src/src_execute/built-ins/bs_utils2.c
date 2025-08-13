@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_export.c                                     :+:      :+:    :+:   */
+/*   bs_utils2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/12 19:24:25 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/12 19:26:31 by lginer-m         ###   ########.fr       */
+/*   Created: 2025/08/13 12:20:00 by lauragm           #+#    #+#             */
+/*   Updated: 2025/08/13 12:36:05 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,30 @@ int	env_exportable(char *var, t_list **my_env)
 		current = current->next;
 	}
 	return (add_to_env(var, my_env));
+}
+
+int	handle_cd_home(t_ms *ms)
+{
+	int	result;
+
+	result = handle_home_cases();
+	if (result != 0)
+		ms->exit_status = 1;
+	else
+		ms->exit_status = 0;
+	return (result);
+}
+
+int	special_case(char *str)
+{
+	if (ft_strncmp(str, "--", 2) == 0 && str[2] == '\0')
+		return (handle_home_cases());
+	else if (ft_strncmp(str, "~", 1) == 0 && str[1] == '\0')
+		return (handle_home_cases());
+	else if (str[0] == '-' && str[1] == '-' && str[2])
+	{
+		printf("cd: -%c: invalid option\n", str[2]);
+		return (1);
+	}
+	return (-1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 21:24:51 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/12 18:31:25 by lginer-m         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:28:11 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	process_heredoc_line(char *line, char *delimiter, int pipe_fd[2])
 {
 	if (!line)
 	{
-		printf("minishell: warning: here-document delimited by end-of-file (wanted '%s')\n", delimiter);
+		printf("minishell: warning: here-document delimited by ");
+		printf("end-of-file (wanted '%s')\n", delimiter);
 		return (1);
 	}
 	if (ft_strcmp(line, delimiter) == 0)
@@ -62,10 +63,10 @@ int	process_heredoc_line(char *line, char *delimiter, int pipe_fd[2])
 	return (0);
 }
 
-int read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms)
+int	read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms)
 {
-	char *line;
-	
+	char	*line;
+
 	setup_heredoc_signals();
 	while (1)
 	{
@@ -79,7 +80,7 @@ int read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms)
 			}
 		}
 		if (process_heredoc_line(line, delimiter, pipe_fd))
-			break; 
+			break ;
 	}
 	setup_signals();
 	return (0);

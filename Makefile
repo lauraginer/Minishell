@@ -47,6 +47,8 @@ BUILTINS_DIR := $(EXEC_DIR)built-ins/
 SRCS_EXEC := \
 	$(addprefix $(EXEC_DIR), execute_cmd.c \
 	execute.c \
+	execute_pipe.c \
+	path_utils.c \
 	utils_ex.c \
 	utils_ex2.c \
 	heredoc.c \
@@ -59,7 +61,8 @@ SRCS_EXEC := \
 	unset.c \
 	cd.c \
 	built-ins.c \
-	bs_utils.c)
+	bs_utils.c \
+	bs_utils2.c)
 	# test_env.c) # Comentado temporalmente - tiene su propio main
 
 SRCS_SIGNALS := \
