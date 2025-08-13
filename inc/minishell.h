@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:32:56 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 13:13:26 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:22:34 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,13 @@ typedef struct s_ms
 								is the current quote */
 }	t_ms;
 
+typedef struct s_checkenv
+{
+	char	*word;
+	int		len;
+	t_list	*tmp;
+}	t_checkenv;
+
 /* ************************************************************************** */
 /*                                   MAIN                                    */
 /* ************************************************************************** */
@@ -180,9 +187,7 @@ void		split_dquot_subt2(t_ms *ms, t_token *aux_t, int *count);
 	 variable to split it as subtoken */
 void		check_env_split(t_ms *ms, t_token *aux_t, int *count);
 /* Second part of check_env_split */
-void		check_env_split2(t_ms *ms, t_token *aux_t, char *word);
-/* Third part of check_env_split */
-void		check_env_split3(t_ms *ms, int *count, char *word);
+void		check_env_split2(t_ms *ms, int *count, t_checkenv *check);
 /* It replaes env variable by its value */
 char		*replace_env(t_ms *ms, t_list *tmp, char **word);
 

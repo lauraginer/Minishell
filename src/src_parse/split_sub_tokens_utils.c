@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:29:39 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 12:07:34 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/13 14:35:39 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,47 +43,45 @@ char	*replace_env(t_ms *ms, t_list *tmp, char **word)
 
 void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 {
-	char	*word;
-	int		len;
-	t_list	*tmp;
+	t_checkenv	*check;
+	int			i;
 
-	tmp = ms->my_env;
-	word = NULL;
-	check_env_split2(ms, aux_t, word);
-	while (tmp)
-	{
-		len = 0;
-		while (((char *)tmp->content)[len] &&
-			((char *)tmp->content)[len] != '=')
-			len++;
-		if (ft_strlen(word) > len)
-			len = ft_strlen(word);
-		if (ft_strncmp(word, (char *)tmp->content, len) == 0
-			&& (((char *)tmp->content)[len] == '='
-			|| ((char *)tmp->content)[len] == '\0'))
-			ms->sub_tokens[*count] = replace_env(ms, tmp, &word);
-		tmp = tmp->next;
-	}
-	check_env_split3(ms, count, word);
-}
-
-void	check_env_split2(t_ms *ms, t_token *aux_t, char *word)
-{
-	int	i;
-
+	check = ft_calloc(sizeof(t_checkenv), 1);
+	if (!check)
+		free_ms(ms);
+	check->tmp = ms->my_env;
+	check->len = 0;
 	i = ms->i;
 	while (ft_isalnum(aux_t->value[ms->i]) || aux_t->value[ms->i] == '_')
 		ms->i++;
-	word = ft_substr(aux_t->value, i, ms->i - i);
-	if (!word)
+	check->word = ft_substr(aux_t->value, i, ms->i - i);
+	if (!check->word)
 		free_ms(ms);
+	check_env_split2(ms, count, check);
+	free(check);
 }
 
-void	check_env_split3(t_ms *ms, int *count, char *word)
+void	check_env_split2(t_ms *ms, int *count, t_checkenv *check)
 {
+	while (check->tmp)
+	{
+		check->len = 0;
+		while (((char *)check->tmp->content)[check->len] &&
+			((char *)check->tmp->content)[check->len] != '=')
+			check->len++;
+		if (ft_strlen(check->word) > check->len)
+			check->len = ft_strlen(check->word);
+		if (ft_strncmp(check->word,
+				(char *)check->tmp->content, check->len) == 0
+			&& (((char *)check->tmp->content)[check->len] == '='
+			|| ((char *)check->tmp->content)[check->len] == '\0'))
+			ms->sub_tokens[*count] = replace_env(ms, check->tmp, &check->word);
+		check->tmp = check->tmp->next;
+	}
 	if (!ms->sub_tokens[*count])
 	{
-		free (word);
+		free(check->word);
+		free(check);
 		ms->sub_tokens[*count] = ft_strdup("");
 		if (!ms->sub_tokens[*count])
 			free_ms(ms);

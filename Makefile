@@ -6,7 +6,7 @@
 #    By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 11:32:18 by jcaro-lo          #+#    #+#              #
-#    Updated: 2025/08/13 11:32:43 by jcaro-lo         ###   ########.fr        #
+#    Updated: 2025/08/13 14:33:40 by jcaro-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME := minishell
 CC := cc
 CFLAGS := -g -Wall -Werror -Wextra \
-		-fsanitize=address,undefined \
+		#-fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
 LIBFT_DIR := libft
