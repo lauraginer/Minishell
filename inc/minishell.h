@@ -6,7 +6,7 @@
 /*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:32:56 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 13:13:26 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:14:14 by lauragm          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,111 +234,86 @@ void		print_tokens(t_ms *ms);
 
 /* EXECUTE */
 int			execute_ast(t_ast_node *node, t_ms *ms);
-int			execute_pipe(t_ast_node *pipe_node, t_ms *ms);
 
 /* EXECUTE_CMD */
+char		**get_env_arr(t_ms *ms, t_list *my_env);
 int			execute_external_command(t_ast_node **args, t_ms **ms,
 				t_list *my_env);
-char		*get_command_path(char *cmd, t_list *my_env);
-char		*manage_relative_or_absolute_path(char *cmd);
-/* Temporary executor for simple commands */
-void		execute_simple_tokens(t_ms *ms);
+
+/* EXECUTE_PIPE */
+int			execute_pipe(t_ast_node *pipe_node, t_ms *ms);
+
+/* HEREDOC */
+int			create_heredoc_pipe(char *delimiter, t_ms *ms);
+int			process_heredocs(t_ast_node *node, t_ms *ms);
 
 /* PATH_UTILS */
 char		*get_env_value(char *name, t_list *my_env);
-
-/* UTILS_EX */
-void		ft_free_split(char **split);
-/* Utility functions */
-int			is_empty_line(char *line);
-
-/* UTILS_EX2 */
-int			read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms);
-/* HEREDOC PREPROCESSING */
-int			process_heredocs(t_ast_node *node, t_ms *ms);
-int			create_heredoc_pipe(char *delimiter, t_ms *ms);
+char		*get_command_path(char *cmd, t_list *my_env);
 
 /* REDIRECTIONS */
 int			execute_redirection(t_ast_node *node, t_ms *ms);
 int			handle_input(t_ast_node *node, t_ms *ms);
 int			handle_output(t_ast_node *node, t_ms *ms);
 int			handle_append(t_ast_node *node, t_ms *ms);
+
+/* UTILS_EX */
+void		ft_free_split(char **split);
+char		*manage_relative_or_absolute_path(char *cmd);
+int			is_string_numeric(char *filename);
 int			get_input_fd(char *filename, t_ms *ms);
 
-/* BUILT-INS */
-/* displays arguments on screen differently according to the flag */
-int			builtin_echo(char **args, t_ms *ms);
-/* checks if the flag is valid */
-int			valid_flag(char *str);
-/* prints the argument (divided function) */
-void		print_arg(char *arg);
-/* allows to go to a specific directory or move between them */
-int			builtin_cd(char **args, t_ms *ms);
-/* handles cd cases to HOME */
-int			handle_home_cases(void);
-/* handles special cd cases (~ y --) */
-int			special_case(char *str);
-/* displays the current path on screen */
-int			builtin_pwd(char **args, t_ms *ms);
-/* same as ft_isdigit but handles + and - */
-int			control_nums(char *str);
-/* program exit, returning different codes */
-int			builtin_exit(char **args, t_ms *ms);
-/* prints environment variables */
-int			builtin_env(char **args, t_list *my_env, t_ms *ms);
-/* checks if the env var nomenclature is correct */
-int			is_correct(char *arg);
-/* adds an env-var through nodes to the list */
-int			add_to_env(char *var, t_list **my_env);
-/* handles the case of an env-var without value */
-int			env_exportable(char *var, t_list **my_env);
-/* prints env-vars, creates and adds according to user request */
-int			builtin_export(char **args, t_list **my_env, t_ms *ms);
-/* removes env-vars, for the unset command */
-int			remove_env(char *var, t_list **my_env);
-/* removes env-vars */
-int			builtin_unset(char **args, t_list **my_env, t_ms *ms);
-/* handles cd without arguments (HOME) */
-int			handle_cd_home(t_ms *ms);
-/* handles cd - (OLDPWD) */
-int			handle_cd_oldpwd(t_ms *ms);
-/* handles cd with specific path */
-int			handle_cd_path(char *path, t_ms *ms);
-/* checks if it's a builtin from other commands */
-int			is_builtin(char *cmd);
-/* executes builtins according to incoming argc */
-int			execute_builtin(t_ast_node *node, t_ms *ms);
-/* executes builtins that can use fork */
-int			execute_builtin_with_fork(t_ast_node *node, t_ms *ms);
-/* detects if a builtin needs to be executed in the parent */
-int			needs_parent_execution(char *cmd);
+/* UTILS_EX2 */
+int			is_empty_line(char *line);
+int			check_heredoc_signal(char *line, int pipe_fd[2], t_ms *ms);
+int			process_heredoc_line(char *line, char *delimiter, int pipe_fd[2]);
+int			read_heredoc_lines(char *delimiter, int pipe_fd[2], t_ms *ms);
 
-/* BS_UTILS */
-/* strcmp just in case */
+/* BUILT-INS */
+int			is_builtin(char *cmd);
+int			execute_builtin(t_ast_node *node, t_ms *ms);
+int			execute_builtin_with_fork(t_ast_node *node, t_ms *ms);
+int			needs_parent_execution(char *cmd);
+int			builtin_cd(char **args, t_ms *ms);
+int			handle_cd_home(t_ms *ms);
+int			handle_cd_oldpwd(t_ms *ms);
+int			handle_cd_path(char *path, t_ms *ms);
+int			builtin_echo(char **args, t_ms *ms);
+int			valid_flag(char *str);
+void		print_arg(char *arg);
+int			builtin_env(char **args, t_list *my_env, t_ms *ms);
+int			builtin_exit(char **args, t_ms *ms);
+int			control_nums(char *str);
+int			builtin_export(char **args, t_list **my_env, t_ms *ms);
+int			add_to_env(char *var, t_list **my_env);
+int			builtin_pwd(char **args, t_ms *ms);
+int			builtin_unset(char **args, t_list **my_env, t_ms *ms);
+int			remove_env(char *var, t_list **my_env);
 int			ft_strcmp(const char *s1, const char *s2);
-/* updates env variables (designed for export) */
 int			update_env_var(char *var, t_list **my_env);
-/* updates PWD and OLDPWD variables */
 int			update_pwd_env(const char *old_dir);
-/* prints variables with different format depending on value */
 void		print_env(t_list **my_env);
 void		debug_ast(t_ast_node *root);
 void		free_ms_content(t_ms *ms);
-/* It frees the linked list of env vars */
 void		free_env_list(t_list *my_env);
-/* It frees the struct ms */
 void		free_ms(t_ms *ms);
-int			is_string_numeric(char *filename);
+int			is_correct(char *arg);
+int			env_exportable(char *var, t_list **my_env);
+int			handle_home_cases(void);
+int			special_case(char *str);
 
 /* ************************************************************************** */
 /*                              SRC_SIGNAL                                   */
 /* ************************************************************************** */
 
+/* SIGNALS */
 void		signal_handler(int sig);
-void		heredoc_signal_handler(int sig);
 void		setup_signals(void);
-void		setup_heredoc_signals(void);
 void		signal_logic(void);
 void		restore_normal_signals(void);
+
+/* UTILS_SIGNALS */
+void		heredoc_signal_handler(int sig);
+void		setup_heredoc_signals(void);
 
 #endif
