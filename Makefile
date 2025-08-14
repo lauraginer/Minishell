@@ -67,7 +67,7 @@ SRCS_EXEC := \
 	pwd.c \
 	env.c \
 	exit.c \
-	utils_export.c \
+	export.c \
 	unset.c \
 	cd.c \
 	built-ins.c \
