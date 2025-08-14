@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:53:03 by lauragm           #+#    #+#             */
-/*   Updated: 2025/08/13 12:45:45 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:32:28 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,23 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	*ms;
 
-	(void)argc;
 	(void)argv;
-	setup_signals();
-	ms = ft_calloc(1, sizeof(t_ms));
-	init_ms(ms);
-	ms->exit_status = 0;
-	if (!ms)
-		exit (1);
-	if (envp && *envp)
+	if (argc == 1)
 	{
-		ms->my_env = copy_env_var(envp);
-		if (!ms->my_env)
-			free_ms(ms);
+		setup_signals();
+		ms = ft_calloc(1, sizeof(t_ms));
+		init_ms(ms);
+		ms->exit_status = 0;
+		if (!ms)
+			exit (1);
+		if (envp && *envp)
+		{
+			ms->my_env = copy_env_var(envp);
+			if (!ms->my_env)
+				free_ms(ms);
+		}
+		increase_shlvl(ms);
+		main_loop(ms);
 	}
-	increase_shlvl(ms);
-	main_loop(ms);
+	return (0);
 }

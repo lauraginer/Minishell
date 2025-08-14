@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:29:39 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 14:35:39 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:18:57 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,33 @@ void	check_env_split(t_ms *ms, t_token *aux_t, int *count)
 	check->word = ft_substr(aux_t->value, i, ms->i - i);
 	if (!check->word)
 		free_ms(ms);
-	check_env_split2(ms, count, check);
-	free(check);
+	check_env_split2(ms, count, &check);
+	if (check)
+		free(check);
 }
 
-void	check_env_split2(t_ms *ms, int *count, t_checkenv *check)
+void	check_env_split2(t_ms *ms, int *count, t_checkenv **check)
 {
-	while (check->tmp)
+	while ((*check)->tmp)
 	{
-		check->len = 0;
-		while (((char *)check->tmp->content)[check->len] &&
-			((char *)check->tmp->content)[check->len] != '=')
-			check->len++;
-		if (ft_strlen(check->word) > check->len)
-			check->len = ft_strlen(check->word);
-		if (ft_strncmp(check->word,
-				(char *)check->tmp->content, check->len) == 0
-			&& (((char *)check->tmp->content)[check->len] == '='
-			|| ((char *)check->tmp->content)[check->len] == '\0'))
-			ms->sub_tokens[*count] = replace_env(ms, check->tmp, &check->word);
-		check->tmp = check->tmp->next;
+		(*check)->len = 0;
+		while (((char *)(*check)->tmp->content)[(*check)->len] &&
+			((char *)(*check)->tmp->content)[(*check)->len] != '=')
+			(*check)->len++;
+		if (ft_strlen((*check)->word) > (*check)->len)
+			(*check)->len = ft_strlen((*check)->word);
+		if (ft_strncmp((*check)->word,
+				(char *)(*check)->tmp->content, (*check)->len) == 0
+			&& (((char *)(*check)->tmp->content)[(*check)->len] == '='
+			|| ((char *)(*check)->tmp->content)[(*check)->len] == '\0'))
+			ms->sub_tokens[*count] = replace_env(ms, (*check)->tmp, &(*check)->word);
+		(*check)->tmp = (*check)->tmp->next;
 	}
 	if (!ms->sub_tokens[*count])
 	{
-		free(check->word);
-		free(check);
+		free((*check)->word);
+		free((*check));
+		*check = NULL;
 		ms->sub_tokens[*count] = ft_strdup("");
 		if (!ms->sub_tokens[*count])
 			free_ms(ms);
