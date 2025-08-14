@@ -1,42 +1,68 @@
-/*Lo que se nos da básicamente en la parte de ejecución es un AST (Árbol de Sintaxis Abstracta),
-y la forma en que lo ejecutamos es recorriéndolo recursivamente. Aquí hay un pseudocódigo que recorre un AST aritmético
-construido previamente en la fase de parseo:*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 19:05:33 by lginer-m          #+#    #+#             */
+/*   Updated: 2025/08/13 11:23:07 by lauragm          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int eval(t_node node)
+#include "../../inc/minishell.h"
+
+static int	handle_token_pipe(t_ast_node *node, t_ms *ms)
 {
- if (node.type == PLUS)
-   return (node.left + node.right);
- else
-   return (node.value);
+	return (execute_pipe(node, ms));
 }
 
-//El pseudocódigo sería algo así:
-
-int execute(t_node node)
+static int	handle_token_word(t_ast_node *node, t_ms *ms)
 {
- if (node.type == PIPE)
-   return (execute_pipe(node.left, node.right));
- else
-   return (execute_simple_command(node.value));
+	if (is_builtin(node->args[0]))
+	{
+		if (needs_parent_execution(node->args[0]))
+			return (execute_builtin(node, ms));
+		else
+			return (execute_builtin_with_fork(node, ms));
+	}
+	else
+		return (execute_external_command(&node, &ms, ms->my_env));
 }
 
-/*Para manejar file descriptors y crear procesos con fork():
-Esto es el núcleo de la parte de ejecución, además de trabajar un poco con las redirecciones,
-donde básicamente abrimos un archivo y luego redirigimos (usando dup2) la entrada o salida estándar a ese archivo.
-En el caso de here-doc (<<), redirigimos la entrada estándar a un pipe.*/
-int execute_pipe()
+static int	handle_redirection(t_ast_node *node, t_ms *ms)
 {
-   pipe(pipe_fds);
-   left_pid = fork();
-   if (pid == 0) // estamos en el hijo izquierdo
-   {
-      // hacer lo necesario
-      close(pipe_fds[0]); // según corresponda
-      close(pipe_fds[1]); // según corresponda
-   }
-   else // estamos de nuevo en el padre
-   {
-      // hacer lo mismo para el hijo derecho
-      // asegurarse de cerrar también los pipe_fds en el padre
-   }
+	if (node->type == TOKEN_REDIR_IN || node->type == TOKEN_REDIR_OUT
+		|| node->type == TOKEN_REDIR_APPEND
+		|| node->type == TOKEN_REDIR_HEREDOC)
+		return (execute_redirection(node, ms));
+	else
+	{
+		ms->exit_status = 1;
+		return (ms->exit_status);
+	}
 }
+
+int	execute_ast(t_ast_node *node, t_ms *ms)
+{
+	ms->exit_status = 0;
+	if (!node || !ms)
+	{
+		ms->exit_status = 1;
+		return (ms->exit_status);
+	}
+	if (node->type == TOKEN_PIPE)
+		return (handle_token_pipe(node, ms));
+	else if (node->type == TOKEN_WORD)
+		return (handle_token_word(node, ms));
+	else
+		return (handle_redirection(node, ms));
+}
+
+/*
+** For handling file descriptors and creating processes with fork():
+** This is the core of the execution part, also working with redirections,
+** where we basically open a file and then redirect (using dup2) the
+** standard input or output to that file.
+** In the case of here-doc (<<), we redirect standard input to a pipe.
+*/

@@ -5,11 +5,10 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/09 20:49:03 by lginer-m          #+#    #+#              #
-#    Updated: 2025/06/12 19:17:02 by lginer-m         ###   ########.fr        #
+#    Created: 2025/08/13 11:32:18 by jcaro-lo          #+#    #+#              #
+#    Updated: 2025/08/14 17:45:27 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 # ============================================================================= #
 #                                  MINISHELL                                    #
@@ -18,10 +17,10 @@
 NAME := minishell
 CC := cc
 CFLAGS := -g -Wall -Werror -Wextra \
-		#-g -fsanitize=address,undefined \
+		-fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
-LIBFT_DIR := Libft
+LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
@@ -32,17 +31,55 @@ INCLUDES = -I./includes -I./lib/libft -I$(READLINE_INCLUDE)
 # ============================================================================= #
 
 SRCS_DIR := src/
-PARSER_DIR := $(SRCS_DIR)src_parsing/
+PARSER_DIR := $(SRCS_DIR)src_parse/
 EXEC_DIR := $(SRCS_DIR)src_execute/
+SIGNAL_DIR := $(SRCS_DIR)src_signal/
 
 SRCS := \
 	$(SRCS_DIR)main.c \
 
 SRCS_PARSER := \
+	$(addprefix $(PARSER_DIR), lexer.c \
+	free_parse.c \
+	token_list_utils.c \
+	lexer_utils.c \
+	expander.c \
+	count_sub_tokens.c \
+	split_sub_tokens.c \
+	split_sub_tokens_utils.c \
+	syntax_checker.c \
+	transitions.c \
+	ast.c \
+	ast_utils.c \
+	update_shlvl.c )
+
+BUILTINS_DIR := $(EXEC_DIR)built-ins/
 
 SRCS_EXEC := \
+	$(addprefix $(EXEC_DIR), execute_cmd.c \
+	execute.c \
+	execute_pipe.c \
+	path_utils.c \
+	utils_ex.c \
+	utils_ex2.c \
+	heredoc.c \
+	redirections.c) \
+	$(addprefix $(BUILTINS_DIR), echo.c \
+	pwd.c \
+	env.c \
+	exit.c \
+	export.c \
+	unset.c \
+	cd.c \
+	built-ins.c \
+	bs_utils.c \
+	bs_utils2.c)
 	
-ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC)
+SRCS_SIGNALS := \
+	$(addprefix $(SIGNAL_DIR), signals.c \
+	utils_signals.c)
+
+ALL_SRCS := $(SRCS) $(SRCS_PARSER) $(SRCS_EXEC) $(SRCS_SIGNALS)
 OBJS := $(ALL_SRCS:.c=.o)
 
 # ============================================================================= #
@@ -64,11 +101,15 @@ RESET       := \033[0m
 #                                    RULES                                      #
 # ============================================================================= #
 
-.PHONY: all clean fclean re bonus norminette test help
+.PHONY: all clean fclean re bonus norminette test help cleanlib
 
-all: header $(NAME)
+all: header cleanlib $(NAME)
 	@echo "$(GREEN)✅ Compilation completed successfully!$(RESET)"
 	@echo "$(CYAN)🚀 Ready to use ./$(NAME)$(RESET)"
+
+cleanlib:
+	@echo "$(YELLOW)🧹 Cleaning library objects...$(RESET)"
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo "$(YELLOW)🔗 Linking $(NAME)...$(RESET)"
@@ -87,7 +128,8 @@ $(LIBFT):
 clean:
 	@echo "$(YELLOW)🧹 Cleaning object files...$(RESET)"
 	@rm -f $(OBJS)
-	@make -C $(LIBFT_DIR) clean --no-print-directory
+	@find $(SRCS_DIR) -name "*.o" -type f -delete 2>/dev/null || true
+	@make -C $(LIBFT_DIR) fclean --no-print-directory
 	@echo "$(GREEN)✨ Object files cleaned!$(RESET)"
 
 fclean: clean
