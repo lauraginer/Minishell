@@ -6,7 +6,7 @@
 #    By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 11:32:18 by jcaro-lo          #+#    #+#              #
-#    Updated: 2025/08/14 13:30:25 by jcaro-lo         ###   ########.fr        #
+#    Updated: 2025/08/14 13:50:36 by jcaro-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,8 +73,7 @@ SRCS_EXEC := \
 	built-ins.c \
 	bs_utils.c \
 	bs_utils2.c)
-	# test_env.c) # Comentado temporalmente - tiene su propio main
-
+	
 SRCS_SIGNALS := \
 	$(addprefix $(SIGNAL_DIR), signals.c \
 	utils_signals.c)
