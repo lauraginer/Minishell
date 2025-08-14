@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 00:00:00 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/13 11:33:15 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/14 19:12:58 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,14 @@ char	*get_command_path(char *cmd, t_list *my_env)
 	char	*path_env;
 	char	**path_dirs;
 	char	*full_path;
+	int		saved_errno;
 
 	full_path = manage_relative_or_absolute_path(cmd);
 	if (full_path)
 		return (full_path);
+	saved_errno = errno;
+	if (saved_errno == EACCES || saved_errno == EISDIR)
+		return (NULL);
 	path_env = get_env_value("PATH", my_env);
 	if (!path_env)
 		return (NULL);

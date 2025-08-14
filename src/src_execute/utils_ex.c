@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_ex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:37:03 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/13 11:29:32 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/14 19:45:42 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,26 @@ void	ft_free_split(char **split)
 
 char	*manage_relative_or_absolute_path(char *cmd)
 {
-	if (cmd[0] == '/' || cmd[0] == '.' || ft_strchr(cmd, '/'))
+	struct stat	statbuf;
+
+	if (!(cmd[0] == '/' || cmd[0] == '.' || ft_strchr(cmd, '/')))
+		return (NULL);
+	if (access(cmd, F_OK) != 0)
 	{
-		if (access(cmd, F_OK | X_OK) == 0)
-			return (ft_strdup(cmd));
+		errno = ENOENT;
 		return (NULL);
 	}
-	return (NULL);
+	if (stat(cmd, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+	{
+		errno = EISDIR;
+		return (NULL);
+	}
+	if (access(cmd, X_OK) != 0)
+	{
+		errno = EACCES;
+		return (NULL);
+	}
+	return (ft_strdup(cmd));
 }
 
 int	is_string_numeric(char *filename)
@@ -71,4 +84,31 @@ int	get_input_fd(char *filename, t_ms *ms)
 		}
 	}
 	return (fd);
+}
+
+char	**get_env_arr(t_ms *ms, t_list *my_env)
+{
+	char	**envp;
+	int		i;
+	t_list	*aux;
+
+	i = ft_lstsize(my_env);
+	envp = malloc(sizeof(char *) * (i + 1));
+	if (!envp)
+		free_ms(ms);
+	aux = my_env;
+	i = 0;
+	while (aux)
+	{
+		envp[i] = ft_strdup(((char *)aux->content));
+		if (!envp[i])
+		{
+			free_double_char(envp);
+			free_ms(ms);
+		}
+		aux = aux->next;
+		i++;
+	}
+	envp[i] = NULL;
+	return (envp);
 }

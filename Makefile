@@ -6,7 +6,7 @@
 #    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2025/08/14 17:57:27 by lginer-m         ###   ########.fr        #
+#    Updated: 2025/08/14 18:01:11 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,13 @@
 NAME := minishell
 CC := cc
 CFLAGS := -g -Wall -Werror -Wextra \
-		-fsanitize=address,undefined \
+		#-fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
 LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
-READLINE_INCLUDE = $(shell brew --prefix readline)/include
-READLINE_LIB = $(shell brew --prefix readline)/lib
-INCLUDES = -I./includes -I./lib/libft -I$(READLINE_INCLUDE)
+INCLUDES := -I$(LIBFT_DIR) -Iinc -I/usr/include
+LIBS := -lreadline
 
 # ============================================================================= #
 #                                   SOURCES                                     #

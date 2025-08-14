@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 19:15:40 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/13 11:36:06 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/14 19:37:31 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char	**get_env_arr(t_ms *ms, t_list *my_env)
-{
-	char	**envp;
-	int		i;
-	t_list	*aux;
-
-	i = ft_lstsize(my_env);
-	envp = malloc(sizeof(char *) * (i + 1));
-	if (!envp)
-		free_ms(ms);
-	aux = my_env;
-	i = 0;
-	while (aux)
-	{
-		envp[i] = ft_strdup(((char *)aux->content));
-		if (!envp[i])
-		{
-			free_double_char(envp);
-			free_ms(ms);
-		}
-		aux = aux->next;
-		i++;
-	}
-	envp[i] = NULL;
-	return (envp);
-}
 
 static int	handle_child_process(char *cmd_path, char **argv, char **envp)
 {
@@ -67,6 +40,38 @@ static int	handle_parent_process(pid_t pid, t_ms **ms)
 	return ((*ms)->exit_status);
 }
 
+static int	check_empty_command(t_ast_node **args, t_ms **ms)
+{
+	if (!(*args)->args[0] || (*args)->args[0][0] == '\0')
+	{
+		(*ms)->exit_status = 0;
+		return (1);
+	}
+	return (0);
+}
+
+static int	handle_command_error(t_ast_node **args, t_ms **ms)
+{
+	if (errno == EACCES)
+	{
+		fprintf(stderr, "%s: Permission denied\n", (*args)->args[0]);
+		(*ms)->exit_status = 126;
+		return (126);
+	}
+	else if (errno == EISDIR)
+	{
+		fprintf(stderr, "%s: Is a directory\n", (*args)->args[0]);
+		(*ms)->exit_status = 126;
+		return (126);
+	}
+	else
+	{
+		printf("command not found: %s\n", (*args)->args[0]);
+		(*ms)->exit_status = 127;
+		return (127);
+	}
+}
+
 int	execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 {
 	pid_t	pid;
@@ -74,13 +79,11 @@ int	execute_external_command(t_ast_node **args, t_ms **ms, t_list *my_env)
 	char	**argv;
 	char	**envp;
 
+	if (check_empty_command(args, ms))
+		return (0);
 	cmd_path = get_command_path((*args)->args[0], my_env);
 	if (!cmd_path)
-	{
-		printf("command not found: %s\n", (*args)->args[0]);
-		(*ms)->exit_status = 127;
-		return (127);
-	}
+		return (handle_command_error(args, ms));
 	argv = (*args)->args;
 	envp = get_env_arr(*ms, my_env);
 	pid = fork();
