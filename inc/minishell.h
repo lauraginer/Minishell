@@ -6,7 +6,7 @@
 /*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:32:56 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 15:03:17 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:28:53 by jcaro-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_ms
 								is the current quote */
 }	t_ms;
 
+/*Struct generated to store values of the function check_env_split*/
 typedef struct s_checkenv
 {
 	char	*word;
