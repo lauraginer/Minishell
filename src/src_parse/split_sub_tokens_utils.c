@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_sub_tokens_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 11:29:39 by jcaro-lo          #+#    #+#             */
-/*   Updated: 2025/08/13 14:35:39 by jcaro-lo         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:29:04 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ void	check_env_split2(t_ms *ms, int *count, t_checkenv *check)
 	}
 	if (!ms->sub_tokens[*count])
 	{
-		free(check->word);
-		free(check);
 		ms->sub_tokens[*count] = ft_strdup("");
 		if (!ms->sub_tokens[*count])
 			free_ms(ms);

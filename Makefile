@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jcaro-lo <jcaro-lo@student.42malaga.com    +#+  +:+       +#+         #
+#    By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 11:32:18 by jcaro-lo          #+#    #+#              #
-#    Updated: 2025/08/14 13:30:25 by jcaro-lo         ###   ########.fr        #
+#    Updated: 2025/08/14 17:29:04 by lginer-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ SRCS_EXEC := \
 	pwd.c \
 	env.c \
 	exit.c \
-	export.c \
+	utils_export.c \
 	unset.c \
 	cd.c \
 	built-ins.c \
