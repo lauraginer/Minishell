@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lauragm <lauragm@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lginer-m <lginer-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:05:33 by lginer-m          #+#    #+#             */
-/*   Updated: 2025/08/13 11:23:07 by lauragm          ###   ########.fr       */
+/*   Updated: 2025/08/18 14:33:14 by lginer-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,3 @@ int	execute_ast(t_ast_node *node, t_ms *ms)
 	else
 		return (handle_redirection(node, ms));
 }
-
-/*
-** For handling file descriptors and creating processes with fork():
-** This is the core of the execution part, also working with redirections,
-** where we basically open a file and then redirect (using dup2) the
-** standard input or output to that file.
-** In the case of here-doc (<<), we redirect standard input to a pipe.
-*/
